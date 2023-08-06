@@ -8,6 +8,7 @@ namespace JGV.StockControl.DesktopApp
 
         private Button _currentButton;
         private Random _random = new Random();
+        private Form _activeForm;
 
         private int _tempIndex;
         public MainForm(IUnitOfWork unitOfWork)
@@ -36,6 +37,7 @@ namespace JGV.StockControl.DesktopApp
                     _currentButton.BackColor = randomColor;
                     _currentButton.ForeColor = SystemColors.ButtonHighlight;
                     _currentButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+                    panelRightDetail.BackColor = randomColor;
                 }
             }
         }
@@ -51,7 +53,26 @@ namespace JGV.StockControl.DesktopApp
             }
         }
 
-        private void productsButton_Click(object sender, EventArgs e)
+        private void OpenChildForm(Form childForm, Button buttonSender)
+        {
+            if (childForm != null)
+                childForm.Close();
+
+            ActivateButton(buttonSender);
+            _activeForm = childForm;
+
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            this.panelContent.Controls.Add(childForm);
+            this.panelContent.Tag = childForm;
+
+            childForm.BringToFront();
+            childForm.Show();
+        }
+
+        private void ProductsButton_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
         }
@@ -61,7 +82,7 @@ namespace JGV.StockControl.DesktopApp
             ActivateButton(sender);
         }
 
-        private void clientDebtsButton_Click(object sender, EventArgs e)
+        private void ClientDebtsButton_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
         }

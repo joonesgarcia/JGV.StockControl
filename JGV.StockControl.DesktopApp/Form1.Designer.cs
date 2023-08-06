@@ -32,8 +32,11 @@
             clientDebtsButton = new Button();
             SellsButton = new Button();
             productsButton = new Button();
-            logoPanel = new Panel();
+            panelLogo = new Panel();
+            panelContent = new Panel();
+            panelRightDetail = new Panel();
             panelMenu.SuspendLayout();
+            panelContent.SuspendLayout();
             SuspendLayout();
             // 
             // panelMenu
@@ -42,7 +45,7 @@
             panelMenu.Controls.Add(clientDebtsButton);
             panelMenu.Controls.Add(SellsButton);
             panelMenu.Controls.Add(productsButton);
-            panelMenu.Controls.Add(logoPanel);
+            panelMenu.Controls.Add(panelLogo);
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
@@ -61,11 +64,11 @@
             clientDebtsButton.Padding = new Padding(0, 0, 0, 20);
             clientDebtsButton.Size = new Size(203, 174);
             clientDebtsButton.TabIndex = 3;
-            clientDebtsButton.Text = "Clientes/Dividas";
+            clientDebtsButton.Text = "Clientes e Dividas";
             clientDebtsButton.TextAlign = ContentAlignment.BottomCenter;
             clientDebtsButton.TextImageRelation = TextImageRelation.TextAboveImage;
             clientDebtsButton.UseVisualStyleBackColor = true;
-            clientDebtsButton.Click += clientDebtsButton_Click;
+            clientDebtsButton.Click += ClientDebtsButton_Click;
             // 
             // SellsButton
             // 
@@ -101,35 +104,57 @@
             productsButton.TextAlign = ContentAlignment.BottomCenter;
             productsButton.TextImageRelation = TextImageRelation.TextAboveImage;
             productsButton.UseVisualStyleBackColor = true;
-            productsButton.Click += productsButton_Click;
+            productsButton.Click += ProductsButton_Click;
             // 
-            // logoPanel
+            // panelLogo
             // 
-            logoPanel.BackColor = Color.FromArgb(108, 108, 112);
-            logoPanel.Dock = DockStyle.Top;
-            logoPanel.Location = new Point(0, 0);
-            logoPanel.Name = "logoPanel";
-            logoPanel.Size = new Size(203, 77);
-            logoPanel.TabIndex = 0;
+            panelLogo.BackColor = Color.FromArgb(108, 108, 112);
+            panelLogo.Dock = DockStyle.Top;
+            panelLogo.Location = new Point(0, 0);
+            panelLogo.Name = "panelLogo";
+            panelLogo.Size = new Size(203, 77);
+            panelLogo.TabIndex = 0;
+            // 
+            // panelContent
+            // 
+            panelContent.Controls.Add(panelRightDetail);
+            panelContent.Dock = DockStyle.Fill;
+            panelContent.Location = new Point(203, 0);
+            panelContent.Name = "panelContent";
+            panelContent.Size = new Size(890, 599);
+            panelContent.TabIndex = 1;
+            // 
+            // panelRightDetail
+            // 
+            panelRightDetail.BackColor = Color.FromArgb(158, 159, 165);
+            panelRightDetail.Dock = DockStyle.Right;
+            panelRightDetail.Location = new Point(871, 0);
+            panelRightDetail.Name = "panelRightDetail";
+            panelRightDetail.Size = new Size(19, 599);
+            panelRightDetail.TabIndex = 0;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1093, 599);
+            Controls.Add(panelContent);
             Controls.Add(panelMenu);
             Name = "MainForm";
             Text = "Controle de vendas";
             panelMenu.ResumeLayout(false);
+            panelContent.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private Panel panelMenu;
-        private Panel logoPanel;
+        private Panel panelLogo;
         private Button clientDebtsButton;
         private Button SellsButton;
         private Button productsButton;
+        private Panel panelContent;
+        private Panel panelRightDetail;
     }
 }
