@@ -1,10 +1,5 @@
-﻿using JGV.StockControl.Library.DAL.Models;
-using JGV.StockControl.Library.DAL.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JGV.StockControl.Library.DAL.ViewModel;
+
 
 namespace JGV.StockControl.Library.DAL.Repository
 {
@@ -16,11 +11,16 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             _dbContext = dbContext;
         }
-        public List<ProductViewModel> GetAll()
+        public IEnumerable<ProductViewModel> GetAll()
         => _dbContext.Products
-            .Select(p => new ProductViewModel(p.Description, p.Cost, p.Price, p.AvailableQuantity, p.DiscountPromotion))
-            .ToList();
-           
-        
+            .Select(p => new ProductViewModel(
+                p.Description, 
+                p.Cost, 
+                p.Price, 
+                p.BoughtQuantity - _dbContext.SoldProducts.Where(s => s.Product == p)
+                                                          .Select(p => p.Quantity)
+                                                          .Sum(), 
+                p.DiscountPromotion))
+            .AsEnumerable();              
     }
 }

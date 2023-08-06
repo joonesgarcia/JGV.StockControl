@@ -13,24 +13,19 @@ public class SellRepository : ISellRepository
 
     public void AddSell(SellInputModel model)
     {
-        Client cliente = _dbContext.Clients.First(c => c.Id == model.clientId);
+        Client client = _dbContext.Clients.First(c => c.Id == model.clientId);
 
-        Sell sell = new Sell()
+        Sell sell = new()
         {
-            Date = DateOnly.FromDateTime(DateTime.Now),
-            Client = cliente,
+            Date = model.sellDate,
+            Client = client,
             SoldProducts = model.soldProducts
         };
 
         foreach (SoldProduct s in model.soldProducts)
-        {
-            Product product = _dbContext.Products.Find(s.Product);
-            product.AvailableQuantity -= s.Quantity;
-
             _dbContext.SoldProducts.Add(s);
-        }
 
-        cliente.Orders.Add(sell);
+        client.Orders.Add(sell);
         _dbContext.Sells.Add(sell);
 
         _dbContext.SaveChanges();
@@ -42,13 +37,8 @@ public class SellRepository : ISellRepository
         Client client = _dbContext.Clients.First(c => c.Orders.Contains(sell));
 
         foreach (SoldProduct s in sell.SoldProducts)
-        {
-            Product product = _dbContext.Products.Find(s.Product);
-            product.AvailableQuantity += s.Quantity;
-
             _dbContext.SoldProducts.Remove(s);
-        }
-
+        
         client.Orders.Remove(sell);
         _dbContext.Sells.Remove(sell);
 

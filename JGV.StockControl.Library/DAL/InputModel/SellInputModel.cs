@@ -1,5 +1,5 @@
 ﻿using JGV.StockControl.Library.DAL.Models;
 
 namespace JGV.StockControl.Library.DAL.InputModel;
-public record SellInputModel(int clientId, List<SoldProduct> soldProducts);
+public record SellInputModel(int clientId, DateOnly sellDate, List<SoldProduct> soldProducts);
 
