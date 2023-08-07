@@ -35,12 +35,15 @@
             // productsGridView
             // 
             productsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            productsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            productsGridView.BackgroundColor = SystemColors.Control;
             productsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             productsGridView.Location = new Point(12, 179);
             productsGridView.Name = "productsGridView";
+            productsGridView.RowHeadersVisible = false;
             productsGridView.RowHeadersWidth = 51;
             productsGridView.RowTemplate.Height = 29;
-            productsGridView.Size = new Size(929, 375);
+            productsGridView.Size = new Size(939, 375);
             productsGridView.TabIndex = 0;
             // 
             // ProductsForm

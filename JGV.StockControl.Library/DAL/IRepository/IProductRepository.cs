@@ -9,6 +9,6 @@ namespace JGV.StockControl.Library.DAL.Repository
 {
     public interface IProductRepository
     {
-        IEnumerable<ProductViewModel> GetAll();
+        List<ProductViewModel> GetAll();
     }
 }

@@ -56,8 +56,8 @@ namespace JGV.StockControl.DesktopApp
 
         private void OpenChildForm(Form childForm, Button buttonSender)
         {
-            if (childForm != null)
-                childForm.Close();
+            if (_activeForm != null)
+                _activeForm.Close();
 
             ActivateButton(buttonSender);
             _activeForm = childForm;
@@ -80,11 +80,15 @@ namespace JGV.StockControl.DesktopApp
 
         private void SellsButton_Click(object sender, EventArgs e)
         {
+            if (_activeForm != null)
+                _activeForm.Close();
             ActivateButton(sender);
         }
 
         private void ClientDebtsButton_Click(object sender, EventArgs e)
         {
+            if (_activeForm != null)
+                _activeForm.Close();
             ActivateButton(sender);
         }
     }

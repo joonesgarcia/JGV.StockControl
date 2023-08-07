@@ -11,7 +11,7 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             _dbContext = dbContext;
         }
-        public IEnumerable<ProductViewModel> GetAll()
+        public List<ProductViewModel> GetAll()
         => _dbContext.Products
             .Select(p => new ProductViewModel(
                 p.Description, 
@@ -21,6 +21,6 @@ namespace JGV.StockControl.Library.DAL.Repository
                                                           .Select(p => p.Quantity)
                                                           .Sum(), 
                 p.DiscountPromotion))
-            .AsEnumerable();              
+            .ToList();              
     }
 }

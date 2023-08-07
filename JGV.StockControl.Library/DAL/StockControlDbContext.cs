@@ -7,6 +7,10 @@ namespace JGV.StockControl.Library.DAL
 {
     public class StockControlDbContext : DbContext
     {
+        public StockControlDbContext()
+        {
+
+        }
         public StockControlDbContext(DbContextOptions options)
             : base(options)
         {
