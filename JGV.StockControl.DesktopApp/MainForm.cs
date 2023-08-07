@@ -1,3 +1,4 @@
+using JGV.StockControl.DesktopApp.Forms;
 using JGV.StockControl.Library.DAL.IRepository;
 
 namespace JGV.StockControl.DesktopApp
@@ -74,7 +75,7 @@ namespace JGV.StockControl.DesktopApp
 
         private void ProductsButton_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender);
+            OpenChildForm(new ProductsForm(_unitOfWork), (Button)sender);
         }
 
         private void SellsButton_Click(object sender, EventArgs e)
