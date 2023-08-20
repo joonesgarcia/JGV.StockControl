@@ -1,5 +1,4 @@
-﻿using JGV.StockControl.Library.DAL.ViewModel;
-
+﻿using JGV.StockControl.Library.BLL.ViewModel;
 
 namespace JGV.StockControl.Library.DAL.Repository
 {

@@ -1,4 +1,4 @@
-﻿using JGV.StockControl.Library.DAL.InputModel;
+﻿using JGV.StockControl.Library.BLL.InputModel;
 using JGV.StockControl.Library.DAL.Models;
 
 namespace JGV.StockControl.Library.DAL.Repository;

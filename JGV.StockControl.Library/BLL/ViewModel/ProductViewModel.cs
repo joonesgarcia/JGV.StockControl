@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JGV.StockControl.Library.DAL.ViewModel;
+namespace JGV.StockControl.Library.BLL.ViewModel;
 
 public record ProductViewModel
 {
@@ -30,5 +30,5 @@ public record ProductViewModel
     [System.ComponentModel.DisplayName("Promoção")]
     public string? DiscountPromotion { get; set; } = null;
 }
-    
+
 

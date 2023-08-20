@@ -17,11 +17,11 @@ namespace JGV.StockControl.DesktopApp
             string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "StockControlLocalDb.db");
             services.AddDbContext<StockControlDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
-            services.AddTransient<IClientRepository, ClientRepository>();
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<ISellRepository, SellRepository>();
+            services.AddSingleton<IClientRepository, ClientRepository>();
+            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<ISellRepository, SellRepository>();
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

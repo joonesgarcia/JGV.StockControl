@@ -18,8 +18,6 @@ namespace JGV.StockControl.Library.DAL
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Console.WriteLine("OnConfiguring was called!");
-
             string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "StockControlLocalDb.db");
 
             var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = $"{dbPath}" };
