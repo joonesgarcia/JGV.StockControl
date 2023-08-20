@@ -1,13 +1,4 @@
 ﻿using JGV.StockControl.Library.DAL.IRepository;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
@@ -19,15 +10,16 @@ namespace JGV.StockControl.DesktopApp.Forms
             InitializeComponent();
             _unitOfWork = unitOfWork;
         }
-
-        private void sellsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void SellsForm_Load(object sender, EventArgs e)
         {
             InitializeGridView();
         }
         private void InitializeGridView()
         {
             sellsGridView.AutoGenerateColumns = true;
-            sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
+            ///sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
         }
+
+
     }
 }

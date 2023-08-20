@@ -53,7 +53,6 @@ namespace JGV.StockControl.DesktopApp
                 }
             }
         }
-
         private void OpenChildForm(Form childForm, Button buttonSender)
         {
             if (_activeForm != null)
