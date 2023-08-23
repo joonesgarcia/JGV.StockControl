@@ -28,13 +28,18 @@ namespace JGV.StockControl.Library.DAL
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Client>()
+                .HasMany(o => o.Orders)
+                .WithOne(c => c.Client);
+
             modelBuilder.Entity<Sell>()
-                .HasOne(c => c.Client)
-                .WithMany(o => o.Orders);
+                .HasMany(sp => sp.SoldProducts)
+                .WithOne(s => s.Sell);
 
             modelBuilder.Entity<SoldProduct>()
-                .HasOne(sell => sell.Sell)
-                .WithMany(orders => orders.SoldProducts);
+                .HasKey(k => new { k.ProductId, k.SellId });
+
+
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Cost)

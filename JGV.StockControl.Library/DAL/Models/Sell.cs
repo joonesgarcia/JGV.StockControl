@@ -3,8 +3,8 @@
     public class Sell
     {
         public int Id { get; set; }
+        public Client Client { get; set; }
         public DateOnly Date { get; set; }
-        public virtual Client Client { get; set; }
-        public virtual ICollection<SoldProduct> SoldProducts { get; set; }
+        public ICollection<SoldProduct> SoldProducts { get; set; }
     }
 }
