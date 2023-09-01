@@ -12,11 +12,11 @@ public record ProductViewModel
 {
     public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion)
     {
-        Description = description.FirstCharToUpperOrDefault();
+        Description = description.FirstCharToUpperOrEmptyStringAsDefault();
         Cost = cost.ToString("C", new CultureInfo("pt-BR"));
         Price = price.ToString("C", new CultureInfo("pt-BR"));
         AvailableQuantity = availableQuantity;
-        DiscountPromotion = discountPromotion?.FirstCharToUpperOrDefault();
+        DiscountPromotion = discountPromotion?.FirstCharToUpperOrEmptyStringAsDefault();
     }
 
     [System.ComponentModel.DisplayName("Descrição")]

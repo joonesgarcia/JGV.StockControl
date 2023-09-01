@@ -1,5 +1,7 @@
 ﻿using JGV.StockControl.Library.BLL.InputModel;
+using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
+using System.Security;
 
 namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
@@ -43,6 +45,31 @@ public class SellRepository : ISellRepository
         _dbContext.Sells.Remove(sell);
 
         _dbContext.SaveChanges();
+    }
+
+    public List<SellViewModel> GetSells()
+    {
+        List<SellViewModel> result = new();
+        foreach (Sell sell in _dbContext.Sells)
+        {
+            SellViewModel model = new()
+            {
+                Id = sell.Id,
+                Date = sell.Date,
+                ClientName = sell.Client.Name,
+                TotalPaidAmount = sell.TotalPaidAmount,
+                InitialDebtValue = _dbContext.SoldProducts
+                                        .Where(sp => sp.Sell == sell)
+                                        .Select(p => p.SoldPrice)
+                                        .Sum(),
+                Profit = (from sp in _dbContext.SoldProducts
+                          join p in _dbContext.Products on sp.ProductId equals p.Id
+                          select ( sp.SoldPrice - p.Cost ) * sp.Quantity
+                          ).Sum()
+            };
+            result.Add(model);
+        }
+        return result;
     }
 }
 

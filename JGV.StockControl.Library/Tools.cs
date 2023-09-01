@@ -9,7 +9,7 @@ namespace JGV.StockControl.Library
 
     public static class Tools
     {
-        public static string FirstCharToUpperOrDefault(this string input) =>
+        public static string FirstCharToUpperOrEmptyStringAsDefault(this string input) =>
                 input switch
                 {
                     null => "",
