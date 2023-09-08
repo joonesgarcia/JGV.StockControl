@@ -31,10 +31,10 @@ namespace JGV.StockControl.Library.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure a custom value converter for the Date property
-            //var dateConverter = new ValueConverter<DateTime, string>(
-            //    v => v.ToString("dd/MM/yyyy"),   // Convert DateTime to string
-            //    v => DateTime.ParseExact(v, "dd/MM/yyyy", CultureInfo.InvariantCulture) // Parse string to DateTime
-            //);
+            var dateConverter = new ValueConverter<DateTime, string>(
+                v => v.ToString("dd/MM/yyyy"),   // Convert DateTime to string
+                v => DateTime.ParseExact(v, "dd/MM/yyyy", CultureInfo.InvariantCulture) // Parse string to DateTime
+            );
 
             modelBuilder.Entity<Client>()
                 .HasMany(o => o.Orders)
@@ -60,9 +60,9 @@ namespace JGV.StockControl.Library.DAL
                 .HasColumnType("REAL");
 
 
-            //modelBuilder.Entity<Sell>()
-            //    .Property(s => s.Date)
-            //    .HasConversion(dateConverter);
+            modelBuilder.Entity<Sell>()
+                .Property(s => s.Date)
+                .HasConversion(dateConverter);
 
             base.OnModelCreating(modelBuilder);
         }
