@@ -72,7 +72,10 @@ namespace JGV.StockControl.Library.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPaidAmount")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -9,7 +9,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
     public struct SellViewModel
     {
         public int Id { get; init; }
-        public DateOnly Date { get; init; }
+        public DateTime Date { get; init; }
         public string ClientName { get; init; }
         public decimal InitialDebtValue { get; init; }
         public decimal TotalPaidAmount { get; init; }

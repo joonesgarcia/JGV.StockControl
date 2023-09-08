@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JGV.StockControl.Library.Migrations
 {
     [DbContext(typeof(StockControlDbContext))]
-    [Migration("20230820004919_firstMg")]
-    partial class firstMg
+    [Migration("20230907212118_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,10 @@ namespace JGV.StockControl.Library.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPaidAmount")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -87,25 +90,19 @@ namespace JGV.StockControl.Library.Migrations
 
             modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.SoldProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SellId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("SoldPrice")
                         .HasColumnType("REAL");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
+                    b.HasKey("ProductId", "SellId");
 
                     b.HasIndex("SellId");
 

@@ -1,7 +1,9 @@
 ﻿using JGV.StockControl.Library.DAL.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 
 namespace JGV.StockControl.Library.DAL
 {
@@ -28,6 +30,12 @@ namespace JGV.StockControl.Library.DAL
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure a custom value converter for the Date property
+            //var dateConverter = new ValueConverter<DateTime, string>(
+            //    v => v.ToString("dd/MM/yyyy"),   // Convert DateTime to string
+            //    v => DateTime.ParseExact(v, "dd/MM/yyyy", CultureInfo.InvariantCulture) // Parse string to DateTime
+            //);
+
             modelBuilder.Entity<Client>()
                 .HasMany(o => o.Orders)
                 .WithOne(c => c.Client);
@@ -51,6 +59,11 @@ namespace JGV.StockControl.Library.DAL
                 .Property(e => e.SoldPrice)
                 .HasColumnType("REAL");
 
+
+            //modelBuilder.Entity<Sell>()
+            //    .Property(s => s.Date)
+            //    .HasConversion(dateConverter);
+
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Client> Clients { get; set; }
@@ -60,4 +73,5 @@ namespace JGV.StockControl.Library.DAL
 
 
     }
+
 }

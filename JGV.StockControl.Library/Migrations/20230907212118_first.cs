@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JGV.StockControl.Library.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMg : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,8 +48,9 @@ namespace JGV.StockControl.Library.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Date = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    ClientId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ClientId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TotalPaidAmount = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,16 +67,14 @@ namespace JGV.StockControl.Library.Migrations
                 name: "SoldProducts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    SoldPrice = table.Column<decimal>(type: "REAL", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     SellId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    SoldPrice = table.Column<decimal>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoldProducts", x => x.Id);
+                    table.PrimaryKey("PK_SoldProducts", x => new { x.ProductId, x.SellId });
                     table.ForeignKey(
                         name: "FK_SoldProducts_Products_ProductId",
                         column: x => x.ProductId,
@@ -94,11 +93,6 @@ namespace JGV.StockControl.Library.Migrations
                 name: "IX_Sells_ClientId",
                 table: "Sells",
                 column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SoldProducts_ProductId",
-                table: "SoldProducts",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SoldProducts_SellId",
