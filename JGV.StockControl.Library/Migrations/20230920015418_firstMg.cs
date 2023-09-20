@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace JGV.StockControl.Library.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class firstMg : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,30 +25,13 @@ namespace JGV.StockControl.Library.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    BoughtQuantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    Cost = table.Column<decimal>(type: "REAL", nullable: false),
-                    Price = table.Column<decimal>(type: "REAL", nullable: false),
-                    DiscountPromotion = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sells",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Date = table.Column<string>(type: "TEXT", nullable: false),
                     TotalPaidAmount = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -64,48 +46,42 @@ namespace JGV.StockControl.Library.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoldProducts",
+                name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SellId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    SoldPrice = table.Column<decimal>(type: "REAL", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    BoughtQuantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cost = table.Column<decimal>(type: "REAL", nullable: false),
+                    SoldPrice = table.Column<decimal>(type: "REAL", nullable: true),
+                    DiscountPromotion = table.Column<string>(type: "TEXT", nullable: true),
+                    SellId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoldProducts", x => new { x.ProductId, x.SellId });
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SoldProducts_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SoldProducts_Sells_SellId",
+                        name: "FK_Products_Sells_SellId",
                         column: x => x.SellId,
                         principalTable: "Sells",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_SellId",
+                table: "Products",
+                column: "SellId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sells_ClientId",
                 table: "Sells",
                 column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SoldProducts_SellId",
-                table: "SoldProducts",
-                column: "SellId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "SoldProducts");
-
             migrationBuilder.DropTable(
                 name: "Products");
 

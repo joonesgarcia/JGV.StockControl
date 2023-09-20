@@ -55,10 +55,15 @@ namespace JGV.StockControl.Library.Migrations
                     b.Property<string>("DiscountPromotion")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Price")
+                    b.Property<int?>("SellId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal?>("SoldPrice")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SellId");
 
                     b.ToTable("Products");
                 });
@@ -72,7 +77,8 @@ namespace JGV.StockControl.Library.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("Date")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalPaidAmount")
@@ -85,25 +91,13 @@ namespace JGV.StockControl.Library.Migrations
                     b.ToTable("Sells");
                 });
 
-            modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.SoldProduct", b =>
+            modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.Product", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
+                    b.HasOne("JGV.StockControl.Library.DAL.Models.Sell", "Sell")
+                        .WithMany("SoldProducts")
+                        .HasForeignKey("SellId");
 
-                    b.Property<int>("SellId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("SoldPrice")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("ProductId", "SellId");
-
-                    b.HasIndex("SellId");
-
-                    b.ToTable("SoldProducts");
+                    b.Navigation("Sell");
                 });
 
             modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.Sell", b =>
@@ -115,25 +109,6 @@ namespace JGV.StockControl.Library.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.SoldProduct", b =>
-                {
-                    b.HasOne("JGV.StockControl.Library.DAL.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JGV.StockControl.Library.DAL.Models.Sell", "Sell")
-                        .WithMany("SoldProducts")
-                        .HasForeignKey("SellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Sell");
                 });
 
             modelBuilder.Entity("JGV.StockControl.Library.DAL.Models.Client", b =>

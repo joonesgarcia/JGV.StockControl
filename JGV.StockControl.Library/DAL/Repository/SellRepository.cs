@@ -24,9 +24,6 @@ public class SellRepository : ISellRepository
             SoldProducts = model.soldProducts
         };
 
-        foreach (SoldProduct s in model.soldProducts)
-            _dbContext.SoldProducts.Add(s);
-
         client.Orders.Add(sell);
         _dbContext.Sells.Add(sell);
 
@@ -37,9 +34,6 @@ public class SellRepository : ISellRepository
     {
         Sell sell = _dbContext.Sells.Single(s => s.Id == sellId);
         Client client = _dbContext.Clients.First(c => c.Orders.Contains(sell));
-
-        foreach (SoldProduct s in sell.SoldProducts)
-            _dbContext.SoldProducts.Remove(s);
         
         client.Orders.Remove(sell);
         _dbContext.Sells.Remove(sell);
@@ -50,25 +44,25 @@ public class SellRepository : ISellRepository
     public List<SellViewModel> GetSells()
     {
         List<SellViewModel> result = new();
-        foreach (Sell sell in _dbContext.Sells)
-        {
-            SellViewModel model = new()
-            {
-                Id = sell.Id,
-                Date = sell.Date,
-                ClientName = sell.Client.Name,
-                TotalPaidAmount = sell.TotalPaidAmount,
-                InitialDebtValue = _dbContext.SoldProducts
-                                        .Where(sp => sp.Sell == sell)
-                                        .Select(p => p.SoldPrice)
-                                        .Sum(),
-                Profit = (from sp in _dbContext.SoldProducts
-                          join p in _dbContext.Products on sp.ProductId equals p.Id
-                          select ( sp.SoldPrice - p.Cost ) * sp.Quantity
-                          ).Sum()
-            };
-            result.Add(model);
-        }
+        //foreach (Sell sell in _dbContext.Sells)
+        //{
+        //    SellViewModel model = new()
+        //    {
+        //        Id = sell.Id,
+        //        Date = sell.Date,
+        //        ClientName = sell.Client.Name,
+        //        TotalPaidAmount = sell.TotalPaidAmount,
+        //        InitialDebtValue = _dbContext.SoldProducts
+        //                                .Where(sp => sp.Sell == sell)
+        //                                .Select(p => p.SoldPrice)
+        //                                .Sum(),
+        //        Profit = (from sp in _dbContext.SoldProducts
+        //                  join p in _dbContext.Products on sp.ProductId equals p.Id
+        //                  select ( sp.SoldPrice - p.Cost ) * sp.Quantity
+        //                  ).Sum()
+        //    };
+        //    result.Add(model);
+        //}
         return result;
     }
 }

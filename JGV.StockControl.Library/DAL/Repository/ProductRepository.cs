@@ -11,15 +11,16 @@ namespace JGV.StockControl.Library.DAL.Repository
             _dbContext = dbContext;
         }
         public List<ProductViewModel> GetAll()
-        => _dbContext.Products
-            .Select(p => new ProductViewModel(
-                p.Description, 
-                p.Cost, 
-                p.Price, 
-                p.BoughtQuantity - _dbContext.SoldProducts.Where(s => s.Product == p)
-                                                          .Select(p => p.Quantity)
-                                                          .Sum(), 
-                p.DiscountPromotion))
-            .ToList();              
+            => new();
+        //=> _dbContext.Products
+        //    .Select(p => new ProductViewModel(
+        //        p.Description, 
+        //        p.Cost, 
+        //        p.SoldPrice, 
+        //        p.BoughtQuantity - _dbContext.SoldProducts.Where(s => s.Product == p)
+        //                                                  .Select(p => p.Quantity)
+        //                                                  .Sum(), 
+        //        p.DiscountPromotion))
+        //    .ToList();              
     }
 }

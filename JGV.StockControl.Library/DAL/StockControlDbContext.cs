@@ -44,18 +44,11 @@ namespace JGV.StockControl.Library.DAL
                 .HasMany(sp => sp.SoldProducts)
                 .WithOne(s => s.Sell);
 
-            modelBuilder.Entity<SoldProduct>()
-                .HasKey(k => new { k.ProductId, k.SellId });
-
-
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Cost)             
+                .HasColumnType("REAL");
 
             modelBuilder.Entity<Product>()
-                .Property(e => e.Cost)
-                .HasColumnType("REAL");
-            modelBuilder.Entity<Product>()
-                .Property(e => e.Price)
-                .HasColumnType("REAL");
-            modelBuilder.Entity<SoldProduct>()
                 .Property(e => e.SoldPrice)
                 .HasColumnType("REAL");
 
@@ -69,8 +62,6 @@ namespace JGV.StockControl.Library.DAL
         public DbSet<Client> Clients { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Sell> Sells { get; set; }
-        public DbSet<SoldProduct> SoldProducts { get; set; }
-
 
     }
 
