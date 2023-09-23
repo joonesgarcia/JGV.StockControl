@@ -36,6 +36,9 @@ namespace JGV.StockControl.Library.DAL
                 v => DateTime.ParseExact(v, "dd/MM/yyyy", CultureInfo.InvariantCulture) // Parse string to DateTime
             );
 
+            modelBuilder.Entity<SoldProduct>()
+                .HasKey(k => new { k.ProductId, k.SellId });
+
             modelBuilder.Entity<Client>()
                 .HasMany(o => o.Orders)
                 .WithOne(c => c.Client);
@@ -44,14 +47,19 @@ namespace JGV.StockControl.Library.DAL
                 .HasMany(sp => sp.SoldProducts)
                 .WithOne(s => s.Sell);
 
+            modelBuilder.Entity<SoldProduct>()
+                .HasOne(p => p.Product);
+            modelBuilder.Entity<SoldProduct>()
+                .HasOne(s => s.Sell);
+
+
             modelBuilder.Entity<Product>()
                 .Property(e => e.Cost)             
                 .HasColumnType("REAL");
 
-            modelBuilder.Entity<Product>()
+            modelBuilder.Entity<SoldProduct>()
                 .Property(e => e.SoldPrice)
                 .HasColumnType("REAL");
-
 
             modelBuilder.Entity<Sell>()
                 .Property(s => s.Date)
@@ -61,6 +69,7 @@ namespace JGV.StockControl.Library.DAL
         }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Sell> Sells { get; set; }
 
     }

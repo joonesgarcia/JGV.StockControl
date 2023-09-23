@@ -8,6 +8,6 @@
         public decimal TotalPaidAmount { get; set; }
 
         public virtual Client Client { get; set; } 
-        public virtual ICollection<Product> SoldProducts { get; set; }
+        public virtual ICollection<SoldProduct> SoldProducts { get; set; }
     }
 }
