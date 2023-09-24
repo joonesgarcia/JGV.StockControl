@@ -56,6 +56,9 @@ namespace JGV.StockControl.Library.DAL
             modelBuilder.Entity<Product>()
                 .Property(e => e.Cost)             
                 .HasColumnType("REAL");
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Price)
+                .HasColumnType("REAL");
 
             modelBuilder.Entity<SoldProduct>()
                 .Property(e => e.SoldPrice)

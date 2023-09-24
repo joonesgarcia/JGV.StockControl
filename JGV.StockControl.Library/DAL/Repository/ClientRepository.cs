@@ -11,7 +11,11 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             _dbContext = dbContext;
         }
-
+        public string? GetClientNameById(int id)
+        {
+            Client? client = _dbContext.Clients.FirstOrDefault(c => c.Id == id);
+            return client?.Name;
+        }
         public void AddClient(ClientInputModel model)
         {
             Client client = new Client()
@@ -25,20 +29,25 @@ namespace JGV.StockControl.Library.DAL.Repository
 
         public void DeleteClientById(int id)
         {
-            Client cliente = _dbContext.Clients.Single(x => x.Id == id);
-            _dbContext.Clients.Remove(cliente);
-            _dbContext.SaveChanges();
+            Client? client = _dbContext.Clients.SingleOrDefault(x => x.Id == id);
+            if (client != null)
+            {
+                _dbContext.Clients.Remove(client);
+                _dbContext.SaveChanges();
+            }
         }
 
         public void UpdateClientById(int id, ClientInputModel model)
         {
-            Client cliente = _dbContext.Clients.Single(x => x.Id == id);
+            Client? client = _dbContext.Clients.Single(x => x.Id == id);
+            if (client != null)
+            {
+                client.Name = model.name;
+                client.PhoneNumber = model.phoneNumber;    
 
-            cliente.Name = model.name;
-            cliente.PhoneNumber = model.phoneNumber;    
-
-            _dbContext.Clients.Update(cliente);
+            _dbContext.Clients.Update(client);
             _dbContext.SaveChanges();
+            }
         }
     }
 }

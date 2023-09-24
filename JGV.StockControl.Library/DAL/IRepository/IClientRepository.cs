@@ -6,5 +6,6 @@ public interface IClientRepository
     public void AddClient(ClientInputModel model);
     public void UpdateClientById(int id, ClientInputModel model);
     public void DeleteClientById(int id);
+    public string? GetClientNameById(int id);
 }
 
