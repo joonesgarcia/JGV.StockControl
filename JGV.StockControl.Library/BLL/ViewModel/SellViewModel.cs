@@ -14,7 +14,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         public decimal InitialDebtValue { get; init; }
         public decimal TotalPaidAmount { get; init; }
         public decimal RemainingValue
-        => InitialDebtValue - TotalPaidAmount;
+        => Math.Round(InitialDebtValue - TotalPaidAmount);
         public decimal Profit { get; init; }
 
     }

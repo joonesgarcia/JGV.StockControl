@@ -21,7 +21,6 @@ namespace JGV.StockControl.Library.DAL.Repository
                                                           .Sum(),
                 p.DiscountPromotion))
             .AsEnumerable()
-            .Where(product => product.AvailableQuantity > 0)
             .OrderByDescending(quantity => quantity.AvailableQuantity)
             .ToList();
     }

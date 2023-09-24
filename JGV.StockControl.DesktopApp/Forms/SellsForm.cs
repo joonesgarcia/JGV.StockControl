@@ -17,7 +17,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void InitializeGridView()
         {
             sellsGridView.AutoGenerateColumns = true;
-            ///sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
+            sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
         }
 
 

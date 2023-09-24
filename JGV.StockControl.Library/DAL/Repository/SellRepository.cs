@@ -1,7 +1,9 @@
 ﻿using JGV.StockControl.Library.BLL.InputModel;
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
@@ -41,29 +43,32 @@ public class SellRepository : ISellRepository
         _dbContext.SaveChanges();
     }
 
-    public List<SellViewModel> GetSells()
+    public List<SellViewModel> GetAll()
     {
         List<SellViewModel> result = new();
-        //foreach (Sell sell in _dbContext.Sells)
-        //{
-        //    SellViewModel model = new()
-        //    {
-        //        Id = sell.Id,
-        //        Date = sell.Date,
-        //        ClientName = sell.Client.Name,
-        //        TotalPaidAmount = sell.TotalPaidAmount,
-        //        InitialDebtValue = _dbContext.SoldProducts
-        //                                .Where(sp => sp.Sell == sell)
-        //                                .Select(p => p.SoldPrice)
-        //                                .Sum(),
-        //        Profit = (from sp in _dbContext.SoldProducts
-        //                  join p in _dbContext.Products on sp.ProductId equals p.Id
-        //                  select ( sp.SoldPrice - p.Cost ) * sp.Quantity
-        //                  ).Sum()
-        //    };
-        //    result.Add(model);
-        //}
-        return result;
+        foreach (Sell sell in _dbContext.Sells
+            .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
+            .Include(c => c.Client))
+        {
+
+            SellViewModel model = new()
+            {
+                Id = sell.Id,
+                Date = sell.Date,
+                ClientName = sell.Client.Name,
+                TotalPaidAmount = sell.TotalPaidAmount,
+                InitialDebtValue = sell.SoldProducts
+                                        .Select(p => p.SoldPrice * p.Quantity)
+                                        .Sum(),
+                Profit = sell.SoldProducts
+                            .Select(p => p.SoldPrice - p.Product.Cost)
+                            .Sum(),
+            };
+            result.Add(model);
+        }
+        return result
+            .OrderByDescending(x => x.Id)
+            .ToList();
     }
 }
 

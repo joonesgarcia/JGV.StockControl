@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace JGV.StockControl.Library.DAL.Repository;
 public interface ISellRepository
 {
-    public List<SellViewModel> GetSells();
+    public List<SellViewModel> GetAll();
     public void AddSell(SellInputModel model);
     public void CancelSell(int sellId);
 }
