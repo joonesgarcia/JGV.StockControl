@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JGV.StockControl.Library.BLL.ViewModel;
 
-public record ProductViewModel
+public struct ProductViewModel
 {
     public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion)
     {
@@ -19,7 +19,7 @@ public record ProductViewModel
         DiscountPromotion = discountPromotion?.FirstCharToUpperOrEmptyStringAsDefault();
     }
 
-    [System.ComponentModel.DisplayName("Descrição")]
+    [System.ComponentModel.DisplayName("Produto")]
     public string Description { get; set; }
     [System.ComponentModel.DisplayName("Preço de custo")]
     public string Cost { get; set; }

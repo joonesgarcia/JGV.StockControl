@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.DAL.IRepository;
+﻿using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.IRepository;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
@@ -20,6 +21,20 @@ namespace JGV.StockControl.DesktopApp.Forms
             sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
         }
 
-
+        private void sellsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 0) {
+                var sellId = sellsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (sellId != null)
+                {
+                    var soldProducts = _unitOfWork.SellRepository
+                        .GetSellById(int.Parse(sellId.ToString())).SoldProducts
+                        .Select(sp => new SoldProductViewModel(sp.Product.Description, sp.Product.Cost, sp.Quantity, sp.SoldPrice))
+                        .ToList();
+                    SellDetailsForm sellDetailsForm = new SellDetailsForm(soldProducts, _unitOfWork);
+                    sellDetailsForm.Show();
+                }
+            }
+        }
     }
 }

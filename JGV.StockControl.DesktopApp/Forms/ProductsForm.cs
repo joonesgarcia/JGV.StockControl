@@ -27,7 +27,6 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void InitializeGridView()
         {
-            productsGridView.DefaultCellStyle.Font = new Font("Tahoma", 12);
             productsGridView.AutoGenerateColumns = true;
             productsGridView.DataSource = _unitOfWork.ProductRepository.GetAll();
         }

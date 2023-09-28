@@ -46,6 +46,7 @@
             sellsGridView.RowTemplate.Height = 29;
             sellsGridView.Size = new Size(935, 374);
             sellsGridView.TabIndex = 0;
+            sellsGridView.CellClick += sellsGridView_CellClick;
             // 
             // SellsForm
             // 

@@ -15,6 +15,11 @@ public class SellRepository : ISellRepository
         _dbContext = dbContext;
     }
 
+    public Sell GetSellById(int id)
+    => _dbContext.Sells
+        .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
+        .SingleOrDefault(s => s.Id.Equals(id));
+    
     public void AddSell(SellInputModel model)
     {
         Client client = _dbContext.Clients.First(c => c.Id == model.clientId);
@@ -51,19 +56,24 @@ public class SellRepository : ISellRepository
             .Include(c => c.Client))
         {
 
-            SellViewModel model = new()
-            {
-                Id = sell.Id,
-                Date = sell.Date,
-                ClientName = sell.Client.Name,
-                TotalPaidAmount = sell.TotalPaidAmount,
-                InitialDebtValue = sell.SoldProducts
-                                        .Select(p => p.SoldPrice * p.Quantity)
-                                        .Sum(),
-                Profit = sell.SoldProducts
-                            .Select(p => p.SoldPrice - p.Product.Cost)
-                            .Sum(),
-            };
+            SellViewModel model = new(
+                sell.Id,
+                DateOnly.FromDateTime(sell.Date),
+                sell.Client.Name,
+                sell.SoldProducts
+                    .Select(p => p.SoldPrice * p.Quantity)
+                    .Sum(),
+                sell.TotalPaidAmount,              
+                sell.SoldProducts
+                    .Select(p => p.SoldPrice - p.Product.Cost)
+                    .Sum(),
+                sell.SoldProducts
+                    .Select(sp => new SoldProductViewModel(
+                        sp.Product.Description,
+                        sp.Product.Cost,
+                        sp.Quantity, 
+                        sp.SoldPrice))
+            );
             result.Add(model);
         }
         return result
