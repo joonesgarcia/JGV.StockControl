@@ -40,7 +40,7 @@ public class SellRepository : ISellRepository
     public void CancelSell(int sellId)
     {
         Sell sell = _dbContext.Sells.Single(s => s.Id == sellId);
-        Client client = _dbContext.Clients.First(c => c.Orders.Contains(sell));
+        Client client = _dbContext.Clients.Single(c => c.Orders.Contains(sell));
         
         client.Orders.Remove(sell);
         _dbContext.Sells.Remove(sell);
@@ -70,7 +70,6 @@ public class SellRepository : ISellRepository
                 sell.SoldProducts
                     .Select(sp => new SoldProductViewModel(
                         sp.Product.Description,
-                        sp.Product.Cost,
                         sp.Quantity, 
                         sp.SoldPrice))
             );

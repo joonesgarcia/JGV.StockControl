@@ -40,6 +40,7 @@
             productsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             productsGridView.Location = new Point(12, 179);
             productsGridView.Name = "productsGridView";
+            productsGridView.ReadOnly = true;
             productsGridView.RowHeadersVisible = false;
             productsGridView.RowHeadersWidth = 51;
             productsGridView.RowTemplate.Height = 29;
