@@ -140,6 +140,7 @@
             ClientSize = new Size(1093, 599);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
+            MinimumSize = new Size(1111, 646);
             Name = "MainForm";
             Text = "Controle de vendas";
             panelMenu.ResumeLayout(false);

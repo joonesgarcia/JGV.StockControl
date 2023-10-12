@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             sellsGridView = new DataGridView();
+            addSellBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)sellsGridView).BeginInit();
             SuspendLayout();
             // 
@@ -48,11 +49,26 @@
             sellsGridView.TabIndex = 0;
             sellsGridView.CellClick += sellsGridView_CellClick;
             // 
+            // addSellBtn
+            // 
+            addSellBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            addSellBtn.BackColor = Color.DarkSeaGreen;
+            addSellBtn.Cursor = Cursors.Hand;
+            addSellBtn.Location = new Point(677, 99);
+            addSellBtn.MinimumSize = new Size(161, 0);
+            addSellBtn.Name = "addSellBtn";
+            addSellBtn.Size = new Size(161, 53);
+            addSellBtn.TabIndex = 1;
+            addSellBtn.Text = "Cadastrar venda";
+            addSellBtn.UseVisualStyleBackColor = false;
+            addSellBtn.Click += addSellBtn_Click;
+            // 
             // SellsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(973, 578);
+            Controls.Add(addSellBtn);
             Controls.Add(sellsGridView);
             Name = "SellsForm";
             Text = "SellsForm";
@@ -64,5 +80,6 @@
         #endregion
 
         private DataGridView sellsGridView;
+        private Button addSellBtn;
     }
 }

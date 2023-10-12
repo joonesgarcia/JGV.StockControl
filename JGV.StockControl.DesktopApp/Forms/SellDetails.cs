@@ -5,12 +5,12 @@ namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class SellDetailsForm : Form
     {
-        private readonly List<SoldProductViewModel> _soldProductsViewModel;
+        private readonly List<SoldProductViewModel> _soldProducts;
         private readonly IUnitOfWork _unitOfWork;
-        public SellDetailsForm(List<SoldProductViewModel> soldProductsViewModel, IUnitOfWork unitOfWork)
+        public SellDetailsForm(List<SoldProductViewModel> soldProducts, IUnitOfWork unitOfWork)
         {
             InitializeComponent();
-            _soldProductsViewModel = soldProductsViewModel;
+            _soldProducts = soldProducts;
             _unitOfWork = unitOfWork;
         }
 
@@ -21,7 +21,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void InitializeGridView()
         {
             sellDetailsGridView.AutoGenerateColumns = true;
-            sellDetailsGridView.DataSource = _soldProductsViewModel;
+            sellDetailsGridView.DataSource = _soldProducts;
         }
     }
 }

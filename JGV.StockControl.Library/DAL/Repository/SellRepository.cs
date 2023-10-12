@@ -22,13 +22,14 @@ public class SellRepository : ISellRepository
     
     public void AddSell(SellInputModel model)
     {
-        Client client = _dbContext.Clients.First(c => c.Id == model.clientId);
+        Client client = _dbContext.Clients.First(c => c.Id == model.ClientId);
 
         Sell sell = new()
         {
-            Date = model.sellDate,
+            Date = model.SellDate,
             Client = client,
-            SoldProducts = model.soldProducts
+            SoldProducts = model.SoldProducts,
+            TotalPaidAmount = model.DownPayment
         };
 
         client.Orders.Add(sell);
