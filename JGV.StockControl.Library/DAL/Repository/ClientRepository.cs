@@ -11,6 +11,10 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             _dbContext = dbContext;
         }
+        public List<Client> GetClients()
+        {
+            return _dbContext.Clients.ToList();
+        }
         public string? GetClientNameById(int id)
         {
             Client? client = _dbContext.Clients.FirstOrDefault(c => c.Id == id);

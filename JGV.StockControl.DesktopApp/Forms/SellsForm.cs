@@ -40,7 +40,7 @@ namespace JGV.StockControl.DesktopApp.Forms
 
         private void addSellBtn_Click(object sender, EventArgs e)
         {
-            AddSellForm addSellForm = new AddSellForm();
+            AddSellForm addSellForm = new AddSellForm(_unitOfWork);
             addSellForm.Show();
         }
     }

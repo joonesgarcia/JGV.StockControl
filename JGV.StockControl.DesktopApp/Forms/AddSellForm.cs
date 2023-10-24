@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JGV.StockControl.Library.DAL.IRepository;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,10 +13,18 @@ namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class AddSellForm : Form
     {
-        public AddSellForm()
+        private readonly IUnitOfWork _unitOfWork;
+        public AddSellForm(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
+            _unitOfWork = unitOfWork;
         }
 
+        private void AddSellForm_Load(object sender, EventArgs e)
+        {
+            clientComboBox.DataSource = _unitOfWork.ClientRepository.GetClients();
+            clientComboBox.DisplayMember = "Name";
+            clientComboBox.ValueMember = "Id";
+        }
     }
 }

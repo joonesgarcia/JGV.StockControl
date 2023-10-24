@@ -120,6 +120,7 @@
             Controls.Add(clientLabel);
             Name = "AddSellForm";
             Text = "Cadastro de venda";
+            Load += AddSellForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
