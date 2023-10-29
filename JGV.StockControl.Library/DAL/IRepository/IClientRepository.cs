@@ -8,6 +8,6 @@ public interface IClientRepository
     public void UpdateClientById(int id, ClientInputModel model);
     public void DeleteClientById(int id);
     public string? GetClientNameById(int id);
-    public List<Client> GetClients();
+    public List<Client> GetAll();
 }
 

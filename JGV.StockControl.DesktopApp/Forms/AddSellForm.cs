@@ -22,7 +22,7 @@ namespace JGV.StockControl.DesktopApp.Forms
 
         private void AddSellForm_Load(object sender, EventArgs e)
         {
-            clientComboBox.DataSource = _unitOfWork.ClientRepository.GetClients();
+            clientComboBox.DataSource = _unitOfWork.ClientRepository.GetAll();
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
         }

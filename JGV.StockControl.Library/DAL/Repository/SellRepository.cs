@@ -2,8 +2,6 @@
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
 
 namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
