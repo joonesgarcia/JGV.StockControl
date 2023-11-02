@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
 {
-    private readonly StockControlDbContext _dbContext;
+    private readonly StockControlLocalDbContext _dbContext;
 
-    public SellRepository(StockControlDbContext dbContext)
+    public SellRepository(StockControlLocalDbContext dbContext)
     {
         _dbContext = dbContext;
     }

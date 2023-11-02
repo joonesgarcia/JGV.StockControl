@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JGV.StockControl.Library.Migrations
 {
-    [DbContext(typeof(StockControlDbContext))]
+    [DbContext(typeof(StockControlLocalDbContext))]
     [Migration("20230923010041_firstMg")]
     partial class firstMg
     {

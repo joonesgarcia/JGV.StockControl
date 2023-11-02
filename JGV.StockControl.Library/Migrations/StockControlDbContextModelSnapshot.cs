@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JGV.StockControl.Library.Migrations
 {
-    [DbContext(typeof(StockControlDbContext))]
+    [DbContext(typeof(StockControlLocalDbContext))]
     partial class StockControlDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

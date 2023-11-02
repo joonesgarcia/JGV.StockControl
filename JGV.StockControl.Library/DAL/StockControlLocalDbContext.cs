@@ -7,13 +7,13 @@ using System.Globalization;
 
 namespace JGV.StockControl.Library.DAL
 {
-    public class StockControlDbContext : DbContext
+    public class StockControlLocalDbContext : DbContext
     {
-        public StockControlDbContext()
+        public StockControlLocalDbContext()
         {
 
         }
-        public StockControlDbContext(DbContextOptions options)
+        public StockControlLocalDbContext(DbContextOptions options)
             : base(options)
         {
 

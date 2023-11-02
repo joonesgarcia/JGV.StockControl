@@ -13,7 +13,7 @@ namespace JGV.StockCentral.API
             var services = webApplicationBuilder.Services;
 
             string dbPath = Path.Combine(Directory.GetCurrentDirectory() + "\\bin\\Debug\\net6.0\\", "StockControlLocalDb.db");
-            services.AddDbContext<StockControlDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+            services.AddDbContext<StockControlLocalDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();

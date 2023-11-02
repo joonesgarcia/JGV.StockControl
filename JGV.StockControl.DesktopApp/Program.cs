@@ -15,7 +15,7 @@ namespace JGV.StockControl.DesktopApp
             var services = new ServiceCollection();
 
             string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "StockControlLocalDb.db");
-            services.AddDbContext<StockControlDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+            services.AddDbContext<StockControlLocalDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();

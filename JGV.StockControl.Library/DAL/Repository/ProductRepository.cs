@@ -4,9 +4,9 @@ namespace JGV.StockControl.Library.DAL.Repository
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly StockControlDbContext _dbContext;
+        private readonly StockControlLocalDbContext _dbContext;
 
-        public ProductRepository(StockControlDbContext dbContext)
+        public ProductRepository(StockControlLocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }

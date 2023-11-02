@@ -6,9 +6,9 @@ namespace JGV.StockControl.DesktopApp
     public partial class MainForm : Form
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Random _random = new();
 
         private Button _currentButton;
-        private Random _random = new Random();
         private Form _activeForm;
 
         private int _tempIndex;

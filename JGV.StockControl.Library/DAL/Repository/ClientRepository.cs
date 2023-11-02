@@ -5,9 +5,9 @@ namespace JGV.StockControl.Library.DAL.Repository
 {
     public class ClientRepository : IClientRepository
     {
-        private readonly StockControlDbContext _dbContext;
+        private readonly StockControlLocalDbContext _dbContext;
 
-        public ClientRepository(StockControlDbContext dbContext)
+        public ClientRepository(StockControlLocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -24,8 +24,8 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             Client client = new Client()
             {
-                Name = model.name,
-                PhoneNumber = model.phoneNumber,
+                Name = model.Name,
+                PhoneNumber = model.PhoneNumber,
             };
             _dbContext.Clients.Add(client);
             _dbContext.SaveChanges();
@@ -46,8 +46,8 @@ namespace JGV.StockControl.Library.DAL.Repository
             Client? client = _dbContext.Clients.Single(x => x.Id == id);
             if (client != null)
             {
-                client.Name = model.name;
-                client.PhoneNumber = model.phoneNumber;    
+                client.Name = model.Name;
+                client.PhoneNumber = model.PhoneNumber;    
 
             _dbContext.Clients.Update(client);
             _dbContext.SaveChanges();
