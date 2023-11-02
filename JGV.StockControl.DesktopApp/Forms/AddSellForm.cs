@@ -25,6 +25,20 @@ namespace JGV.StockControl.DesktopApp.Forms
             clientComboBox.DataSource = _unitOfWork.ClientRepository.GetAll();
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
+
+            soldProductsListView.Items.AddRange(
+                _unitOfWork.ProductRepository.GetAll()
+                .Where(p => p.AvailableQuantity > 0)
+                .Select(listViewItem => new ListViewItem(listViewItem.Description))
+                .ToArray()
+            );
+        }
+        private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
+        {
+            if (!long.TryParse(downPaymentTextBox.Text, out _))
+            {
+                downPaymentTextBox.Clear();
+            }
         }
     }
 }

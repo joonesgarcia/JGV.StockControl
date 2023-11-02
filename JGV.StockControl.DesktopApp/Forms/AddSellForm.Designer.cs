@@ -74,11 +74,14 @@
             // 
             // soldProductsListView
             // 
+            soldProductsListView.FullRowSelect = true;
+            soldProductsListView.GridLines = true;
             soldProductsListView.Location = new Point(388, 87);
             soldProductsListView.Name = "soldProductsListView";
             soldProductsListView.Size = new Size(358, 340);
             soldProductsListView.TabIndex = 4;
             soldProductsListView.UseCompatibleStateImageBehavior = false;
+            soldProductsListView.View = View.Tile;
             // 
             // soldProductsLabel
             // 
@@ -104,6 +107,7 @@
             downPaymentTextBox.Name = "downPaymentTextBox";
             downPaymentTextBox.Size = new Size(125, 27);
             downPaymentTextBox.TabIndex = 7;
+            downPaymentTextBox.TextChanged += DownPaymentTextBoxOnlyNumbers;
             // 
             // AddSellForm
             // 
