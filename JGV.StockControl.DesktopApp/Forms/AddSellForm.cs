@@ -26,10 +26,10 @@ namespace JGV.StockControl.DesktopApp.Forms
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
 
-            soldProductsListView.Items.AddRange(
+            soldProductsListSeletor.Items.AddRange(
                 _unitOfWork.ProductRepository.GetAll()
                 .Where(p => p.AvailableQuantity > 0)
-                .Select(listViewItem => new ListViewItem(listViewItem.Description))
+                .Select(listViewItem => listViewItem.Description)
                 .ToArray()
             );
         }
