@@ -23,5 +23,7 @@ namespace JGV.StockControl.Library.DAL.Repository
             .AsEnumerable()
             .OrderByDescending(quantity => quantity.AvailableQuantity)
             .ToList();
+        public ProductViewModel GetProductByDescription(string description)
+        => GetAll().SingleOrDefault(p => description.Equals(p.Description));
     }
 }

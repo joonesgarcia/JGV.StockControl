@@ -1,3 +1,4 @@
+using JGV.StockControl.Library.BLL;
 using JGV.StockControl.Library.DAL;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;

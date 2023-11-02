@@ -40,9 +40,9 @@
             soldProductQuantityLabel = new Label();
             addSoldProductButton = new Button();
             AddSellButton = new Button();
-            soldProductsSelectorGrid = new DataGridView();
+            SelectedSoldProductsGrid = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)soldProductsSelectorGrid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).BeginInit();
             SuspendLayout();
             // 
             // clientLabel
@@ -142,6 +142,7 @@
             addSoldProductButton.TabIndex = 12;
             addSoldProductButton.Text = "Adicionar";
             addSoldProductButton.UseVisualStyleBackColor = false;
+            addSoldProductButton.Click += AddSoldProductButton_Click;
             // 
             // AddSellButton
             // 
@@ -155,23 +156,23 @@
             AddSellButton.Text = "Cadastrar venda";
             AddSellButton.UseVisualStyleBackColor = false;
             // 
-            // soldProductsSelectorGrid
+            // SelectedSoldProductsGrid
             // 
-            soldProductsSelectorGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            soldProductsSelectorGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            soldProductsSelectorGrid.Location = new Point(52, 468);
-            soldProductsSelectorGrid.Name = "soldProductsSelectorGrid";
-            soldProductsSelectorGrid.RowHeadersWidth = 51;
-            soldProductsSelectorGrid.RowTemplate.Height = 29;
-            soldProductsSelectorGrid.Size = new Size(690, 305);
-            soldProductsSelectorGrid.TabIndex = 14;
+            SelectedSoldProductsGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            SelectedSoldProductsGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            SelectedSoldProductsGrid.Location = new Point(52, 468);
+            SelectedSoldProductsGrid.Name = "SelectedSoldProductsGrid";
+            SelectedSoldProductsGrid.RowHeadersWidth = 51;
+            SelectedSoldProductsGrid.RowTemplate.Height = 29;
+            SelectedSoldProductsGrid.Size = new Size(690, 305);
+            SelectedSoldProductsGrid.TabIndex = 14;
             // 
             // AddSellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 800);
-            Controls.Add(soldProductsSelectorGrid);
+            Controls.Add(SelectedSoldProductsGrid);
             Controls.Add(AddSellButton);
             Controls.Add(addSoldProductButton);
             Controls.Add(soldProductQuantityLabel);
@@ -189,7 +190,7 @@
             Text = "Cadastro de venda";
             Load += AddSellForm_Load;
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).EndInit();
-            ((System.ComponentModel.ISupportInitialize)soldProductsSelectorGrid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -208,6 +209,6 @@
         private Label soldProductQuantityLabel;
         private Button addSoldProductButton;
         private Button AddSellButton;
-        private DataGridView soldProductsSelectorGrid;
+        private DataGridView SelectedSoldProductsGrid;
     }
 }

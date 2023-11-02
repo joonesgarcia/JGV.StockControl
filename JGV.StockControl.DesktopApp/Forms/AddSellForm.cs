@@ -1,4 +1,7 @@
-﻿using JGV.StockControl.Library.DAL.IRepository;
+﻿using JGV.StockControl.Library.BLL;
+using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.IRepository;
+using JGV.StockControl.Library.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +17,8 @@ namespace JGV.StockControl.DesktopApp.Forms
     public partial class AddSellForm : Form
     {
         private readonly IUnitOfWork _unitOfWork;
+
+        private readonly BindingList<SoldProductViewModel> sellSoldProducts = new();
         public AddSellForm(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
@@ -22,10 +27,25 @@ namespace JGV.StockControl.DesktopApp.Forms
 
         private void AddSellForm_Load(object sender, EventArgs e)
         {
+            LoadClientComboBox();
+            LoadSoldProductsListSeletor();
+            ConfigureSoldProductsGrid();
+        }
+        private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
+        {
+            if (!int.TryParse(downPaymentTextBox.Text, out _))
+            {
+                downPaymentTextBox.Clear();
+            }
+        }
+        private void LoadClientComboBox()
+        {
             clientComboBox.DataSource = _unitOfWork.ClientRepository.GetAll();
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
-
+        }
+        private void LoadSoldProductsListSeletor()
+        {
             soldProductsListSeletor.Items.AddRange(
                 _unitOfWork.ProductRepository.GetAll()
                 .Where(p => p.AvailableQuantity > 0)
@@ -33,11 +53,20 @@ namespace JGV.StockControl.DesktopApp.Forms
                 .ToArray()
             );
         }
-        private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
+        private void ConfigureSoldProductsGrid()
         {
-            if (!long.TryParse(downPaymentTextBox.Text, out _))
+            SelectedSoldProductsGrid.DataSource = sellSoldProducts;
+        }
+
+        private void AddSoldProductButton_Click(object sender, EventArgs e)
+        {
+            var selectedSoldProduct = soldProductsListSeletor.SelectedItem;
+            if (selectedSoldProduct != null)
             {
-                downPaymentTextBox.Clear();
+                var product = _unitOfWork.ProductRepository.GetProductByDescription((string)selectedSoldProduct);
+                var soldProduct = ProductsService.CreateSoldProductItem(product, (int)soldProductQuantityInput.Value);
+
+                sellSoldProducts.Add(soldProduct);
             }
         }
     }
