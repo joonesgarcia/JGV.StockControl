@@ -10,6 +10,7 @@ namespace JGV.StockControl.Library.DAL.Models
         public decimal Cost { get; set; }
         public decimal Price { get; set; }
         public string? DiscountPromotion { get; set; }
+        public bool IsFromInitialInvestment { get; set; }
 
     }
     public class SoldProduct

@@ -10,9 +10,11 @@ namespace JGV.StockControl.Library.BLL.ViewModel;
 
 public struct ProductViewModel
 {
-    public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion)
+    public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion, bool IsFromInitialInvestment)
     {
-        Description = description.FirstCharToUpperOrEmptyStringAsDefault();
+        Description = IsFromInitialInvestment ? 
+            description.FirstCharToUpperOrEmptyStringAsDefault() + "*" :
+            description.FirstCharToUpperOrEmptyStringAsDefault();
         Cost = cost.ToString("C", new CultureInfo("pt-BR"));
         Price = price.ToString("C", new CultureInfo("pt-BR"));
         AvailableQuantity = availableQuantity;

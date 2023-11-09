@@ -19,7 +19,8 @@ namespace JGV.StockControl.Library.DAL.Repository
                 p.BoughtQuantity - _dbContext.SoldProducts.Where(s => s.Product == p)
                                                           .Select(p => p.Quantity)
                                                           .Sum(),
-                p.DiscountPromotion))
+                p.DiscountPromotion,
+                p.IsFromInitialInvestment))
             .AsEnumerable()
             .OrderByDescending(quantity => quantity.AvailableQuantity)
             .ToList();
