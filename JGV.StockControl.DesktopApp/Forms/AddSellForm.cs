@@ -28,7 +28,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void AddSellForm_Load(object sender, EventArgs e)
         {
             LoadClientComboBox();
-            LoadSoldProductsListSeletor();
+            LoadAvailableProductsListView();
             ConfigureSoldProductsGrid();
         }
         private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
@@ -44,29 +44,38 @@ namespace JGV.StockControl.DesktopApp.Forms
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
         }
-        private void LoadSoldProductsListSeletor()
+        private void LoadAvailableProductsListView()
         {
-            soldProductsListSeletor.Items.AddRange(
-                _unitOfWork.ProductRepository.GetAll()
+            availableProductsListView.Columns.Add("Produto", 270, HorizontalAlignment.Left);
+            availableProductsListView.Columns.Add("Disponível", 100, HorizontalAlignment.Center);
+
+            var itens = _unitOfWork.ProductRepository.GetAll()
                 .Where(p => p.AvailableQuantity > 0)
-                .Select(listViewItem => listViewItem.Description)
-                .ToArray()
-            );
+                .Select(pView => new ListViewItem(pView.Description) { SubItems = { pView.AvailableQuantity.ToString() } })           
+                .ToArray();
+
+            availableProductsListView.Items.AddRange(itens);
         }
         private void ConfigureSoldProductsGrid()
         {
             SelectedSoldProductsGrid.DataSource = sellSoldProducts;
         }
-
         private void AddSoldProductButton_Click(object sender, EventArgs e)
         {
-            var selectedSoldProduct = soldProductsListSeletor.SelectedItem;
+            var selectedSoldProduct = availableProductsListView.FocusedItem;
             if (selectedSoldProduct != null)
             {
-                var product = _unitOfWork.ProductRepository.GetProductByDescription((string)selectedSoldProduct);
+                var product = _unitOfWork.ProductRepository.GetProductByDescription(selectedSoldProduct.Text);
                 var soldProduct = ProductsService.CreateSoldProductItem(product, (int)soldProductQuantityInput.Value);
 
                 sellSoldProducts.Add(soldProduct);
+            }
+        }
+        private void availableProductsListView_ItemSelected(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                soldProductQuantityInput.Maximum = decimal.Parse(e.Item.SubItems[1].Text);
             }
         }
     }

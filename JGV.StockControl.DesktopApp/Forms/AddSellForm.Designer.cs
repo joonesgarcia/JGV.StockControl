@@ -35,12 +35,12 @@
             soldProductsLabel = new Label();
             downPaymentLabel = new Label();
             downPaymentTextBox = new TextBox();
-            soldProductsListSeletor = new ListBox();
             soldProductQuantityInput = new NumericUpDown();
             soldProductQuantityLabel = new Label();
             addSoldProductButton = new Button();
             AddSellButton = new Button();
             SelectedSoldProductsGrid = new DataGridView();
+            availableProductsListView = new ListView();
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).BeginInit();
             SuspendLayout();
@@ -105,15 +105,6 @@
             downPaymentTextBox.TabIndex = 7;
             downPaymentTextBox.TextChanged += DownPaymentTextBoxOnlyNumbers;
             // 
-            // soldProductsListSeletor
-            // 
-            soldProductsListSeletor.FormattingEnabled = true;
-            soldProductsListSeletor.ItemHeight = 20;
-            soldProductsListSeletor.Location = new Point(357, 84);
-            soldProductsListSeletor.Name = "soldProductsListSeletor";
-            soldProductsListSeletor.Size = new Size(385, 224);
-            soldProductsListSeletor.TabIndex = 9;
-            // 
             // soldProductQuantityInput
             // 
             soldProductQuantityInput.Location = new Point(592, 331);
@@ -167,17 +158,27 @@
             SelectedSoldProductsGrid.Size = new Size(690, 305);
             SelectedSoldProductsGrid.TabIndex = 14;
             // 
+            // availableProductsListView
+            // 
+            availableProductsListView.Location = new Point(357, 84);
+            availableProductsListView.Name = "availableProductsListView";
+            availableProductsListView.Size = new Size(385, 223);
+            availableProductsListView.TabIndex = 15;
+            availableProductsListView.UseCompatibleStateImageBehavior = false;
+            availableProductsListView.View = View.Details;
+            availableProductsListView.ItemSelectionChanged += availableProductsListView_ItemSelected;
+            // 
             // AddSellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 800);
+            Controls.Add(availableProductsListView);
             Controls.Add(SelectedSoldProductsGrid);
             Controls.Add(AddSellButton);
             Controls.Add(addSoldProductButton);
             Controls.Add(soldProductQuantityLabel);
             Controls.Add(soldProductQuantityInput);
-            Controls.Add(soldProductsListSeletor);
             Controls.Add(downPaymentTextBox);
             Controls.Add(downPaymentLabel);
             Controls.Add(soldProductsLabel);
@@ -204,11 +205,11 @@
         private Label soldProductsLabel;
         private Label downPaymentLabel;
         private TextBox downPaymentTextBox;
-        private ListBox soldProductsListSeletor;
         private NumericUpDown soldProductQuantityInput;
         private Label soldProductQuantityLabel;
         private Button addSoldProductButton;
         private Button AddSellButton;
         private DataGridView SelectedSoldProductsGrid;
+        private ListView availableProductsListView;
     }
 }
