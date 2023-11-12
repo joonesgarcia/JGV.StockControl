@@ -42,6 +42,7 @@
             sellsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             sellsGridView.Location = new Point(12, 179);
             sellsGridView.Name = "sellsGridView";
+            sellsGridView.ReadOnly = true;
             sellsGridView.RowHeadersVisible = false;
             sellsGridView.RowHeadersWidth = 51;
             sellsGridView.RowTemplate.Height = 29;

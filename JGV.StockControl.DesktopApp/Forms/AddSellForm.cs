@@ -59,6 +59,9 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void ConfigureSoldProductsGrid()
         {
             SelectedSoldProductsGrid.DataSource = sellSoldProducts;
+            SelectedSoldProductsGrid.EditMode = DataGridViewEditMode.EditOnEnter;
+            SelectedSoldProductsGrid.Columns["ProductDescription"].ReadOnly = true;
+            SelectedSoldProductsGrid.Columns["Quantity"].ReadOnly = true;
         }
         private void AddSoldProductButton_Click(object sender, EventArgs e)
         {
