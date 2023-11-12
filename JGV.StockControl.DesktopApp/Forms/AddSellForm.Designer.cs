@@ -166,7 +166,7 @@
             availableProductsListView.TabIndex = 15;
             availableProductsListView.UseCompatibleStateImageBehavior = false;
             availableProductsListView.View = View.Details;
-            availableProductsListView.ItemSelectionChanged += availableProductsListView_ItemSelected;
+            availableProductsListView.ItemSelectionChanged += AvailableProductsListView_ItemSelected;
             // 
             // AddSellForm
             // 

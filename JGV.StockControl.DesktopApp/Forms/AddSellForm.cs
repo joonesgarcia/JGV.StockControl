@@ -63,15 +63,30 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void AddSoldProductButton_Click(object sender, EventArgs e)
         {
             var selectedSoldProduct = availableProductsListView.FocusedItem;
+
             if (selectedSoldProduct != null)
             {
                 var product = _unitOfWork.ProductRepository.GetProductByDescription(selectedSoldProduct.Text);
-                var soldProduct = ProductsService.CreateSoldProductItem(product, (int)soldProductQuantityInput.Value);
 
-                sellSoldProducts.Add(soldProduct);
+                int inputProductSoldQuantity = GetValidProductSoldQuantityFromInput(product);
+                if (inputProductSoldQuantity > 0)
+                {
+                    var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
+                    sellSoldProducts.Add(soldProductItem);
+                }
             }
         }
-        private void availableProductsListView_ItemSelected(object sender, ListViewItemSelectionChangedEventArgs e)
+        private int GetValidProductSoldQuantityFromInput(ProductViewModel product)
+        {
+            int sellAlreadySoldProductQuantity = sellSoldProducts
+                    .Where(p => p.ProductDescription == product.Description)
+                    .Select(q => q.Quantity)
+                    .Sum();
+
+            return (int)soldProductQuantityInput.Value + sellAlreadySoldProductQuantity > product.AvailableQuantity ?
+                    product.AvailableQuantity - sellAlreadySoldProductQuantity : (int)soldProductQuantityInput.Value;
+        }
+        private void AvailableProductsListView_ItemSelected(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (e.IsSelected)
             {
