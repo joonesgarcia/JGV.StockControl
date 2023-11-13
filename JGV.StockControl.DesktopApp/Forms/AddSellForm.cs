@@ -70,8 +70,8 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (selectedSoldProduct != null)
             {
                 var product = _unitOfWork.ProductRepository.GetProductByDescription(selectedSoldProduct.Text);
-
                 int inputProductSoldQuantity = GetValidProductSoldQuantityFromInput(product);
+
                 if (inputProductSoldQuantity > 0)
                 {
                     var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
