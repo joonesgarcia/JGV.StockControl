@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.BLL;
+﻿using JGV.StockControl.Library;
+using JGV.StockControl.Library.BLL;
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +53,7 @@ namespace JGV.StockControl.DesktopApp.Forms
 
             var itens = _unitOfWork.ProductRepository.GetAll()
                 .Where(p => p.AvailableQuantity > 0)
-                .Select(pView => new ListViewItem(pView.Description) { SubItems = { pView.AvailableQuantity.ToString() } })           
+                .Select(pView => new ListViewItem(pView.Description) { SubItems = { pView.AvailableQuantity.ToString() } })
                 .ToArray();
 
             availableProductsListView.Items.AddRange(itens);
@@ -76,6 +78,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 {
                     var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
                     sellSoldProducts.Add(soldProductItem);
+                    RefreshTotalDebtTextValue();
                 }
             }
         }
@@ -95,6 +98,13 @@ namespace JGV.StockControl.DesktopApp.Forms
             {
                 soldProductQuantityInput.Maximum = decimal.Parse(e.Item.SubItems[1].Text);
             }
+        }
+        private void RefreshTotalDebtTextValue()
+        {
+            sellDebtValueText.Text = sellSoldProducts
+                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
+                .Sum()
+                .ToString("C", new CultureInfo("pt-BR"));
         }
     }
 }

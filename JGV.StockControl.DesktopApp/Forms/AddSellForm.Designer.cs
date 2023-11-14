@@ -41,6 +41,9 @@
             AddSellButton = new Button();
             SelectedSoldProductsGrid = new DataGridView();
             availableProductsListView = new ListView();
+            removeSoldProductButton = new Button();
+            SellInitialDebtLabel = new Label();
+            sellDebtValueText = new Label();
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).BeginInit();
             SuspendLayout();
@@ -126,10 +129,10 @@
             // 
             // addSoldProductButton
             // 
-            addSoldProductButton.BackColor = Color.PaleGoldenrod;
+            addSoldProductButton.BackColor = Color.FromArgb(255, 224, 192);
             addSoldProductButton.Location = new Point(357, 387);
             addSoldProductButton.Name = "addSoldProductButton";
-            addSoldProductButton.Size = new Size(385, 35);
+            addSoldProductButton.Size = new Size(187, 35);
             addSoldProductButton.TabIndex = 12;
             addSoldProductButton.Text = "Adicionar";
             addSoldProductButton.UseVisualStyleBackColor = false;
@@ -155,7 +158,7 @@
             SelectedSoldProductsGrid.Name = "SelectedSoldProductsGrid";
             SelectedSoldProductsGrid.RowHeadersWidth = 51;
             SelectedSoldProductsGrid.RowTemplate.Height = 29;
-            SelectedSoldProductsGrid.Size = new Size(690, 305);
+            SelectedSoldProductsGrid.Size = new Size(572, 305);
             SelectedSoldProductsGrid.TabIndex = 14;
             // 
             // availableProductsListView
@@ -168,11 +171,43 @@
             availableProductsListView.View = View.Details;
             availableProductsListView.ItemSelectionChanged += AvailableProductsListView_ItemSelected;
             // 
+            // removeSoldProductButton
+            // 
+            removeSoldProductButton.BackColor = Color.Silver;
+            removeSoldProductButton.Location = new Point(550, 387);
+            removeSoldProductButton.Name = "removeSoldProductButton";
+            removeSoldProductButton.Size = new Size(187, 35);
+            removeSoldProductButton.TabIndex = 16;
+            removeSoldProductButton.Text = "Remover";
+            removeSoldProductButton.UseVisualStyleBackColor = false;
+            // 
+            // SellInitialDebtLabel
+            // 
+            SellInitialDebtLabel.AutoSize = true;
+            SellInitialDebtLabel.Font = new Font("Segoe UI", 19F, FontStyle.Regular, GraphicsUnit.Point);
+            SellInitialDebtLabel.Location = new Point(674, 674);
+            SellInitialDebtLabel.Name = "SellInitialDebtLabel";
+            SellInitialDebtLabel.Size = new Size(88, 45);
+            SellInitialDebtLabel.TabIndex = 17;
+            SellInitialDebtLabel.Text = "Total";
+            // 
+            // sellDebtValueText
+            // 
+            sellDebtValueText.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            sellDebtValueText.AutoSize = true;
+            sellDebtValueText.Location = new Point(687, 741);
+            sellDebtValueText.Name = "sellDebtValueText";
+            sellDebtValueText.Size = new Size(0, 20);
+            sellDebtValueText.TabIndex = 18;
+            // 
             // AddSellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 800);
+            Controls.Add(sellDebtValueText);
+            Controls.Add(SellInitialDebtLabel);
+            Controls.Add(removeSoldProductButton);
             Controls.Add(availableProductsListView);
             Controls.Add(SelectedSoldProductsGrid);
             Controls.Add(AddSellButton);
@@ -211,5 +246,8 @@
         private Button AddSellButton;
         private DataGridView SelectedSoldProductsGrid;
         private ListView availableProductsListView;
+        private Button removeSoldProductButton;
+        private Label SellInitialDebtLabel;
+        private Label sellDebtValueText;
     }
 }
