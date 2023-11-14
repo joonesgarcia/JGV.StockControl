@@ -78,7 +78,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 {
                     var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
                     sellSoldProducts.Add(soldProductItem);
-                    RefreshTotalDebtTextValue();
                 }
             }
         }
@@ -105,6 +104,37 @@ namespace JGV.StockControl.DesktopApp.Forms
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
                 .Sum()
                 .ToString("C", new CultureInfo("pt-BR"));
+
+            decimal totalExpected = sellSoldProducts
+                .Select(soldItem => soldItem.ExpectedSellPrice)
+                .Sum();
+
+            decimal totalSoldPrice = sellSoldProducts
+                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
+                .Sum();
+
+            decimal discount = ((totalExpected - totalSoldPrice) / totalExpected) * 100;
+            if (discount > 0)
+            {
+                discountTextValue.Text = Math.Round(discount).ToString() + " % OFF";
+                if (discount > 15)
+                {
+                    this.Text = "VENDA IMPOSSIVEL";
+                    discountTextValue.ForeColor = Color.Red;
+                    discountTextValue.BackColor = Color.White;
+                    impossibleSellLable.Text = this.Text;
+                }else
+                {
+                    this.Text = "Cadastro de venda";
+                    impossibleSellLable.Text = "";
+
+                }
+            }
+        }
+
+        private void AddSellForm_Click(object sender, EventArgs e)
+        {
+            RefreshTotalDebtTextValue();
         }
     }
 }

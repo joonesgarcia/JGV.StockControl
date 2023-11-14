@@ -44,6 +44,8 @@
             removeSoldProductButton = new Button();
             SellInitialDebtLabel = new Label();
             sellDebtValueText = new Label();
+            discountTextValue = new Label();
+            impossibleSellLable = new Label();
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).BeginInit();
             SuspendLayout();
@@ -197,17 +199,39 @@
             // 
             sellDebtValueText.Anchor = AnchorStyles.Right;
             sellDebtValueText.AutoSize = true;
-            sellDebtValueText.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            sellDebtValueText.Location = new Point(667, 626);
+            sellDebtValueText.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            sellDebtValueText.Location = new Point(660, 626);
             sellDebtValueText.Name = "sellDebtValueText";
-            sellDebtValueText.Size = new Size(0, 25);
+            sellDebtValueText.Size = new Size(0, 30);
             sellDebtValueText.TabIndex = 18;
+            // 
+            // discountTextValue
+            // 
+            discountTextValue.AutoSize = true;
+            discountTextValue.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            discountTextValue.ForeColor = SystemColors.ControlText;
+            discountTextValue.Location = new Point(660, 748);
+            discountTextValue.Name = "discountTextValue";
+            discountTextValue.Size = new Size(0, 25);
+            discountTextValue.TabIndex = 19;
+            // 
+            // impossibleSellLable
+            // 
+            impossibleSellLable.AutoSize = true;
+            impossibleSellLable.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            impossibleSellLable.ForeColor = Color.Red;
+            impossibleSellLable.Location = new Point(297, 436);
+            impossibleSellLable.Name = "impossibleSellLable";
+            impossibleSellLable.Size = new Size(0, 25);
+            impossibleSellLable.TabIndex = 20;
             // 
             // AddSellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 800);
+            Controls.Add(impossibleSellLable);
+            Controls.Add(discountTextValue);
             Controls.Add(sellDebtValueText);
             Controls.Add(SellInitialDebtLabel);
             Controls.Add(removeSoldProductButton);
@@ -228,6 +252,7 @@
             Name = "AddSellForm";
             Text = "Cadastro de venda";
             Load += AddSellForm_Load;
+            Click += AddSellForm_Click;
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).EndInit();
             ResumeLayout(false);
@@ -252,5 +277,7 @@
         private Button removeSoldProductButton;
         private Label SellInitialDebtLabel;
         private Label sellDebtValueText;
+        private Label discountTextValue;
+        private Label impossibleSellLable;
     }
 }
