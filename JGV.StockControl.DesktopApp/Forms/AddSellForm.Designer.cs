@@ -153,6 +153,7 @@
             // SelectedSoldProductsGrid
             // 
             SelectedSoldProductsGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            SelectedSoldProductsGrid.BackgroundColor = SystemColors.Control;
             SelectedSoldProductsGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             SelectedSoldProductsGrid.Location = new Point(52, 468);
             SelectedSoldProductsGrid.Name = "SelectedSoldProductsGrid";
@@ -183,9 +184,10 @@
             // 
             // SellInitialDebtLabel
             // 
+            SellInitialDebtLabel.Anchor = AnchorStyles.Right;
             SellInitialDebtLabel.AutoSize = true;
             SellInitialDebtLabel.Font = new Font("Segoe UI", 19F, FontStyle.Regular, GraphicsUnit.Point);
-            SellInitialDebtLabel.Location = new Point(674, 674);
+            SellInitialDebtLabel.Location = new Point(664, 559);
             SellInitialDebtLabel.Name = "SellInitialDebtLabel";
             SellInitialDebtLabel.Size = new Size(88, 45);
             SellInitialDebtLabel.TabIndex = 17;
@@ -193,11 +195,12 @@
             // 
             // sellDebtValueText
             // 
-            sellDebtValueText.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            sellDebtValueText.Anchor = AnchorStyles.Right;
             sellDebtValueText.AutoSize = true;
-            sellDebtValueText.Location = new Point(687, 741);
+            sellDebtValueText.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            sellDebtValueText.Location = new Point(667, 626);
             sellDebtValueText.Name = "sellDebtValueText";
-            sellDebtValueText.Size = new Size(0, 20);
+            sellDebtValueText.Size = new Size(0, 25);
             sellDebtValueText.TabIndex = 18;
             // 
             // AddSellForm
@@ -221,7 +224,7 @@
             Controls.Add(dateLabel);
             Controls.Add(clientComboBox);
             Controls.Add(clientLabel);
-            MinimumSize = new Size(800, 694);
+            MinimumSize = new Size(818, 847);
             Name = "AddSellForm";
             Text = "Cadastro de venda";
             Load += AddSellForm_Load;

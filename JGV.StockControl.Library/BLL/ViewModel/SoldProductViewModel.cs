@@ -19,7 +19,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         [System.ComponentModel.DisplayName("Produto")]
         public string ProductDescription { get; set; }
         [System.ComponentModel.DisplayName("Valor vendido")]
-        public string SoldPrice { get { return Math.Round(soldPrice).ToString("C", new CultureInfo("pt-BR")); } set { soldPrice = Tools.ExtractNumericValue(value); NotifyPropertyChanged("SoldPrice"); } }
+        public string SoldPrice { get { return soldPrice.ToString("C", new CultureInfo("pt-BR")); } set { soldPrice = Tools.ExtractNumericValue(value); NotifyPropertyChanged("SoldPrice"); } }
         [System.ComponentModel.DisplayName("Quantidade")]
         public int Quantity { get; set; }
 

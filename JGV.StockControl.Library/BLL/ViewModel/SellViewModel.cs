@@ -16,10 +16,10 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             Id = id;
             Date = date;
             ClientName = clientName;
-            InitialDebtValue = Math.Round(initialDebtValue).ToString("C", new CultureInfo("pt-BR"));
-            TotalPaidAmount = Math.Round(totalPaidAmount).ToString("C", new CultureInfo("pt-BR"));
+            InitialDebtValue = initialDebtValue.ToString("C", new CultureInfo("pt-BR"));
+            TotalPaidAmount = totalPaidAmount.ToString("C", new CultureInfo("pt-BR"));
             RemainingValue = initialDebtValue - totalPaidAmount;
-            Profit = Math.Round(profit).ToString("C", new CultureInfo("pt-BR"));
+            Profit = profit.ToString("C", new CultureInfo("pt-BR"));
             SoldProductViews = soldProductViews;
         }
         public int Id { get; init; }
