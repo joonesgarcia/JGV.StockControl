@@ -253,7 +253,6 @@
             Name = "AddSellForm";
             Text = "Cadastro de venda";
             Load += AddSellForm_Load;
-            Click += AddSellForm_Click;
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).EndInit();
             ResumeLayout(false);

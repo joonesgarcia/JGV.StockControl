@@ -3,6 +3,7 @@ using JGV.StockControl.Library.BLL;
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +17,31 @@ using System.Windows.Forms;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
-    public partial class AddSellForm : Form
+    public partial class AddSellForm : Form, INotifyPropertyChanged
     {
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly BindingList<SoldProductViewModel> sellSoldProducts = new();
+        private decimal totalDebtValue;
+        public string TotalDebt
+        {
+            get
+            {
+                return totalDebtValue.ToString("C", new CultureInfo("pt-BR"));
+            }
+            set
+            {
+                totalDebtValue = Tools.ExtractNumericValue(value);
+                NotifyPropertyChanged("TotalDebt");
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void NotifyPropertyChanged(string p)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
+        }
+
         public AddSellForm(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
@@ -32,6 +53,8 @@ namespace JGV.StockControl.DesktopApp.Forms
             LoadClientComboBox();
             LoadAvailableProductsListView();
             ConfigureSoldProductsGrid();
+
+            sellDebtValueText.DataBindings.Add(new Binding("Text", this, "TotalDebt"));
         }
         private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
         {
@@ -78,9 +101,17 @@ namespace JGV.StockControl.DesktopApp.Forms
                 {
                     var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
                     sellSoldProducts.Add(soldProductItem);
+
+                    RefreshTotalDebtAndImpossibleSellMessage();
                 }
             }
         }
+        private void RefreshTotalDebtTextValue()
+        => TotalDebt = sellSoldProducts
+                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
+                .Sum()
+                .ToString("C", new CultureInfo("pt-BR"));
+        
         private int GetValidProductSoldQuantityFromInput(ProductViewModel product)
         {
             int sellAlreadySoldProductQuantity = sellSoldProducts
@@ -98,12 +129,9 @@ namespace JGV.StockControl.DesktopApp.Forms
                 soldProductQuantityInput.Maximum = decimal.Parse(e.Item.SubItems[1].Text);
             }
         }
-        private void RefreshTotalDebtTextValue()
+        private void RefreshTotalDebtAndImpossibleSellMessage()
         {
-            sellDebtValueText.Text = sellSoldProducts
-                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
-                .Sum()
-                .ToString("C", new CultureInfo("pt-BR"));
+            RefreshTotalDebtTextValue();
 
             decimal totalExpected = sellSoldProducts
                 .Select(soldItem => soldItem.ExpectedSellPrice)
@@ -135,12 +163,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 }
             }
         }
-
-        private void AddSellForm_Click(object sender, EventArgs e)
-        {
-            RefreshTotalDebtTextValue();
-        }
-
         private void RemoveSoldProductButton_Click(object sender, EventArgs e)
         {
             if(SelectedSoldProductsGrid.SelectedCells.Count > 0)
@@ -159,6 +181,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                     if(product != null)
                         sellSoldProducts.Remove(product);
                 }
+                RefreshTotalDebtAndImpossibleSellMessage();
             }
         }
     }
