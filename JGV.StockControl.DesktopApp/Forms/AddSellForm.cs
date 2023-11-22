@@ -101,7 +101,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void RefreshTotalDebtTextValue()
         {
             sellDebtValueText.Text = sellSoldProducts
-                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
+                .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
                 .Sum()
                 .ToString("C", new CultureInfo("pt-BR"));
 
@@ -112,6 +112,9 @@ namespace JGV.StockControl.DesktopApp.Forms
             decimal totalSoldPrice = sellSoldProducts
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
                 .Sum();
+
+            if (totalExpected == 0)
+                return;
 
             decimal discount = ((totalExpected - totalSoldPrice) / totalExpected) * 100;
             if (discount > 0)
