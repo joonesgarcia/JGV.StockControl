@@ -126,7 +126,8 @@ namespace JGV.StockControl.DesktopApp.Forms
                     discountTextValue.ForeColor = Color.Red;
                     discountTextValue.BackColor = Color.White;
                     impossibleSellLable.Text = this.Text;
-                }else
+                }
+                else
                 {
                     this.Text = "Cadastro de venda";
                     impossibleSellLable.Text = "";
@@ -138,6 +139,27 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void AddSellForm_Click(object sender, EventArgs e)
         {
             RefreshTotalDebtTextValue();
+        }
+
+        private void RemoveSoldProductButton_Click(object sender, EventArgs e)
+        {
+            if(SelectedSoldProductsGrid.SelectedCells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in  SelectedSoldProductsGrid.SelectedCells)
+                {
+                    string soldProductName = (string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[0].Value;
+                    decimal soldProductValue = Tools.ExtractNumericValue((string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[1].Value);
+                    int soldProductQuantity = (int)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[2].Value;
+                    SoldProductViewModel? product = sellSoldProducts
+                        .First(x =>
+                        soldProductName.Equals(x.ProductDescription) &&
+                        soldProductValue.Equals(Tools.ExtractNumericValue(x.SoldPrice)) &&
+                        soldProductQuantity.Equals(x.Quantity));
+
+                    if(product != null)
+                        sellSoldProducts.Remove(product);
+                }
+            }
         }
     }
 }

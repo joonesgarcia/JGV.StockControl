@@ -183,6 +183,7 @@
             removeSoldProductButton.TabIndex = 16;
             removeSoldProductButton.Text = "Remover";
             removeSoldProductButton.UseVisualStyleBackColor = false;
+            removeSoldProductButton.Click += RemoveSoldProductButton_Click;
             // 
             // SellInitialDebtLabel
             // 
