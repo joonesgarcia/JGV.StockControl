@@ -31,7 +31,7 @@
             clientLabel = new Label();
             clientComboBox = new ComboBox();
             dateLabel = new Label();
-            dateTimePicker1 = new DateTimePicker();
+            sellDateInput = new DateTimePicker();
             soldProductsLabel = new Label();
             downPaymentLabel = new Label();
             downPaymentTextBox = new TextBox();
@@ -76,13 +76,13 @@
             dateLabel.TabIndex = 2;
             dateLabel.Text = "Data:";
             // 
-            // dateTimePicker1
+            // sellDateInput
             // 
-            dateTimePicker1.Format = DateTimePickerFormat.Short;
-            dateTimePicker1.Location = new Point(149, 150);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(130, 27);
-            dateTimePicker1.TabIndex = 3;
+            sellDateInput.Format = DateTimePickerFormat.Short;
+            sellDateInput.Location = new Point(149, 150);
+            sellDateInput.Name = "sellDateInput";
+            sellDateInput.Size = new Size(130, 27);
+            sellDateInput.TabIndex = 3;
             // 
             // soldProductsLabel
             // 
@@ -109,6 +109,7 @@
             downPaymentTextBox.Size = new Size(130, 27);
             downPaymentTextBox.TabIndex = 7;
             downPaymentTextBox.TextChanged += DownPaymentTextBoxOnlyNumbers;
+            downPaymentTextBox.Text = "0";
             // 
             // soldProductQuantityInput
             // 
@@ -151,6 +152,7 @@
             AddSellButton.TabIndex = 13;
             AddSellButton.Text = "Cadastrar venda";
             AddSellButton.UseVisualStyleBackColor = false;
+            AddSellButton.Click += AddSellButton_Click;
             // 
             // SelectedSoldProductsGrid
             // 
@@ -245,7 +247,7 @@
             Controls.Add(downPaymentTextBox);
             Controls.Add(downPaymentLabel);
             Controls.Add(soldProductsLabel);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(sellDateInput);
             Controls.Add(dateLabel);
             Controls.Add(clientComboBox);
             Controls.Add(clientLabel);
@@ -264,7 +266,7 @@
         private Label clientLabel;
         private ComboBox clientComboBox;
         private Label dateLabel;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker sellDateInput;
         private Label soldProductsLabel;
         private Label downPaymentLabel;
         private TextBox downPaymentTextBox;

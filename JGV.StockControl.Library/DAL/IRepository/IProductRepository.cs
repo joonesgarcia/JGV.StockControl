@@ -1,4 +1,5 @@
 ﻿using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace JGV.StockControl.Library.DAL.Repository
     public interface IProductRepository
     {
         List<ProductViewModel> GetAll();
-        ProductViewModel GetProductByDescription(string description);
+        ProductViewModel GetProductViewByDescription(string description);
+        Product? GetProductByDescription(string description);
     }
 }

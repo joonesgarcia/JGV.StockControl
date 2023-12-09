@@ -9,5 +9,6 @@
 
         public virtual Client Client { get; set; } 
         public virtual ICollection<SoldProduct> SoldProducts { get; set; }
+
     }
 }

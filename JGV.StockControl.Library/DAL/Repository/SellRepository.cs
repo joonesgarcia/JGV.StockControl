@@ -13,27 +13,22 @@ public class SellRepository : ISellRepository
         _dbContext = dbContext;
     }
 
+    public int GetNextSellId()
+    => GetAll().OrderBy(x => x.Id)
+        .Last().Id + 1;
+
     public Sell GetSellById(int id)
     => _dbContext.Sells
         .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
         .SingleOrDefault(s => s.Id.Equals(id));
     
-    public void AddSell(SellInputModel model)
+    public void AddSell(Sell sell)
     {
-        Client client = _dbContext.Clients.First(c => c.Id == model.ClientId);
-
-        Sell sell = new()
+        using (var dbContext = new StockControlLocalDbContext())
         {
-            Date = model.SellDate,
-            Client = client,
-            SoldProducts = model.SoldProducts,
-            TotalPaidAmount = model.DownPayment
-        };
-
-        client.Orders.Add(sell);
-        _dbContext.Sells.Add(sell);
-
-        _dbContext.SaveChanges();
+            _dbContext.Sells.Add(sell);
+            _dbContext.SaveChanges();
+        }
     }
 
     public void CancelSell(int sellId)
@@ -64,7 +59,7 @@ public class SellRepository : ISellRepository
                     .Sum(),
                 sell.TotalPaidAmount,              
                 sell.SoldProducts
-                    .Select(p => p.SoldPrice - p.Product.Cost)
+                    .Select(p => (p.SoldPrice - p.Product.Cost) * p.Quantity)
                     .Sum(),
                 sell.SoldProducts
                     .Select(sp => new SoldProductViewModel(

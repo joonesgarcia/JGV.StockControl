@@ -1,4 +1,5 @@
 ﻿using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.Models;
 
 namespace JGV.StockControl.Library.DAL.Repository
 {
@@ -24,7 +25,26 @@ namespace JGV.StockControl.Library.DAL.Repository
             .AsEnumerable()
             .OrderByDescending(quantity => quantity.AvailableQuantity)
             .ToList();
-        public ProductViewModel GetProductByDescription(string description)
+        public ProductViewModel GetProductViewByDescription(string description)
         => GetAll().SingleOrDefault(p => description.Equals(p.Description));
+        public Product? GetProductByDescription(string description)
+        {
+            if (description == null) return null;
+
+            bool isFromInitialInvestment = false;
+            string productDescription = description.ToUpperInvariant();
+
+            if(productDescription.Last() == '*')
+            {
+                isFromInitialInvestment = true;
+                productDescription = productDescription[..^1];
+            }        
+            return _dbContext.Products
+                .AsEnumerable()
+                .FirstOrDefault(p => 
+                    p.Description.ToUpperInvariant() ==  productDescription &&
+                    p.IsFromInitialInvestment == isFromInitialInvestment);
+        }
+
     }
 }

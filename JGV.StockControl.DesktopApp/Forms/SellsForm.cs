@@ -10,7 +10,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;
-        }
+        } 
         private void SellsForm_Load(object sender, EventArgs e)
         {
             InitializeGridView();
@@ -40,8 +40,9 @@ namespace JGV.StockControl.DesktopApp.Forms
 
         private void addSellBtn_Click(object sender, EventArgs e)
         {
-            AddSellForm addSellForm = new AddSellForm(_unitOfWork);
+            AddSellForm addSellForm = new(_unitOfWork);
             addSellForm.Show();
+
         }
     }
 }

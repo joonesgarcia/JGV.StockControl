@@ -11,7 +11,8 @@ namespace JGV.StockControl.Library.DAL.Repository;
 public interface ISellRepository
 {
     public List<SellViewModel> GetAll();
-    public void AddSell(SellInputModel model);
+    public void AddSell(Sell sell);
     public void CancelSell(int sellId);
     public Sell GetSellById(int id);
+    public int GetNextSellId();
 }

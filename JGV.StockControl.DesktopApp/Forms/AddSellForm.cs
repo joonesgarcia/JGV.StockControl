@@ -1,19 +1,14 @@
 ﻿using JGV.StockControl.Library;
 using JGV.StockControl.Library.BLL;
+using JGV.StockControl.Library.BLL.InputModel;
 using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.Builder;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
@@ -61,6 +56,7 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (!int.TryParse(downPaymentTextBox.Text, out _))
             {
                 downPaymentTextBox.Clear();
+                downPaymentTextBox.Text = "0";
             }
         }
         private void LoadClientComboBox()
@@ -94,12 +90,22 @@ namespace JGV.StockControl.DesktopApp.Forms
 
             if (selectedSoldProduct != null)
             {
-                var product = _unitOfWork.ProductRepository.GetProductByDescription(selectedSoldProduct.Text);
+                var product = _unitOfWork.ProductRepository.GetProductViewByDescription(selectedSoldProduct.Text);
                 int inputProductSoldQuantity = GetValidProductSoldQuantityFromInput(product);
 
                 if (inputProductSoldQuantity > 0)
                 {
                     var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
+
+                    if(sellSoldProducts.Any(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice)))
+                    {
+                        var alreadyAddedProduct = sellSoldProducts.First(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice));
+                        alreadyAddedProduct.Quantity += soldProductItem.Quantity;
+
+                        RefreshTotalDebtAndImpossibleSellMessage();
+                        return;
+                    }
+
                     sellSoldProducts.Add(soldProductItem);
 
                     RefreshTotalDebtAndImpossibleSellMessage();
@@ -111,7 +117,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
                 .Sum()
                 .ToString("C", new CultureInfo("pt-BR"));
-        
+
         private int GetValidProductSoldQuantityFromInput(ProductViewModel product)
         {
             int sellAlreadySoldProductQuantity = sellSoldProducts
@@ -133,18 +139,18 @@ namespace JGV.StockControl.DesktopApp.Forms
         {
             RefreshTotalDebtTextValue();
 
-            decimal totalExpected = sellSoldProducts
+            decimal totalExpectedValue = sellSoldProducts
                 .Select(soldItem => soldItem.ExpectedSellPrice)
                 .Sum();
 
-            decimal totalSoldPrice = sellSoldProducts
+            decimal totalSoldPriceValue = sellSoldProducts
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice))
                 .Sum();
 
-            if (totalExpected == 0)
+            if (totalExpectedValue == 0)
                 return;
 
-            decimal discount = ((totalExpected - totalSoldPrice) / totalExpected) * 100;
+            decimal discount = ((totalExpectedValue - totalSoldPriceValue) / totalExpectedValue) * 100;
             if (discount > 0)
             {
                 discountTextValue.Text = Math.Round(discount).ToString() + " % OFF";
@@ -165,9 +171,9 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void RemoveSoldProductButton_Click(object sender, EventArgs e)
         {
-            if(SelectedSoldProductsGrid.SelectedCells.Count > 0)
+            if (SelectedSoldProductsGrid.SelectedCells.Count > 0)
             {
-                foreach (DataGridViewCell cell in  SelectedSoldProductsGrid.SelectedCells)
+                foreach (DataGridViewCell cell in SelectedSoldProductsGrid.SelectedCells)
                 {
                     string soldProductName = (string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[0].Value;
                     decimal soldProductValue = Tools.ExtractNumericValue((string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[1].Value);
@@ -178,10 +184,33 @@ namespace JGV.StockControl.DesktopApp.Forms
                         soldProductValue.Equals(Tools.ExtractNumericValue(x.SoldPrice)) &&
                         soldProductQuantity.Equals(x.Quantity));
 
-                    if(product != null)
+                    if (product != null)
                         sellSoldProducts.Remove(product);
                 }
                 RefreshTotalDebtAndImpossibleSellMessage();
+            }
+        }
+
+        private void AddSellButton_Click(object sender, EventArgs e)
+        {
+            if (sellSoldProducts.Any())
+            {
+                var client = (Client)clientComboBox.SelectedItem;
+                var sellDate = sellDateInput.Value;
+                var downPayment = decimal.Parse(downPaymentTextBox.Text.ToString());
+
+                Sell newSell = new SellBuilder(_unitOfWork)
+                    .CreateSell()
+                    .WithSoldProducts(sellSoldProducts)
+                    .AtDate(sellDate)
+                    .ForClient(client)
+                    .WithDownPayment(downPayment)
+                    .Build();
+
+                _unitOfWork.SellRepository.AddSell(newSell);
+                MessageBox.Show("Venda adicionada!");
+
+                this.Close();
             }
         }
     }

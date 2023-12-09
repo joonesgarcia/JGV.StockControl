@@ -7,6 +7,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
     public class SoldProductViewModel : INotifyPropertyChanged
     {
         private decimal soldPrice;
+        private int quantity;
         public SoldProductViewModel(string productDescription, int quantity, decimal soldPrice)
         {
             this.ProductDescription = productDescription;
@@ -32,7 +33,13 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             } 
         }
         [System.ComponentModel.DisplayName("Quantidade")]
-        public int Quantity { get; set; }
+        public int Quantity { get { return quantity; } 
+            set 
+            {
+                quantity = value;
+                NotifyPropertyChanged("Quantity");
+            } 
+        }
         [Browsable(false)]
         public decimal ExpectedSellPrice { get; set; }
 
