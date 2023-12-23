@@ -43,22 +43,6 @@ namespace JGV.StockControl.DesktopApp.Forms
             _unitOfWork = unitOfWork;
         }
 
-        private void AddSellForm_Load(object sender, EventArgs e)
-        {
-            LoadClientComboBox();
-            LoadAvailableProductsListView();
-            ConfigureSoldProductsGrid();
-
-            sellDebtValueText.DataBindings.Add(new Binding("Text", this, "TotalDebt"));
-        }
-        private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
-        {
-            if (!int.TryParse(downPaymentTextBox.Text, out _))
-            {
-                downPaymentTextBox.Clear();
-                downPaymentTextBox.Text = "0";
-            }
-        }
         private void LoadClientComboBox()
         {
             clientComboBox.DataSource = _unitOfWork.ClientRepository.GetAll();
@@ -84,41 +68,13 @@ namespace JGV.StockControl.DesktopApp.Forms
             SelectedSoldProductsGrid.Columns["ProductDescription"].ReadOnly = true;
             SelectedSoldProductsGrid.Columns["Quantity"].ReadOnly = true;
         }
-        private void AddSoldProductButton_Click(object sender, EventArgs e)
-        {
-            var selectedSoldProduct = availableProductsListView.FocusedItem;
 
-            if (selectedSoldProduct != null)
-            {
-                var product = _unitOfWork.ProductRepository.GetProductViewByDescription(selectedSoldProduct.Text);
-                int inputProductSoldQuantity = GetValidProductSoldQuantityFromInput(product);
-
-                if (inputProductSoldQuantity > 0)
-                {
-                    var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
-
-                    if(sellSoldProducts.Any(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice)))
-                    {
-                        var alreadyAddedProduct = sellSoldProducts.First(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice));
-                        alreadyAddedProduct.Quantity += soldProductItem.Quantity;
-
-                        RefreshTotalDebtAndImpossibleSellMessage();
-                        return;
-                    }
-
-                    sellSoldProducts.Add(soldProductItem);
-
-                    RefreshTotalDebtAndImpossibleSellMessage();
-                }
-            }
-        }
         private void RefreshTotalDebtTextValue()
         => TotalDebt = sellSoldProducts
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
                 .Sum()
                 .ToString("C", new CultureInfo("pt-BR"));
-
-        private int GetValidProductSoldQuantityFromInput(ProductViewModel product)
+        private int  GetValidProductSoldQuantityFromInput(ProductViewModel product)
         {
             int sellAlreadySoldProductQuantity = sellSoldProducts
                     .Where(p => p.ProductDescription == product.Description)
@@ -127,13 +83,6 @@ namespace JGV.StockControl.DesktopApp.Forms
 
             return (int)soldProductQuantityInput.Value + sellAlreadySoldProductQuantity > product.AvailableQuantity ?
                     product.AvailableQuantity - sellAlreadySoldProductQuantity : (int)soldProductQuantityInput.Value;
-        }
-        private void AvailableProductsListView_ItemSelected(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            if (e.IsSelected)
-            {
-                soldProductQuantityInput.Maximum = decimal.Parse(e.Item.SubItems[1].Text);
-            }
         }
         private void RefreshTotalDebtAndImpossibleSellMessage()
         {
@@ -169,6 +118,60 @@ namespace JGV.StockControl.DesktopApp.Forms
                 }
             }
         }
+
+
+        #region :: Events ::
+        private void AddSellForm_Load(object sender, EventArgs e)
+        {
+            LoadClientComboBox();
+            LoadAvailableProductsListView();
+            ConfigureSoldProductsGrid();
+
+            sellDebtValueText.DataBindings.Add(new Binding("Text", this, "TotalDebt"));
+        }
+        private void DownPaymentTextBoxOnlyNumbers(object sender, EventArgs e)
+        {
+            if (!int.TryParse(downPaymentTextBox.Text, out _))
+            {
+                downPaymentTextBox.Clear();
+                downPaymentTextBox.Text = "0";
+            }
+        }
+        private void AddSoldProductButton_Click(object sender, EventArgs e)
+        {
+            var selectedSoldProduct = availableProductsListView.FocusedItem;
+
+            if (selectedSoldProduct != null)
+            {
+                var product = _unitOfWork.ProductRepository.GetProductViewByDescription(selectedSoldProduct.Text);
+                int inputProductSoldQuantity = GetValidProductSoldQuantityFromInput(product);
+
+                if (inputProductSoldQuantity > 0)
+                {
+                    var soldProductItem = ProductsService.CreateSoldProductItem(product, inputProductSoldQuantity);
+
+                    if (sellSoldProducts.Any(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice)))
+                    {
+                        var alreadyAddedProduct = sellSoldProducts.First(x => x.ProductDescription.Equals(x.ProductDescription) && x.SoldPrice.Equals(soldProductItem.SoldPrice));
+                        alreadyAddedProduct.Quantity += soldProductItem.Quantity;
+
+                        RefreshTotalDebtAndImpossibleSellMessage();
+                        return;
+                    }
+
+                    sellSoldProducts.Add(soldProductItem);
+
+                    RefreshTotalDebtAndImpossibleSellMessage();
+                }
+            }
+        }
+        private void AvailableProductsListView_ItemSelected(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                soldProductQuantityInput.Maximum = decimal.Parse(e.Item.SubItems[1].Text);
+            }
+        }
         private void RemoveSoldProductButton_Click(object sender, EventArgs e)
         {
             if (SelectedSoldProductsGrid.SelectedCells.Count > 0)
@@ -190,7 +193,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 RefreshTotalDebtAndImpossibleSellMessage();
             }
         }
-
         private void AddSellButton_Click(object sender, EventArgs e)
         {
             if (sellSoldProducts.Any())
@@ -213,5 +215,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 this.Close();
             }
         }
+        #endregion
     }
 }

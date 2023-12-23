@@ -32,7 +32,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                         .GetSellById(int.Parse(sellId.ToString())).SoldProducts
                         .Select(sp => new SoldProductViewModel(sp.Product.Description, sp.Quantity, sp.SoldPrice))
                         .ToList();
-                    SellDetailsForm sellDetailsForm = new SellDetailsForm(soldProducts, _unitOfWork);
+                    SellDetailsForm sellDetailsForm = new(soldProducts, _unitOfWork);
                     sellDetailsForm.Show();
                 }
             }
