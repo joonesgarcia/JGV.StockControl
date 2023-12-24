@@ -30,15 +30,25 @@ public class SellRepository : ISellRepository
     => _dbContext.Sells
         .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
         .SingleOrDefault(s => s.Id.Equals(id));
-    
+
     public void AddSell(Sell sell)
     {
-        using (var dbContext = new StockControlLocalDbContext())
+        _dbContext.Sells.Add(sell);
+        _dbContext.SaveChanges();       
+    }
+
+    public void RemoveSoldProductFromSell(int sellId, SoldProduct product)
+    {
+        var sell = GetSellById(sellId);
+
+        if (sell != null)
         {
-            _dbContext.Sells.Add(sell);
+            sell.SoldProducts.Remove(product);
             _dbContext.SaveChanges();
         }
+
     }
+
 
     public void CancelSell(int sellId)
     {
@@ -47,6 +57,9 @@ public class SellRepository : ISellRepository
         
         client.Orders.Remove(sell);
         _dbContext.Sells.Remove(sell);
+
+        _dbContext.SoldProducts.RemoveRange(
+            _dbContext.SoldProducts.Where(sp => sp.Sell == sell).ToArray());
 
         _dbContext.SaveChanges();
     }
@@ -72,6 +85,7 @@ public class SellRepository : ISellRepository
                     .Sum(),
                 sell.SoldProducts
                     .Select(sp => new SoldProductViewModel(
+                        sp.ProductId,
                         sp.Product.Description,
                         sp.Quantity, 
                         sp.SoldPrice))

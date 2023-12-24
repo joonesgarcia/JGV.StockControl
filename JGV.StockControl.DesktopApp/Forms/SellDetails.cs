@@ -3,14 +3,16 @@ using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
+using System.ComponentModel;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class SellDetailsForm : Form
     {
         private int _sellId;
-        private List<SoldProductViewModel> _soldProductsView;
+        private BindingList<SoldProductViewModel> _soldProductsView;
 
         private readonly IUnitOfWork _unitOfWork;
         public SellDetailsForm(int sellId, IUnitOfWork unitOfWork)
@@ -29,6 +31,18 @@ namespace JGV.StockControl.DesktopApp.Forms
         {
             sellDetailsGridView.AutoGenerateColumns = true;
             sellDetailsGridView.DataSource = _soldProductsView;
+            sellDetailsGridView.Columns["ProductId"].Visible = false;
+
+            AddRemoveSoldProductButton();
+        }
+        private void AddRemoveSoldProductButton()
+        {
+            var deleteButton = new DataGridViewButtonColumn();
+            deleteButton.Name = "soldProductsViewDeleteButton";
+            deleteButton.HeaderText = "";
+            deleteButton.Text = "Remover";
+            deleteButton.UseColumnTextForButtonValue = true;
+            this.sellDetailsGridView.Columns.Add(deleteButton);
         }
         private void RefreshDividaRestantePanel()
         {
@@ -39,8 +53,8 @@ namespace JGV.StockControl.DesktopApp.Forms
 
         }
         private void RefreshSoldProductsView(Sell sell)
-         => _soldProductsView = SoldProductViewModel
-                            .GetViewFromSell(sell);
+         => _soldProductsView = new BindingList<SoldProductViewModel>(
+                                    SoldProductViewModel.GetViewFromSell(sell));
         private void RefreshDividaRestante(Sell sell)
         {
             decimal debt = sell.InitialDebtAmount - sell.TotalPaidAmount;
@@ -72,6 +86,27 @@ namespace JGV.StockControl.DesktopApp.Forms
                 _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
 
                 RefreshDividaRestantePanel();
+            }
+        }
+        void SoldProductsView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if click is on new row or header row
+            if (e.RowIndex == sellDetailsGridView.NewRowIndex || e.RowIndex < 0)
+                return;
+
+            //Check if click is on specific column 
+            if (e.ColumnIndex == sellDetailsGridView.Columns["soldProductsViewDeleteButton"].Index)
+            {
+                Sell sell = _unitOfWork.SellRepository.GetSellById(_sellId);
+
+                SoldProduct soldProduct = sell.SoldProducts
+                    .FirstOrDefault(
+                    p => p.Sell == sell && 
+                    p.ProductId == Convert.ToInt32(sellDetailsGridView.Rows[e.RowIndex].Cells["ProductId"].Value))!;
+
+
+                _unitOfWork.SellRepository.RemoveSoldProductFromSell(_sellId, soldProduct);
+                _soldProductsView.RemoveAt(e.RowIndex);
             }
         }
         #endregion

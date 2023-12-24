@@ -9,8 +9,9 @@ namespace JGV.StockControl.Library.BLL.ViewModel
     {
         private decimal soldPrice;
         private int quantity;
-        public SoldProductViewModel(string productDescription, int quantity, decimal soldPrice)
+        public SoldProductViewModel(int productId, string productDescription, int quantity, decimal soldPrice)
         {
+            this.ProductId = productId;
             this.ProductDescription = productDescription;
             this.Quantity = quantity;
             this.soldPrice = soldPrice;
@@ -18,11 +19,11 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         }
         public static List<SoldProductViewModel> GetViewFromSell(Sell sell)
             => sell.SoldProducts
-                .Select(sp => new SoldProductViewModel(sp.Product.Description, sp.Quantity, sp.SoldPrice))
+                .Select(sp => new SoldProductViewModel(sp.ProductId, sp.Product.Description, sp.Quantity, sp.SoldPrice))
                 .ToList();
         public SoldProductViewModel()
         {}
-
+        public int ProductId { get; set; }
         [System.ComponentModel.DisplayName("Produto")]
         public string ProductDescription { get; set; }
         [System.ComponentModel.DisplayName("Valor vendido")]

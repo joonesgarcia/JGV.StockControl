@@ -53,6 +53,8 @@
             sellDetailsGridView.RowTemplate.Height = 29;
             sellDetailsGridView.Size = new Size(838, 290);
             sellDetailsGridView.TabIndex = 0;
+            sellDetailsGridView.AllowUserToAddRows = false;
+            sellDetailsGridView.CellClick += SoldProductsView_CellClick;
             // 
             // labelDividaRestante
             // 
