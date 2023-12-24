@@ -25,14 +25,10 @@ namespace JGV.StockControl.DesktopApp.Forms
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
-                var sellId = sellsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                if (sellId != null)
+                var sellId = Convert.ToInt32(sellsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                if (sellId > 0)
                 {
-                    var soldProducts = _unitOfWork.SellRepository
-                        .GetSellById(int.Parse(sellId.ToString())).SoldProducts
-                        .Select(sp => new SoldProductViewModel(sp.Product.Description, sp.Quantity, sp.SoldPrice))
-                        .ToList();
-                    SellDetailsForm sellDetailsForm = new(soldProducts, _unitOfWork);
+                    SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
                     sellDetailsForm.Show();
                 }
             }

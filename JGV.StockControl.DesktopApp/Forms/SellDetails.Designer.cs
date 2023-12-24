@@ -77,7 +77,7 @@
             abaterDividaTextBox.Name = "abaterDividaTextBox";
             abaterDividaTextBox.Size = new Size(84, 27);
             abaterDividaTextBox.TabIndex = 3;
-            abaterDividaTextBox.TextChanged += AbaterDividaTextBoxOnlyNumbers;
+            abaterDividaTextBox.TextChanged += ValidaValorAbatimento;
             // 
             // labelAbaterDivida
             // 

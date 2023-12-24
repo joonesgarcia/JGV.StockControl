@@ -13,6 +13,15 @@ public class SellRepository : ISellRepository
         _dbContext = dbContext;
     }
 
+    public void DeduceDebtValue(int sellId, decimal value)
+    {
+        var sell = GetSellById(sellId);
+        if (sell != null) {
+            sell.TotalPaidAmount += value;
+            _dbContext.SaveChanges();
+        }
+    }
+
     public int GetNextSellId()
     => GetAll().OrderBy(x => x.Id)
         .Last().Id + 1;

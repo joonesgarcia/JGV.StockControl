@@ -1,66 +1,80 @@
 ﻿using JGV.StockControl.Library;
 using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL;
 using JGV.StockControl.Library.DAL.IRepository;
+using JGV.StockControl.Library.DAL.Models;
 using System.Globalization;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class SellDetailsForm : Form
     {
-        private readonly List<SoldProductViewModel> _soldProducts;
+        private int _sellId;
+        private List<SoldProductViewModel> _soldProductsView;
+
         private readonly IUnitOfWork _unitOfWork;
-        public SellDetailsForm(List<SoldProductViewModel> soldProducts, IUnitOfWork unitOfWork)
+        public SellDetailsForm(int sellId, IUnitOfWork unitOfWork)
         {
             InitializeComponent();
-            _soldProducts = soldProducts;
             _unitOfWork = unitOfWork;
+            _sellId = sellId;
         }
-
         private void SellDetailsForm_Load(object sender, EventArgs e)
         {
+            RefreshDividaRestantePanel();
             InitializeGridView();
-            InitializeDividaRestantePanel();
         }
+
         private void InitializeGridView()
         {
             sellDetailsGridView.AutoGenerateColumns = true;
-            sellDetailsGridView.DataSource = _soldProducts;
+            sellDetailsGridView.DataSource = _soldProductsView;
         }
-        private void InitializeDividaRestantePanel()
+        private void RefreshDividaRestantePanel()
         {
-            AtualizaDividaRestante();
+            Sell sell = _unitOfWork.SellRepository.GetSellById(_sellId);
 
+            RefreshSoldProductsView(sell);
+            RefreshDividaRestante(sell);
 
         }
-        private void AbaterDividaTextBoxOnlyNumbers(object sender, EventArgs e)
+        private void RefreshSoldProductsView(Sell sell)
+         => _soldProductsView = SoldProductViewModel
+                            .GetViewFromSell(sell);
+        private void RefreshDividaRestante(Sell sell)
         {
-            if (!decimal.TryParse(abaterDividaTextBox.Text, out _))
+            decimal debt = sell.InitialDebtAmount - sell.TotalPaidAmount;
+            labelDividaRestanteValor.Text = debt.ToString("C", new CultureInfo("pt-BR"));
+            if (debt == 0)
+            {
+                botaoAbaterDivida.Enabled = false;
+                botaoAbaterDivida.BackColor = Color.Transparent;
+            }
+        }
+
+        #region :: Events ::
+        private void ValidaValorAbatimento(object sender, EventArgs e)
+        {
+            if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
             {
                 abaterDividaTextBox.Clear();
                 abaterDividaTextBox.Text = "0";
             }
+            else if (abater > Tools.ExtractNumericValue(labelDividaRestanteValor.Text))
+                abaterDividaTextBox.Text = Tools.ExtractNumericValue(labelDividaRestanteValor.Text).ToString();
         }
-        private void AtualizaDividaRestante()
-        {
-            labelDividaRestanteValor.Text = _soldProducts
-            .Select(p => Tools.ExtractNumericValue(p.SoldPrice) * p.Quantity)
-            .Sum()
-            .ToString("C", new CultureInfo("pt-BR"));
-        }
-
         private void BotaoAbaterDivida_Click(object sender, EventArgs e)
         {
-            decimal valorAbater = Convert.ToDecimal(abaterDividaTextBox);
+            if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
+            {
+                decimal valorAbater = Convert.ToDecimal(Tools.ExtractNumericValue(abaterDividaTextBox.Text));
 
-            if (valorAbater <= 0)
-                return;
+                _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
 
-            if (valorAbater >= Tools.ExtractNumericValue(labelDividaRestanteValor.Text))
-                valorAbater = Tools.ExtractNumericValue(labelDividaRestanteValor.Text);
-
-
-
-            AtualizaDividaRestante();
+                RefreshDividaRestantePanel();
+            }
         }
+        #endregion
+
     }
 }

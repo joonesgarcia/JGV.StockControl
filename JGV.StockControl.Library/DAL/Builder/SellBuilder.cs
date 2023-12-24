@@ -28,12 +28,14 @@ namespace JGV.StockControl.Library.DAL.Builder
         public SellBuilder WithSoldProducts(IEnumerable<SoldProductViewModel> soldProductViews) 
         {
             List<SoldProduct> soldProducts = new();
+            decimal debt = 0;
+
             foreach (var productView in soldProductViews)
             {
                 Product? product = _unitOfWork.ProductRepository.GetProductByDescription(productView.ProductDescription) ?? 
                     throw new NullReferenceException($"Product {productView.ProductDescription} not found");
 
-                soldProducts.Add(new SoldProduct()
+                SoldProduct soldProduct = new SoldProduct()
                 {
                     Product = product,
                     ProductId = product.Id,
@@ -41,8 +43,11 @@ namespace JGV.StockControl.Library.DAL.Builder
                     SoldPrice = Tools.ExtractNumericValue(productView.SoldPrice),
                     Sell = _sell,
                     SellId = _sell.Id
-                });
+                };
+                soldProducts.Add(soldProduct);
+                debt += soldProduct.Quantity * soldProduct.SoldPrice;
             }
+            _sell.InitialDebtAmount = debt;
             _sell.SoldProducts = soldProducts;
             return this;
         }

@@ -15,4 +15,5 @@ public interface ISellRepository
     public void CancelSell(int sellId);
     public Sell GetSellById(int id);
     public int GetNextSellId();
+    public void DeduceDebtValue(int sellId, decimal value);
 }

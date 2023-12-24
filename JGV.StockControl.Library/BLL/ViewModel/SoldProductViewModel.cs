@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using JGV.StockControl.Library.DAL.Models;
+using System.ComponentModel;
 using System.Globalization;
 
 
@@ -15,6 +16,10 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             this.soldPrice = soldPrice;
             this.ExpectedSellPrice = soldPrice;
         }
+        public static List<SoldProductViewModel> GetViewFromSell(Sell sell)
+            => sell.SoldProducts
+                .Select(sp => new SoldProductViewModel(sp.Product.Description, sp.Quantity, sp.SoldPrice))
+                .ToList();
         public SoldProductViewModel()
         {}
 
