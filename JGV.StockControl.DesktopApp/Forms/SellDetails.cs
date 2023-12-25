@@ -107,6 +107,12 @@ namespace JGV.StockControl.DesktopApp.Forms
 
                 _unitOfWork.SellRepository.RemoveSoldProductFromSell(_sellId, soldProduct);
                 _soldProductsView.RemoveAt(e.RowIndex);
+
+                if(_soldProductsView.Count == 0)
+                {
+                    MessageBox.Show("Venda excluida! Não há produtos vendidos.");
+                    this.Close();
+                }
             }
         }
         #endregion

@@ -33,6 +33,8 @@ namespace JGV.StockControl.DesktopApp.Forms
                 {
                     SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
                     sellDetailsForm.Show();
+
+                    sellDetailsForm.FormClosed += RefreshSellsForm;
                 }
             }
         }

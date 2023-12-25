@@ -44,10 +44,17 @@ public class SellRepository : ISellRepository
         if (sell != null)
         {
             sell.SoldProducts.Remove(product);
+
+            if (SellHasNoSoldProducts(sell))
+                _dbContext.Sells.Remove(sell);
+
             _dbContext.SaveChanges();
         }
 
     }
+
+    private bool SellHasNoSoldProducts(Sell sell)
+        => !sell.SoldProducts.Any();
 
 
     public void CancelSell(int sellId)
