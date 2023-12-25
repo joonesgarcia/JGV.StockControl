@@ -18,7 +18,6 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             ClientName = clientName;
             InitialDebtValue = initialDebtValue.ToString("C", new CultureInfo("pt-BR"));
             TotalPaidAmount = totalPaidAmount.ToString("C", new CultureInfo("pt-BR"));
-            RemainingValue = initialDebtValue - totalPaidAmount;
             Profit = profit.ToString("C", new CultureInfo("pt-BR"));
             SoldProductViews = soldProductViews;
         }
@@ -27,8 +26,6 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         public DateOnly Date { get; init; }
         [System.ComponentModel.DisplayName("Nome do cliente")]
         public string ClientName { get; init; }
-        [System.ComponentModel.DisplayName("Divida restante")]
-        public decimal RemainingValue { get; init; }
         [System.ComponentModel.DisplayName("Divida inicial")]
         public string InitialDebtValue { get; init; }
         [System.ComponentModel.DisplayName("Divida quitada")]

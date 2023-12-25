@@ -21,7 +21,10 @@ namespace JGV.StockControl.DesktopApp.Forms
             sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
         }
 
-        private void sellsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void RefreshSellsForm(object? sender, FormClosedEventArgs e)
+            => sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
+
+        private void SellsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
@@ -34,11 +37,12 @@ namespace JGV.StockControl.DesktopApp.Forms
             }
         }
 
-        private void addSellBtn_Click(object sender, EventArgs e)
+        private void AddSellBtn_Click(object sender, EventArgs e)
         {
             AddSellForm addSellForm = new(_unitOfWork);
             addSellForm.Show();
 
+            addSellForm.FormClosed += RefreshSellsForm;
         }
     }
 }

@@ -48,7 +48,7 @@
             sellsGridView.RowTemplate.Height = 29;
             sellsGridView.Size = new Size(935, 374);
             sellsGridView.TabIndex = 0;
-            sellsGridView.CellClick += sellsGridView_CellClick;
+            sellsGridView.CellClick += SellsGridView_CellClick;
             // 
             // addSellBtn
             // 
@@ -62,7 +62,7 @@
             addSellBtn.TabIndex = 1;
             addSellBtn.Text = "Cadastrar venda";
             addSellBtn.UseVisualStyleBackColor = false;
-            addSellBtn.Click += addSellBtn_Click;
+            addSellBtn.Click += AddSellBtn_Click;
             // 
             // SellsForm
             // 

@@ -178,7 +178,7 @@ namespace JGV.StockControl.DesktopApp.Forms
             {
                 foreach (DataGridViewCell cell in SelectedSoldProductsGrid.SelectedCells)
                 {
-                    string soldProductName = (string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[0].Value;
+                    string soldProductName = (string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[1].Value;
                     decimal soldProductValue = Tools.ExtractNumericValue((string)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[1].Value);
                     int soldProductQuantity = (int)SelectedSoldProductsGrid.Rows[cell.RowIndex].Cells[2].Value;
                     SoldProductViewModel? product = sellSoldProducts
