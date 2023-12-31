@@ -31,5 +31,7 @@ namespace JGV.StockControl.Library
 
             return numericValue;
         }
+        public static string ExtractCurrencyString(decimal value)
+        => value.ToString("C", new CultureInfo("pt-BR"));
     }
 }

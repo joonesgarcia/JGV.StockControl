@@ -31,16 +31,17 @@
             sellDetailsGridView = new DataGridView();
             labelDividaRestante = new Label();
             labelDividaRestanteValor = new Label();
-            abaterDividaTextBox = new TextBox();
-            labelAbaterDivida = new Label();
             dividaRestantePanel = new Panel();
-            botaoAbaterDivida = new Button();
+            SellDateValue = new Label();
+            SellDateLabel = new Label();
+            cancellSellBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)sellDetailsGridView).BeginInit();
             dividaRestantePanel.SuspendLayout();
             SuspendLayout();
             // 
             // sellDetailsGridView
             // 
+            sellDetailsGridView.AllowUserToAddRows = false;
             sellDetailsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             sellDetailsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             sellDetailsGridView.BackgroundColor = SystemColors.Control;
@@ -53,72 +54,80 @@
             sellDetailsGridView.RowTemplate.Height = 29;
             sellDetailsGridView.Size = new Size(838, 290);
             sellDetailsGridView.TabIndex = 0;
-            sellDetailsGridView.AllowUserToAddRows = false;
             sellDetailsGridView.CellClick += SoldProductsView_CellClick;
             // 
             // labelDividaRestante
             // 
             labelDividaRestante.AutoSize = true;
-            labelDividaRestante.Location = new Point(21, 22);
+            labelDividaRestante.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            labelDividaRestante.ForeColor = Color.Red;
+            labelDividaRestante.Location = new Point(26, 97);
             labelDividaRestante.Name = "labelDividaRestante";
-            labelDividaRestante.Size = new Size(112, 20);
+            labelDividaRestante.Size = new Size(162, 30);
             labelDividaRestante.TabIndex = 1;
             labelDividaRestante.Text = "Dívida restante:";
             // 
             // labelDividaRestanteValor
             // 
             labelDividaRestanteValor.AutoSize = true;
-            labelDividaRestanteValor.Location = new Point(151, 24);
+            labelDividaRestanteValor.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            labelDividaRestanteValor.ForeColor = Color.Red;
+            labelDividaRestanteValor.Location = new Point(218, 97);
             labelDividaRestanteValor.Name = "labelDividaRestanteValor";
-            labelDividaRestanteValor.Size = new Size(0, 20);
+            labelDividaRestanteValor.Size = new Size(0, 30);
             labelDividaRestanteValor.TabIndex = 2;
-            // 
-            // abaterDividaTextBox
-            // 
-            abaterDividaTextBox.Location = new Point(151, 67);
-            abaterDividaTextBox.Name = "abaterDividaTextBox";
-            abaterDividaTextBox.Size = new Size(84, 27);
-            abaterDividaTextBox.TabIndex = 3;
-            abaterDividaTextBox.TextChanged += ValidaValorAbatimento;
-            // 
-            // labelAbaterDivida
-            // 
-            labelAbaterDivida.AutoSize = true;
-            labelAbaterDivida.Location = new Point(21, 70);
-            labelAbaterDivida.Name = "labelAbaterDivida";
-            labelAbaterDivida.Size = new Size(102, 20);
-            labelAbaterDivida.TabIndex = 4;
-            labelAbaterDivida.Text = "Abater dívida:";
             // 
             // dividaRestantePanel
             // 
-            dividaRestantePanel.Controls.Add(botaoAbaterDivida);
-            dividaRestantePanel.Controls.Add(labelAbaterDivida);
+            dividaRestantePanel.BackColor = Color.LightGray;
+            dividaRestantePanel.Controls.Add(SellDateValue);
+            dividaRestantePanel.Controls.Add(SellDateLabel);
             dividaRestantePanel.Controls.Add(labelDividaRestante);
-            dividaRestantePanel.Controls.Add(abaterDividaTextBox);
             dividaRestantePanel.Controls.Add(labelDividaRestanteValor);
-            dividaRestantePanel.Location = new Point(489, 12);
+            dividaRestantePanel.Location = new Point(12, 26);
             dividaRestantePanel.Name = "dividaRestantePanel";
-            dividaRestantePanel.Size = new Size(361, 170);
+            dividaRestantePanel.Size = new Size(361, 156);
             dividaRestantePanel.TabIndex = 5;
             // 
-            // botaoAbaterDivida
+            // SellDateValue
             // 
-            botaoAbaterDivida.BackColor = Color.LawnGreen;
-            botaoAbaterDivida.FlatAppearance.BorderColor = Color.Black;
-            botaoAbaterDivida.Location = new Point(228, 127);
-            botaoAbaterDivida.Name = "botaoAbaterDivida";
-            botaoAbaterDivida.Size = new Size(114, 29);
-            botaoAbaterDivida.TabIndex = 5;
-            botaoAbaterDivida.Text = "Confirma";
-            botaoAbaterDivida.UseVisualStyleBackColor = false;
-            botaoAbaterDivida.Click += BotaoAbaterDivida_Click;
+            SellDateValue.AutoSize = true;
+            SellDateValue.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            SellDateValue.Location = new Point(218, 42);
+            SellDateValue.Name = "SellDateValue";
+            SellDateValue.Size = new Size(0, 25);
+            SellDateValue.TabIndex = 4;
+            // 
+            // SellDateLabel
+            // 
+            SellDateLabel.AutoSize = true;
+            SellDateLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            SellDateLabel.Location = new Point(26, 42);
+            SellDateLabel.Name = "SellDateLabel";
+            SellDateLabel.Size = new Size(137, 25);
+            SellDateLabel.TabIndex = 3;
+            SellDateLabel.Text = "Data da venda:";
+            // 
+            // cancellSellBtn
+            // 
+            cancellSellBtn.BackColor = Color.IndianRed;
+            cancellSellBtn.FlatStyle = FlatStyle.Popup;
+            cancellSellBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            cancellSellBtn.ForeColor = SystemColors.ButtonHighlight;
+            cancellSellBtn.Location = new Point(693, 135);
+            cancellSellBtn.Name = "cancellSellBtn";
+            cancellSellBtn.Size = new Size(157, 47);
+            cancellSellBtn.TabIndex = 6;
+            cancellSellBtn.Text = "Cancelar venda";
+            cancellSellBtn.UseVisualStyleBackColor = false;
+            cancellSellBtn.Click += cancellSellBtn_Click;
             // 
             // SellDetailsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(862, 510);
+            Controls.Add(cancellSellBtn);
             Controls.Add(dividaRestantePanel);
             Controls.Add(sellDetailsGridView);
             Name = "SellDetailsForm";
@@ -135,9 +144,9 @@
         private DataGridView sellDetailsGridView;
         private Label labelDividaRestante;
         private Label labelDividaRestanteValor;
-        private TextBox abaterDividaTextBox;
-        private Label labelAbaterDivida;
         private Panel dividaRestantePanel;
-        private Button botaoAbaterDivida;
+        private Label SellDateValue;
+        private Label SellDateLabel;
+        private Button cancellSellBtn;
     }
 }

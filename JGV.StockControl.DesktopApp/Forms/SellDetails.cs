@@ -57,37 +57,39 @@ namespace JGV.StockControl.DesktopApp.Forms
                                     SoldProductViewModel.GetViewFromSell(sell));
         private void RefreshDividaRestante(Sell sell)
         {
-            decimal debt = sell.InitialDebtAmount - sell.TotalPaidAmount;
-            labelDividaRestanteValor.Text = debt.ToString("C", new CultureInfo("pt-BR"));
-            if (debt == 0)
-            {
-                botaoAbaterDivida.Enabled = false;
-                botaoAbaterDivida.BackColor = Color.Transparent;
-            }
+            List<SoldProductViewModel> soldProductsView = SoldProductViewModel.GetViewFromSell(sell);
+
+            labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity));
+            SellDateValue.Text = sell.Date.ToShortDateString();
+            //if (debt == 0)
+            //{
+            //    botaoAbaterDivida.Enabled = false;
+            //    botaoAbaterDivida.BackColor = Color.Transparent;
+            //}
         }
 
         #region :: Events ::
-        private void ValidaValorAbatimento(object sender, EventArgs e)
-        {
-            if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
-            {
-                abaterDividaTextBox.Clear();
-                abaterDividaTextBox.Text = "0";
-            }
-            else if (abater > Tools.ExtractNumericValue(labelDividaRestanteValor.Text))
-                abaterDividaTextBox.Text = Tools.ExtractNumericValue(labelDividaRestanteValor.Text).ToString();
-        }
-        private void BotaoAbaterDivida_Click(object sender, EventArgs e)
-        {
-            if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
-            {
-                decimal valorAbater = Convert.ToDecimal(Tools.ExtractNumericValue(abaterDividaTextBox.Text));
+        //private void ValidaValorAbatimento(object sender, EventArgs e)
+        //{
+        //    if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
+        //    {
+        //        abaterDividaTextBox.Clear();
+        //        abaterDividaTextBox.Text = "0";
+        //    }
+        //    else if (abater > Tools.ExtractNumericValue(labelDividaRestanteValor.Text))
+        //        abaterDividaTextBox.Text = Tools.ExtractNumericValue(labelDividaRestanteValor.Text).ToString();
+        //}
+        //private void BotaoAbaterDivida_Click(object sender, EventArgs e)
+        //{
+        //    if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
+        //    {
+        //        decimal valorAbater = Convert.ToDecimal(Tools.ExtractNumericValue(abaterDividaTextBox.Text));
 
-                _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
+        //        _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
 
-                RefreshDividaRestantePanel();
-            }
-        }
+        //        RefreshDividaRestantePanel();
+        //    }
+        //}
         void SoldProductsView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //if click is on new row or header row
@@ -101,14 +103,16 @@ namespace JGV.StockControl.DesktopApp.Forms
 
                 SoldProduct soldProduct = sell.SoldProducts
                     .FirstOrDefault(
-                    p => p.Sell == sell && 
+                    p => p.Sell == sell &&
                     p.ProductId == Convert.ToInt32(sellDetailsGridView.Rows[e.RowIndex].Cells["ProductId"].Value))!;
 
 
                 _unitOfWork.SellRepository.RemoveSoldProductFromSell(_sellId, soldProduct);
                 _soldProductsView.RemoveAt(e.RowIndex);
 
-                if(_soldProductsView.Count == 0)
+                RefreshDividaRestante(sell);
+
+                if (_soldProductsView.Count == 0)
                 {
                     MessageBox.Show("Venda excluida! Não há produtos vendidos.");
                     this.Close();
@@ -117,5 +121,15 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         #endregion
 
+        private void cancellSellBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Tem certeza? Não é possível desfazer essa ação.", "Cancelamento de venda", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                _unitOfWork.SellRepository.CancelSell(_sellId);
+                MessageBox.Show("Venda cancelada!");
+                this.Close();
+            }
+        }
     }
 }

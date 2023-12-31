@@ -49,7 +49,7 @@
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(203, 599);
+            panelMenu.Size = new Size(203, 640);
             panelMenu.TabIndex = 0;
             // 
             // clientDebtsButton
@@ -121,23 +121,23 @@
             panelContent.Dock = DockStyle.Fill;
             panelContent.Location = new Point(203, 0);
             panelContent.Name = "panelContent";
-            panelContent.Size = new Size(890, 599);
+            panelContent.Size = new Size(1322, 640);
             panelContent.TabIndex = 1;
             // 
             // panelRightDetail
             // 
             panelRightDetail.BackColor = Color.FromArgb(158, 159, 165);
             panelRightDetail.Dock = DockStyle.Right;
-            panelRightDetail.Location = new Point(871, 0);
+            panelRightDetail.Location = new Point(1303, 0);
             panelRightDetail.Name = "panelRightDetail";
-            panelRightDetail.Size = new Size(19, 599);
+            panelRightDetail.Size = new Size(19, 640);
             panelRightDetail.TabIndex = 0;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1093, 599);
+            ClientSize = new Size(1525, 640);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
             MinimumSize = new Size(1111, 646);
