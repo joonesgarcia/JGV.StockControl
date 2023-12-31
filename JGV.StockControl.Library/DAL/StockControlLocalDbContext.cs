@@ -37,7 +37,7 @@ namespace JGV.StockControl.Library.DAL
             );
 
             modelBuilder.Entity<SoldProduct>()
-                .HasKey(k => new { k.ProductId, k.SellId });
+                .HasKey(k => new { k.ProductId, k.SellId, k.SoldPrice });
 
             modelBuilder.Entity<Client>()
                 .HasMany(o => o.Orders)
