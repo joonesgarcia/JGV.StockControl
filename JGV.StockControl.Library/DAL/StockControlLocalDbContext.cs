@@ -32,8 +32,8 @@ namespace JGV.StockControl.Library.DAL
         {
             // Configure a custom value converter for the Date property
             var dateConverter = new ValueConverter<DateTime, string>(
-                v => v.ToString("dd/MM/yyyy"),   // Convert DateTime to string
-                v => DateTime.ParseExact(v, "dd/MM/yyyy", CultureInfo.InvariantCulture) // Parse string to DateTime
+                v => v.ToString("yyyy-MM-dd"),   // Convert DateTime to string
+                v => DateTime.ParseExact(v, "yyyy-MM-dd", CultureInfo.InvariantCulture) // Parse string to DateTime
             );
 
             modelBuilder.Entity<SoldProduct>()
