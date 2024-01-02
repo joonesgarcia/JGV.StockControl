@@ -21,6 +21,8 @@ namespace JGV.StockControl.DesktopApp
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<ISellRepository, SellRepository>();
+            services.AddSingleton<IDebtsRepository, DebtsRepository>();
+
 
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
 

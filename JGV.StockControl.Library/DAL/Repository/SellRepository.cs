@@ -1,16 +1,23 @@
 ﻿using JGV.StockControl.Library.BLL.InputModel;
 using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
 {
     private readonly StockControlLocalDbContext _dbContext;
+    private readonly IDebtsRepository debtsRepository;
+    private readonly IClientRepository clientsRepository;
+    private readonly ISellRepository sellRepository;
 
-    public SellRepository(StockControlLocalDbContext dbContext)
+    public SellRepository(StockControlLocalDbContext dbContext, IDebtsRepository debtsRepository, IClientRepository clientsRepository)
     {
         _dbContext = dbContext;
+        this.debtsRepository = debtsRepository;
+        this.clientsRepository = clientsRepository;
     }
 
     public void DeduceDebtValue(int sellId, decimal value)
@@ -55,7 +62,6 @@ public class SellRepository : ISellRepository
 
     private bool SellHasNoSoldProducts(Sell sell)
         => !sell.SoldProducts.Any();
-
 
     public void CancelSell(int sellId)
     {
@@ -102,6 +108,49 @@ public class SellRepository : ISellRepository
         return result
             .OrderByDescending(x => x.Id)
             .ToList();
+    }
+
+    public List<ClientDebtViewModel> GetClientsDebtView()
+    {
+        List <ClientDebtViewModel> clientDebts= new();
+
+        //int i = 1;
+
+        //foreach (Client client in _dbContext.Clients.Include(o => o.Orders))
+        //{
+        //    var debt = new Debt()
+        //    {
+        //        Id = i,
+        //        Client = client,
+        //        ClientId = client.Id,
+        //        Comment = string.Empty,
+        //        TotalPaid = client.Orders.Sum(x => x.TotalPaidAmount),
+        //        WillBePaidIn = client.Orders.OrderByDescending(x => x.Date).Last().Date.AddMonths(1)
+        //    };
+        //    _dbContext.Debts.Add(debt);
+        //    _dbContext.SaveChanges();
+        //    i++;
+        //}
+
+        foreach (Debt debt in _dbContext.Debts
+            .Include(c => c.Client)
+                .ThenInclude(o => o.Orders)
+                    .ThenInclude(sp => sp.SoldProducts)
+                        .ThenInclude(p => p.Product))
+        {
+            clientDebts.Add(new ClientDebtViewModel(
+                debt.Id,
+                debt.Client.Name,
+                debt.Client.Orders.Sum(x => x.InitialDebtAmount),
+                debt.Client.Orders.Sum(x => x.InitialDebtAmount) - debt.TotalPaid,
+                debt.Comment,
+                debt.WillBePaidIn,
+                debt.Client.Orders.SelectMany(x => SoldProductViewModel.GetViewFromSell(x)
+                ).ToList()));
+        }
+
+        return clientDebts.OrderByDescending(x => Tools.ExtractNumericValue(x.RemainingDebtValue)).ToList() ;    
+       
     }
 }
 

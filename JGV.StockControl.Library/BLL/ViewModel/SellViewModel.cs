@@ -51,6 +51,8 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         [System.ComponentModel.DisplayName("Lucro")]
         public string Profit { get; init; }
 
+        public decimal TotalPaidAmount { get => _totalPaidAmount; }
+
         [Browsable(false)]
         public IEnumerable<SoldProductViewModel> SoldProductViews { get; init; }
 

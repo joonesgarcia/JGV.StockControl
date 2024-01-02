@@ -15,10 +15,10 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             return _dbContext.Clients.ToList();
         }
-        public string? GetClientNameById(int id)
+        public Client? GetClientById(int id)
         {
             Client? client = _dbContext.Clients.FirstOrDefault(c => c.Id == id);
-            return client?.Name;
+            return client;
         }
         public void AddClient(ClientInputModel model)
         {
@@ -52,6 +52,11 @@ namespace JGV.StockControl.Library.DAL.Repository
             _dbContext.Clients.Update(client);
             _dbContext.SaveChanges();
             }
+        }
+        public Client? GetClientByName(string clientName)
+        {
+            Client? client = _dbContext.Clients.FirstOrDefault(c => c.Name == clientName);
+            return client;
         }
     }
 }

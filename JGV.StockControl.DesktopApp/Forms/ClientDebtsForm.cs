@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.DAL.IRepository;
+﻿using JGV.StockControl.Library.BLL.ViewModel;
+using JGV.StockControl.Library.DAL.IRepository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace JGV.StockControl.DesktopApp.Forms
     public partial class ClientDebtsForm : Form
     {
         private readonly IUnitOfWork _unitOfWork;
+        private BindingList<ClientDebtViewModel> clientDebtView;
 
         public ClientDebtsForm(IUnitOfWork unitOfWork)
         {
@@ -27,8 +29,27 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void InitializeGridView()
         {
+            clientDebtView = new BindingList<ClientDebtViewModel>(_unitOfWork.SellRepository.GetClientsDebtView());
+
             ClientDebtsGridView.AutoGenerateColumns = true;
-            // ... add data
+            ClientDebtsGridView.DataSource = clientDebtView;
+            ClientDebtsGridView.Columns["Id"].Visible = false;
+
+        }
+        private void ClientDebtsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+            {
+                var clientName = Convert.ToString(ClientDebtsGridView.Rows[e.RowIndex].Cells[1].Value);
+                var boughtItens = clientDebtView.ToList()
+                    .Single(x => x.ClientName.Equals(clientName))
+                    .SoldProductViews.ToList();
+                    
+
+                DebtDetailsForm sellDetailsForm = new(_unitOfWork, boughtItens); ;
+                sellDetailsForm.Show();
+
+            }
         }
     }
 }

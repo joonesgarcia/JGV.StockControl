@@ -85,9 +85,7 @@ namespace JGV.StockControl.DesktopApp
 
         private void ClientDebtsButton_Click(object sender, EventArgs e)
         {
-            if (_activeForm != null)
-                _activeForm.Close();
-            ActivateButton(sender);
+            OpenChildForm(new ClientDebtsForm(_unitOfWork), (Button)sender);
         }
     }
 }

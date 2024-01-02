@@ -38,10 +38,13 @@ namespace JGV.StockControl.Library.DAL
 
             modelBuilder.Entity<SoldProduct>()
                 .HasKey(k => new { k.ProductId, k.SellId, k.SoldPrice });
-
+                
             modelBuilder.Entity<Client>()
                 .HasMany(o => o.Orders)
                 .WithOne(c => c.Client);
+
+            modelBuilder.Entity<Debt>()
+                .HasOne(c => c.Client);
 
             modelBuilder.Entity<Sell>()
                 .HasMany(sp => sp.SoldProducts)
@@ -52,20 +55,24 @@ namespace JGV.StockControl.Library.DAL
             modelBuilder.Entity<SoldProduct>()
                 .HasOne(s => s.Sell);
 
-
+            modelBuilder.Entity<Debt>()
+                .Property(p => p.TotalPaid)
+                .HasColumnType("REAL");
             modelBuilder.Entity<Product>()
                 .Property(e => e.Cost)             
                 .HasColumnType("REAL");
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)
                 .HasColumnType("REAL");
-
             modelBuilder.Entity<SoldProduct>()
                 .Property(e => e.SoldPrice)
                 .HasColumnType("REAL");
 
             modelBuilder.Entity<Sell>()
                 .Property(s => s.Date)
+                .HasConversion(dateConverter);
+            modelBuilder.Entity<Debt>()
+                .Property(w => w.WillBePaidIn)
                 .HasConversion(dateConverter);
 
             base.OnModelCreating(modelBuilder);
@@ -74,6 +81,7 @@ namespace JGV.StockControl.Library.DAL
         public DbSet<Product> Products { get; set; }
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Sell> Sells { get; set; }
+        public DbSet<Debt> Debts { get; set; }
 
     }
 
