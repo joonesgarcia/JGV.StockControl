@@ -98,6 +98,7 @@ public class SellRepository : ISellRepository
                     .Sum(),
                 sell.SoldProducts
                     .Select(sp => new SoldProductViewModel(
+                        sell.Date.ToShortDateString(),
                         sp.ProductId,
                         sp.Product.Description,
                         sp.Quantity, 

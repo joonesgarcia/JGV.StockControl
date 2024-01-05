@@ -32,6 +32,7 @@ namespace JGV.StockControl.DesktopApp.Forms
             sellDetailsGridView.AutoGenerateColumns = true;
             sellDetailsGridView.DataSource = _soldProductsView;
             sellDetailsGridView.Columns["ProductId"].Visible = false;
+            sellDetailsGridView.Columns["SellDate"].Visible = false;
 
             AddRemoveSoldProductButton();
         }
@@ -61,11 +62,6 @@ namespace JGV.StockControl.DesktopApp.Forms
 
             labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity));
             SellDateValue.Text = sell.Date.ToShortDateString();
-            //if (debt == 0)
-            //{
-            //    botaoAbaterDivida.Enabled = false;
-            //    botaoAbaterDivida.BackColor = Color.Transparent;
-            //}
         }
 
         #region :: Events ::
