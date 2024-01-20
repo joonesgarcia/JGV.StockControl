@@ -1,25 +1,16 @@
 ﻿using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
-using JGV.StockControl.Library.DAL.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class DebtDetailsForm : Form
     {
         public IUnitOfWork _unitOfWork { get; }
-        private BindingList<SoldProductViewModel> _boughtProducts = new();
-        public DebtDetailsForm(IUnitOfWork unitOfWork, List<SoldProductViewModel> boughtProducts)
+        private BindingList<SellViewModel> _purchases = new();
+        public DebtDetailsForm(IUnitOfWork unitOfWork, List<SellViewModel> purchases)
         {
-            _boughtProducts = new BindingList<SoldProductViewModel>(boughtProducts);
+            _purchases = new BindingList<SellViewModel>(purchases);
             _unitOfWork = unitOfWork;
 
             InitializeComponent();
@@ -28,10 +19,20 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void InitializeGridView()
         {
             debtDetailsGridView.AutoGenerateColumns = true;
-            debtDetailsGridView.DataSource = _boughtProducts;
-            debtDetailsGridView.Columns["ProductId"].Visible = false;
-
+            debtDetailsGridView.DataSource = _purchases;
+            debtDetailsGridView.Columns["Profit"].Visible = false;
         }
-
+        private void DebtDetailsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 0)
+            {
+                var sellId = Convert.ToInt32(debtDetailsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                if (sellId > 0)
+                {
+                    SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
+                    sellDetailsForm.Show();
+                }
+            }
+        }
     }
 }

@@ -47,6 +47,7 @@
             debtDetailsGridView.RowTemplate.Height = 29;
             debtDetailsGridView.Size = new Size(776, 263);
             debtDetailsGridView.TabIndex = 1;
+            debtDetailsGridView.CellClick += DebtDetailsGridView_CellClick;
             // 
             // DebtDetails
             // 

@@ -77,7 +77,7 @@ public class SellRepository : ISellRepository
         _dbContext.SaveChanges();
     }
 
-    public List<SellViewModel> GetAll()
+    public List<SellViewModel> GetAll(Client? clientFilter = null)
     {
         List<SellViewModel> result = new();
         foreach (Sell sell in _dbContext.Sells
@@ -88,7 +88,7 @@ public class SellRepository : ISellRepository
             SellViewModel model = new(
                 sell.Id,
                 DateOnly.FromDateTime(sell.Date),
-                sell.Client.Name,
+                sell.Client,
                 sell.SoldProducts
                     .Select(p => p.SoldPrice * p.Quantity)
                     .Sum(),
@@ -106,6 +106,11 @@ public class SellRepository : ISellRepository
             );
             result.Add(model);
         }
+        if (clientFilter != null)
+            return result
+                .OrderByDescending(x => x.Id)
+                .Where(x => x.Client == clientFilter)
+                .ToList();
         return result
             .OrderByDescending(x => x.Id)
             .ToList();
@@ -146,8 +151,7 @@ public class SellRepository : ISellRepository
                 debt.Client.Orders.Sum(x => x.InitialDebtAmount) - debt.TotalPaid,
                 debt.Comment,
                 debt.WillBePaidIn,
-                debt.Client.Orders.SelectMany(x => SoldProductViewModel.GetViewFromSell(x)
-                ).ToList()));
+                GetAll(debt.Client)));
         }
 
         return clientDebts.OrderByDescending(x => Tools.ExtractNumericValue(x.RemainingDebtValue)).ToList() ;    

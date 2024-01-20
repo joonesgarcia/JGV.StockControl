@@ -23,15 +23,15 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         public string Comment { get; set; }
 
         [Browsable(false)]
-        public IEnumerable<SoldProductViewModel> SoldProductViews { get; init; }
+        public IEnumerable<SellViewModel> Purchases { get; init; }
 
-        public ClientDebtViewModel(int id, string clientName, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt, IEnumerable<SoldProductViewModel> soldProductViews)
+        public ClientDebtViewModel(int id, string clientName, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt, IEnumerable<SellViewModel> purchases)
         {
             this.Id = id;   
             this.ClientName = clientName;
             this.initialDebtValue = initialDebtValue;
             this.remainingDebtValue = remainingDebtValue;
-            this.SoldProductViews = soldProductViews;
+            this.Purchases = purchases;
             this.Comment = comment;
             this.WillBePaidAt = willBePaidAt;
         }

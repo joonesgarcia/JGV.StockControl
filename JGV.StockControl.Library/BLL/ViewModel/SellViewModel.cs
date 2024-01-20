@@ -14,24 +14,25 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         private readonly decimal _totalPaidAmount { get; init; }
         private readonly decimal _initialDebtValue { get; init; }
 
-        public SellViewModel(int id, DateOnly date, string clientName, decimal initialDebtValue, decimal totalPaidAmount, decimal profit, IEnumerable<SoldProductViewModel> soldProductViews)
+        public SellViewModel(int id, DateOnly date, Client client, decimal initialDebtValue, decimal totalPaidAmount, decimal profit, IEnumerable<SoldProductViewModel> soldProductViews)
         {
             Id = id;
             Date = date;
-            ClientName = clientName;
+            ClientName = client.Name;
             Profit = Tools.ExtractCurrencyString(profit);
 
             _initialDebtValue = initialDebtValue;
             _totalPaidAmount = totalPaidAmount;
 
             SoldProductViews = soldProductViews;
+            Client = client;
         }
         public int Id { get; init; }
         [System.ComponentModel.DisplayName("Data")]
         public DateOnly Date { get; init; }
         [System.ComponentModel.DisplayName("Nome do cliente")]
         public string ClientName { get; init; }
-        [System.ComponentModel.DisplayName("Divida inicial")]
+        [System.ComponentModel.DisplayName("Dívida inicial")]
         public string InitialDebtValue
         {
             get
@@ -44,17 +45,19 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         {
             get
             {
-                return Tools.ExtractCurrencyString(SoldProductViews.ToList()
-                    .Sum(s => Tools.ExtractNumericValue(s.SoldPrice) * s.Quantity));
+                return Tools.ExtractCurrencyString(_initialDebtValue - _totalPaidAmount);
             }
         }
         [System.ComponentModel.DisplayName("Lucro")]
         public string Profit { get; init; }
+        [System.ComponentModel.DisplayName("Total pago")]
 
         public decimal TotalPaidAmount { get => _totalPaidAmount; }
 
         [Browsable(false)]
         public IEnumerable<SoldProductViewModel> SoldProductViews { get; init; }
+        [Browsable(false)]
+        public Client Client { get; set; }
 
     }
 }

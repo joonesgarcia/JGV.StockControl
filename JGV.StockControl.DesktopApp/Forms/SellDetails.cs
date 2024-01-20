@@ -60,7 +60,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         {
             List<SoldProductViewModel> soldProductsView = SoldProductViewModel.GetViewFromSell(sell);
 
-            labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity));
+            labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity) - sell.TotalPaidAmount);
             SellDateValue.Text = sell.Date.ToShortDateString();
         }
 

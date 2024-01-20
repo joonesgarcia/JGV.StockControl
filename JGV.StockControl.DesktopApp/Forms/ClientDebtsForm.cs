@@ -43,7 +43,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 var clientName = Convert.ToString(ClientDebtsGridView.Rows[e.RowIndex].Cells[1].Value);
                 var boughtItens = clientDebtView.ToList()
                     .Single(x => x.ClientName.Equals(clientName))
-                    .SoldProductViews.OrderByDescending(d => DateTime.Parse(d.SellDate)).ToList();
+                    .Purchases.OrderByDescending(d => d.Date).ToList();
                     
 
                 DebtDetailsForm sellDetailsForm = new(_unitOfWork, boughtItens); ;
