@@ -41,14 +41,11 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (e.ColumnIndex == 1)
             {
                 var clientName = Convert.ToString(ClientDebtsGridView.Rows[e.RowIndex].Cells[1].Value);
-                var boughtItens = clientDebtView.ToList()
-                    .Single(x => x.ClientName.Equals(clientName))
-                    .Purchases.OrderByDescending(d => d.Date).ToList();
+                var clientDebt = clientDebtView.ToList()
+                    .Single(x => x.ClientName.Equals(clientName));
                     
-
-                DebtDetailsForm sellDetailsForm = new(_unitOfWork, boughtItens); ;
+                DebtDetailsForm sellDetailsForm = new(_unitOfWork, clientDebt);
                 sellDetailsForm.Show();
-
             }
         }
     }

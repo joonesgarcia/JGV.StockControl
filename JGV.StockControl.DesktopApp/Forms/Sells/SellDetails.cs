@@ -65,27 +65,6 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
 
         #region :: Events ::
-        //private void ValidaValorAbatimento(object sender, EventArgs e)
-        //{
-        //    if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
-        //    {
-        //        abaterDividaTextBox.Clear();
-        //        abaterDividaTextBox.Text = "0";
-        //    }
-        //    else if (abater > Tools.ExtractNumericValue(labelDividaRestanteValor.Text))
-        //        abaterDividaTextBox.Text = Tools.ExtractNumericValue(labelDividaRestanteValor.Text).ToString();
-        //}
-        //private void BotaoAbaterDivida_Click(object sender, EventArgs e)
-        //{
-        //    if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
-        //    {
-        //        decimal valorAbater = Convert.ToDecimal(Tools.ExtractNumericValue(abaterDividaTextBox.Text));
-
-        //        _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
-
-        //        RefreshDividaRestantePanel();
-        //    }
-        //}
         void SoldProductsView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //if click is on new row or header row

@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.BLL.ViewModel;
+﻿using JGV.StockControl.Library;
+using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
 using System.ComponentModel;
 
@@ -8,9 +9,9 @@ namespace JGV.StockControl.DesktopApp.Forms
     {
         public IUnitOfWork _unitOfWork { get; }
         private BindingList<SellViewModel> _purchases = new();
-        public DebtDetailsForm(IUnitOfWork unitOfWork, List<SellViewModel> purchases)
+        public DebtDetailsForm(IUnitOfWork unitOfWork, ClientDebtViewModel clientDebt)
         {
-            _purchases = new BindingList<SellViewModel>(purchases);
+            _purchases = new BindingList<SellViewModel>(clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
             _unitOfWork = unitOfWork;
 
             InitializeComponent();
@@ -32,6 +33,27 @@ namespace JGV.StockControl.DesktopApp.Forms
                     SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
                     sellDetailsForm.Show();
                 }
+            }
+        }
+        private void ValidaValorAbatimento(object sender, EventArgs e)
+        {
+            if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
+            {
+                abaterDividaTextBox.Clear();
+                abaterDividaTextBox.Text = "0";
+            }
+            else if (abater > Tools.ExtractNumericValue(dividaRestanteValue.Text))
+                abaterDividaTextBox.Text = Tools.ExtractNumericValue(dividaRestanteValue.Text).ToString();
+        }
+        private void BotaoAbaterDivida_Click(object sender, EventArgs e)
+        {
+            if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
+            {
+                decimal valorAbater = Convert.ToDecimal(Tools.ExtractNumericValue(abaterDividaTextBox.Text));
+
+                // _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
+
+               // RefreshDividaRestantePanel();
             }
         }
     }
