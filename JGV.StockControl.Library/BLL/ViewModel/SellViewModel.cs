@@ -40,6 +40,8 @@ namespace JGV.StockControl.Library.BLL.ViewModel
                 return Tools.ExtractCurrencyString(_initialDebtValue);
             }
         }
+        [System.ComponentModel.DisplayName("Total pago")]
+        public decimal TotalPaidAmount { get => _totalPaidAmount; }
         [System.ComponentModel.DisplayName("Divida restante")]
         public string RemainingDebt
         {
@@ -50,9 +52,6 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         }
         [System.ComponentModel.DisplayName("Lucro")]
         public string Profit { get; init; }
-        [System.ComponentModel.DisplayName("Total pago")]
-
-        public decimal TotalPaidAmount { get => _totalPaidAmount; }
 
         [Browsable(false)]
         public IEnumerable<SoldProductViewModel> SoldProductViews { get; init; }

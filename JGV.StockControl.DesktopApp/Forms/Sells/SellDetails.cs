@@ -94,8 +94,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 }
             }
         }
-        #endregion
-
         private void cancellSellBtn_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("Tem certeza? Não é possível desfazer essa ação.", "Cancelamento de venda", MessageBoxButtons.YesNo);
@@ -106,5 +104,6 @@ namespace JGV.StockControl.DesktopApp.Forms
                 this.Close();
             }
         }
+        #endregion
     }
 }

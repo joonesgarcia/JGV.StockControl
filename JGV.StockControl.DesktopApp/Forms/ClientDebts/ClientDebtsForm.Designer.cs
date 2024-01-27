@@ -34,16 +34,17 @@
             // 
             // ClientDebtsGridView
             // 
+            ClientDebtsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ClientDebtsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ClientDebtsGridView.BackgroundColor = SystemColors.Control;
             ClientDebtsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ClientDebtsGridView.Location = new Point(12, 215);
+            ClientDebtsGridView.Location = new Point(12, 179);
             ClientDebtsGridView.Name = "ClientDebtsGridView";
             ClientDebtsGridView.ReadOnly = true;
             ClientDebtsGridView.RowHeadersVisible = false;
             ClientDebtsGridView.RowHeadersWidth = 51;
             ClientDebtsGridView.RowTemplate.Height = 29;
-            ClientDebtsGridView.Size = new Size(1122, 351);
+            ClientDebtsGridView.Size = new Size(949, 377);
             ClientDebtsGridView.TabIndex = 0;
             ClientDebtsGridView.CellClick += ClientDebtsGridView_CellClick;
             // 
@@ -51,7 +52,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1146, 578);
+            ClientSize = new Size(973, 578);
             Controls.Add(ClientDebtsGridView);
             Name = "ClientDebtsForm";
             Text = "ClientDebtsForm";

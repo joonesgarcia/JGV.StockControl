@@ -30,6 +30,8 @@
         {
             debtDetailsGridView = new DataGridView();
             panel1 = new Panel();
+            clientValue = new Label();
+            clientLabel = new Label();
             valorLabel = new Label();
             abaterDividaBtn = new Button();
             abaterDividaLabel = new Label();
@@ -43,7 +45,7 @@
             // debtDetailsGridView
             // 
             debtDetailsGridView.AllowUserToAddRows = false;
-            debtDetailsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            debtDetailsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             debtDetailsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             debtDetailsGridView.BackgroundColor = SystemColors.Control;
             debtDetailsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -59,6 +61,8 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(clientValue);
+            panel1.Controls.Add(clientLabel);
             panel1.Controls.Add(valorLabel);
             panel1.Controls.Add(abaterDividaBtn);
             panel1.Controls.Add(abaterDividaLabel);
@@ -71,17 +75,38 @@
             panel1.Size = new Size(800, 190);
             panel1.TabIndex = 2;
             // 
+            // clientValue
+            // 
+            clientValue.AutoSize = true;
+            clientValue.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            clientValue.Location = new Point(188, 92);
+            clientValue.Name = "clientValue";
+            clientValue.Size = new Size(0, 22);
+            clientValue.TabIndex = 7;
+            // 
+            // clientLabel
+            // 
+            clientLabel.AutoSize = true;
+            clientLabel.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            clientLabel.Location = new Point(34, 92);
+            clientLabel.Name = "clientLabel";
+            clientLabel.Size = new Size(69, 22);
+            clientLabel.TabIndex = 6;
+            clientLabel.Text = "Cliente:";
+            // 
             // valorLabel
             // 
             valorLabel.AutoSize = true;
-            valorLabel.Location = new Point(545, 73);
+            valorLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            valorLabel.Location = new Point(540, 81);
             valorLabel.Name = "valorLabel";
-            valorLabel.Size = new Size(46, 20);
+            valorLabel.Size = new Size(60, 25);
             valorLabel.TabIndex = 5;
             valorLabel.Text = "Valor:";
             // 
             // abaterDividaBtn
             // 
+            abaterDividaBtn.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
             abaterDividaBtn.Location = new Point(540, 118);
             abaterDividaBtn.Name = "abaterDividaBtn";
             abaterDividaBtn.Size = new Size(198, 56);
@@ -92,34 +117,38 @@
             // abaterDividaLabel
             // 
             abaterDividaLabel.AutoSize = true;
-            abaterDividaLabel.Location = new Point(540, 15);
+            abaterDividaLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            abaterDividaLabel.Location = new Point(540, 22);
             abaterDividaLabel.Name = "abaterDividaLabel";
-            abaterDividaLabel.Size = new Size(99, 20);
+            abaterDividaLabel.Size = new Size(124, 25);
             abaterDividaLabel.TabIndex = 3;
             abaterDividaLabel.Text = "Abater dívida";
             // 
             // abaterDividaTextBox
             // 
-            abaterDividaTextBox.Location = new Point(608, 70);
+            abaterDividaTextBox.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            abaterDividaTextBox.Location = new Point(609, 74);
             abaterDividaTextBox.Name = "abaterDividaTextBox";
-            abaterDividaTextBox.Size = new Size(103, 27);
+            abaterDividaTextBox.Size = new Size(129, 32);
             abaterDividaTextBox.TabIndex = 2;
             abaterDividaTextBox.TextChanged += ValidaValorAbatimento;
             // 
             // dividaRestanteValue
             // 
             dividaRestanteValue.AutoSize = true;
-            dividaRestanteValue.Location = new Point(159, 30);
+            dividaRestanteValue.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            dividaRestanteValue.Location = new Point(188, 37);
             dividaRestanteValue.Name = "dividaRestanteValue";
-            dividaRestanteValue.Size = new Size(0, 20);
+            dividaRestanteValue.Size = new Size(0, 22);
             dividaRestanteValue.TabIndex = 1;
             // 
             // dividaRestanteLabel
             // 
             dividaRestanteLabel.AutoSize = true;
-            dividaRestanteLabel.Location = new Point(25, 30);
+            dividaRestanteLabel.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            dividaRestanteLabel.Location = new Point(34, 37);
             dividaRestanteLabel.Name = "dividaRestanteLabel";
-            dividaRestanteLabel.Size = new Size(112, 20);
+            dividaRestanteLabel.Size = new Size(133, 22);
             dividaRestanteLabel.TabIndex = 0;
             dividaRestanteLabel.Text = "Dívida restante:";
             // 
@@ -127,7 +156,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 508);
+            ClientSize = new Size(800, 858);
             Controls.Add(panel1);
             Controls.Add(debtDetailsGridView);
             Name = "DebtDetailsForm";
@@ -148,5 +177,7 @@
         private TextBox abaterDividaTextBox;
         private Label dividaRestanteValue;
         private Label dividaRestanteLabel;
+        private Label clientValue;
+        private Label clientLabel;
     }
 }

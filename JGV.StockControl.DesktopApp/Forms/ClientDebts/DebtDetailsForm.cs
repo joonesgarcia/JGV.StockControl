@@ -9,19 +9,31 @@ namespace JGV.StockControl.DesktopApp.Forms
     {
         public IUnitOfWork _unitOfWork { get; }
         private BindingList<SellViewModel> _purchases = new();
+        private readonly ClientDebtViewModel _clientDebt;
+
         public DebtDetailsForm(IUnitOfWork unitOfWork, ClientDebtViewModel clientDebt)
         {
-            _purchases = new BindingList<SellViewModel>(clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
             _unitOfWork = unitOfWork;
+            _clientDebt = clientDebt;
+
+            _purchases = new BindingList<SellViewModel>(clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
 
             InitializeComponent();
             InitializeGridView();
+            RefreshDividaRestantePanel();
         }
         private void InitializeGridView()
         {
             debtDetailsGridView.AutoGenerateColumns = true;
             debtDetailsGridView.DataSource = _purchases;
             debtDetailsGridView.Columns["Profit"].Visible = false;
+            debtDetailsGridView.Columns["ClientName"].Visible = false;
+        }
+
+        private void RefreshDividaRestantePanel()
+        {
+            clientValue.Text = _clientDebt.ClientName;
+            dividaRestanteValue.Text = _clientDebt.RemainingDebtValue;
         }
         private void DebtDetailsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -37,7 +49,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void ValidaValorAbatimento(object sender, EventArgs e)
         {
-            if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater))
+            if (!decimal.TryParse(abaterDividaTextBox.Text, out decimal abater) || abater < 0)
             {
                 abaterDividaTextBox.Clear();
                 abaterDividaTextBox.Text = "0";
@@ -53,7 +65,7 @@ namespace JGV.StockControl.DesktopApp.Forms
 
                 // _unitOfWork.SellRepository.DeduceDebtValue(_sellId, valorAbater);
 
-               // RefreshDividaRestantePanel();
+                // RefreshDividaRestantePanel();
             }
         }
     }

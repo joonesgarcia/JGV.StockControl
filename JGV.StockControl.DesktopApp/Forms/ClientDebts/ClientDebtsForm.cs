@@ -43,7 +43,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 var clientName = Convert.ToString(ClientDebtsGridView.Rows[e.RowIndex].Cells[1].Value);
                 var clientDebt = clientDebtView.ToList()
                     .Single(x => x.ClientName.Equals(clientName));
-                    
+
                 DebtDetailsForm sellDetailsForm = new(_unitOfWork, clientDebt);
                 sellDetailsForm.Show();
             }

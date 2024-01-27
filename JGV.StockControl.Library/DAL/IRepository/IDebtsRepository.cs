@@ -8,6 +8,6 @@ namespace JGV.StockControl.Library.DAL.IRepository
 {
     public interface IDebtsRepository
     {
-        decimal GetTotalPaidFromClient(int clientId);
+        decimal GetTotalPaidByClient(int clientId);
     }
 }

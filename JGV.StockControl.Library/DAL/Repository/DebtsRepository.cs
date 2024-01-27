@@ -17,7 +17,7 @@ namespace JGV.StockControl.Library.DAL.Repository
             _dbContext = dbContext;
             _clientRepository = clientRepository;
         }
-        public decimal GetTotalPaidFromClient(int clientId)
+        public decimal GetTotalPaidByClient(int clientId)
         {
             var client = _clientRepository.GetClientById(clientId);
             if (client == null)
