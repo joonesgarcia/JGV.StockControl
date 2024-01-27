@@ -9,15 +9,10 @@ namespace JGV.StockControl.Library.DAL.Repository;
 public class SellRepository : ISellRepository
 {
     private readonly StockControlLocalDbContext _dbContext;
-    private readonly IDebtsRepository debtsRepository;
-    private readonly IClientRepository clientsRepository;
-    private readonly ISellRepository sellRepository;
 
-    public SellRepository(StockControlLocalDbContext dbContext, IDebtsRepository debtsRepository, IClientRepository clientsRepository)
+    public SellRepository(StockControlLocalDbContext dbContext)
     {
         _dbContext = dbContext;
-        this.debtsRepository = debtsRepository;
-        this.clientsRepository = clientsRepository;
     }
 
     public void DeduceDebtValue(int sellId, decimal value)

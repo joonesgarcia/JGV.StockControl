@@ -13,10 +13,12 @@ namespace JGV.StockControl.Library.DAL.Repository
         }
         public List<Client> GetAll()
         {
-            return _dbContext.Clients.ToList();
+            return _dbContext.Clients.OrderBy(x => x.Name).ToList();
         }
-        public Client? GetClientById(int id)
+        public Client? GetClientById(int? id)
         {
+            if (id == null)
+                return null;
             Client? client = _dbContext.Clients.FirstOrDefault(c => c.Id == id);
             return client;
         }
