@@ -24,8 +24,10 @@ namespace JGV.StockControl.Library.BLL.ViewModel
 
         [Browsable(false)]
         public IEnumerable<SellViewModel> Purchases { get; init; }
+        [Browsable(false)]
+        public int ClientId { get; set; }
 
-        public ClientDebtViewModel(int id, string clientName, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt, IEnumerable<SellViewModel> purchases)
+        public ClientDebtViewModel(int id, string clientName, int clientId, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt, IEnumerable<SellViewModel> purchases)
         {
             this.Id = id;   
             this.ClientName = clientName;
@@ -34,6 +36,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             this.Purchases = purchases;
             this.Comment = comment;
             this.WillBePaidAt = willBePaidAt;
+            this.ClientId = clientId;   
         }
     }
 }

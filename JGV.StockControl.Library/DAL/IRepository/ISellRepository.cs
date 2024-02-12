@@ -17,5 +17,4 @@ public interface ISellRepository
     public int GetNextSellId();
     public void DeduceDebtValue(int sellId, decimal value);
     public void RemoveSoldProductFromSell(int sellId, SoldProduct product);
-    public List<ClientDebtViewModel> GetClientsDebtView();
 }

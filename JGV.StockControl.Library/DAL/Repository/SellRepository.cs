@@ -111,46 +111,6 @@ public class SellRepository : ISellRepository
             .ToList();
     }
 
-    public List<ClientDebtViewModel> GetClientsDebtView()
-    {
-        List <ClientDebtViewModel> clientDebts= new();
 
-        //int i = 1;
-
-        //foreach (Client client in _dbContext.Clients.Include(o => o.Orders))
-        //{
-        //    var debt = new Debt()
-        //    {
-        //        Id = i,
-        //        Client = client,
-        //        ClientId = client.Id,
-        //        Comment = string.Empty,
-        //        TotalPaid = client.Orders.Sum(x => x.TotalPaidAmount),
-        //        WillBePaidIn = client.Orders.OrderByDescending(x => x.Date).Last().Date.AddMonths(1)
-        //    };
-        //    _dbContext.Debts.Add(debt);
-        //    _dbContext.SaveChanges();
-        //    i++;
-        //}
-
-        foreach (Debt debt in _dbContext.Debts
-            .Include(c => c.Client)
-                .ThenInclude(o => o.Orders)
-                    .ThenInclude(sp => sp.SoldProducts)
-                        .ThenInclude(p => p.Product))
-        {
-            clientDebts.Add(new ClientDebtViewModel(
-                debt.Id,
-                debt.Client.Name,
-                debt.Client.Orders.Sum(x => x.InitialDebtAmount),
-                debt.Client.Orders.Sum(x => x.InitialDebtAmount) - debt.TotalPaid,
-                debt.Comment,
-                debt.WillBePaidIn,
-                GetAll(debt.Client)));
-        }
-
-        return clientDebts.OrderByDescending(x => Tools.ExtractNumericValue(x.RemainingDebtValue)).ToList() ;    
-       
-    }
 }
 

@@ -198,21 +198,25 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (sellSoldProducts.Any())
             {
                 var client = (Client)clientComboBox.SelectedItem;
-                var sellDate = sellDateInput.Value;
-                var downPayment = decimal.Parse(downPaymentTextBox.Text.ToString());
+                if (client != null)
+                {
+                    var sellDate = sellDateInput.Value;
+                    var downPayment = decimal.Parse(downPaymentTextBox.Text.ToString());
 
-                Sell newSell = new SellBuilder(_unitOfWork)
-                    .CreateSell()
-                    .WithSoldProducts(sellSoldProducts)
-                    .AtDate(sellDate)
-                    .ForClient(client)
-                    .WithDownPayment(downPayment)
-                    .Build();
+                    Sell newSell = new SellBuilder(_unitOfWork)
+                        .CreateSell()
+                        .WithSoldProducts(sellSoldProducts)
+                        .AtDate(sellDate)
+                        .ForClient(client)
+                        .WithDownPayment(downPayment)
+                        .Build();
 
-                _unitOfWork.SellRepository.AddSell(newSell);
-                MessageBox.Show("Venda adicionada!");
+                    _unitOfWork.SellRepository.AddSell(newSell);
+                    MessageBox.Show("Venda adicionada!");
 
-                this.Close();
+                    this.Close();
+                }else
+                    MessageBox.Show("Cliente inválido!");
             }
         }
         #endregion

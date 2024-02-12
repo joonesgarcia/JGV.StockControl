@@ -29,13 +29,17 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void InitializeGridView()
         {
-            clientDebtView = new BindingList<ClientDebtViewModel>(_unitOfWork.SellRepository.GetClientsDebtView());
-
             ClientDebtsGridView.AutoGenerateColumns = true;
-            ClientDebtsGridView.DataSource = clientDebtView;
+            RefreshClientDebtsGrid();
             ClientDebtsGridView.Columns["Id"].Visible = false;
-
         }
+        private void RefreshClientDebtsGrid()
+        {
+            clientDebtView = new BindingList<ClientDebtViewModel>(_unitOfWork.DebtsRepository.GetClientsDebtView());
+            ClientDebtsGridView.DataSource = clientDebtView;
+        }
+        private void RefreshClientDebtsGridOnDebtDetailsClose(object? sender, FormClosedEventArgs e)
+        => RefreshClientDebtsGrid();
         private void ClientDebtsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 1)
@@ -46,6 +50,8 @@ namespace JGV.StockControl.DesktopApp.Forms
 
                 DebtDetailsForm sellDetailsForm = new(_unitOfWork, clientDebt);
                 sellDetailsForm.Show();
+
+                sellDetailsForm.FormClosed += RefreshClientDebtsGridOnDebtDetailsClose;
             }
         }
     }

@@ -46,6 +46,10 @@ namespace JGV.StockControl.Library.DAL
             modelBuilder.Entity<Debt>()
                 .HasOne(c => c.Client);
 
+            modelBuilder.Entity<Debt>()
+                .HasMany(p => p.Payments)
+                .WithOne(d => d.Debt);
+
             modelBuilder.Entity<Sell>()
                 .HasMany(sp => sp.SoldProducts)
                 .WithOne(s => s.Sell);
@@ -67,6 +71,9 @@ namespace JGV.StockControl.Library.DAL
             modelBuilder.Entity<SoldProduct>()
                 .Property(e => e.SoldPrice)
                 .HasColumnType("REAL");
+            modelBuilder.Entity<Payment>()
+                .Property(v => v.Value)
+                .HasColumnType("REAL");
 
             modelBuilder.Entity<Sell>()
                 .Property(s => s.Date)
@@ -82,6 +89,7 @@ namespace JGV.StockControl.Library.DAL
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Sell> Sells { get; set; }
         public DbSet<Debt> Debts { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
     }
 

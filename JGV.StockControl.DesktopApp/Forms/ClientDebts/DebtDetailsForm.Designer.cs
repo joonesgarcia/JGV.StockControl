@@ -30,7 +30,7 @@
         {
             debtDetailsGridView = new DataGridView();
             panel1 = new Panel();
-            clientValue = new Label();
+            clientNameValue = new Label();
             clientLabel = new Label();
             valorLabel = new Label();
             abaterDividaBtn = new Button();
@@ -61,7 +61,7 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(clientValue);
+            panel1.Controls.Add(clientNameValue);
             panel1.Controls.Add(clientLabel);
             panel1.Controls.Add(valorLabel);
             panel1.Controls.Add(abaterDividaBtn);
@@ -75,14 +75,14 @@
             panel1.Size = new Size(800, 190);
             panel1.TabIndex = 2;
             // 
-            // clientValue
+            // clientNameValue
             // 
-            clientValue.AutoSize = true;
-            clientValue.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            clientValue.Location = new Point(188, 92);
-            clientValue.Name = "clientValue";
-            clientValue.Size = new Size(0, 22);
-            clientValue.TabIndex = 7;
+            clientNameValue.AutoSize = true;
+            clientNameValue.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            clientNameValue.Location = new Point(188, 92);
+            clientNameValue.Name = "clientNameValue";
+            clientNameValue.Size = new Size(0, 22);
+            clientNameValue.TabIndex = 7;
             // 
             // clientLabel
             // 
@@ -113,6 +113,7 @@
             abaterDividaBtn.TabIndex = 4;
             abaterDividaBtn.Text = "Abater";
             abaterDividaBtn.UseVisualStyleBackColor = true;
+            abaterDividaBtn.Click += abaterDividaBtn_Click;
             // 
             // abaterDividaLabel
             // 
@@ -177,7 +178,7 @@
         private TextBox abaterDividaTextBox;
         private Label dividaRestanteValue;
         private Label dividaRestanteLabel;
-        private Label clientValue;
+        private Label clientNameValue;
         private Label clientLabel;
     }
 }

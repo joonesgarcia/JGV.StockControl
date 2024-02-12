@@ -7,5 +7,6 @@ namespace JGV.StockControl.Library.DAL.IRepository
         IClientRepository ClientRepository { get; }
         IProductRepository ProductRepository { get; }
         ISellRepository SellRepository { get; }
+        IDebtsRepository DebtsRepository { get; }
     }
 }

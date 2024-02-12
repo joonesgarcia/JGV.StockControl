@@ -41,7 +41,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             }
         }
         [System.ComponentModel.DisplayName("Total pago")]
-        public decimal TotalPaidAmount { get => _totalPaidAmount; }
+        public string TotalPaidAmount { get => Tools.ExtractCurrencyString(_totalPaidAmount); }
         [System.ComponentModel.DisplayName("Divida restante")]
         public string RemainingDebt
         {
