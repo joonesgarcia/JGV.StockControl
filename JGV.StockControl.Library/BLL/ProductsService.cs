@@ -18,7 +18,7 @@ namespace JGV.StockControl.Library.BLL
             if (product.Equals(default(ProductViewModel)))
                 return new SoldProductViewModel();
 
-            SoldProductViewModel result = new ()
+            SoldProductViewModel result = new()
             {
                 ProductDescription = product.Description,
                 Quantity = quantity,

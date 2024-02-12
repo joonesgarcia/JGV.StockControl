@@ -10,7 +10,7 @@ namespace JGV.StockControl.Library.DAL.IRepository
     public interface IDebtsRepository
     {
         decimal GetTotalPaidByClient(int clientId);
-        void BuildClientsDebts(int clientId = -1);
+        //void BuildClientsDebts();
         List<ClientDebtViewModel> GetClientsDebtView(int clientId = -1);
     }
 }

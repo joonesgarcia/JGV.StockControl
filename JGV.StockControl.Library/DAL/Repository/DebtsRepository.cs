@@ -30,26 +30,29 @@ namespace JGV.StockControl.Library.DAL.Repository
             return _dbContext.Debts.SingleOrDefault(d => d.ClientId == clientId)!
                 .TotalPaid;
         }
-        public void BuildClientsDebts(int clientId = -1)
-        {
-            int i = 1;
+        /// <summary>
+        /// Used only when doing build/payload
+        /// </summary>
+        //public void BuildClientsDebts()
+        //{
+        //    int i = 1;
 
-            foreach (Client client in _dbContext.Clients.Include(o => o.Orders))
-            {
-                var debt = new Debt()
-                {
-                    Id = i,
-                    Client = client,
-                    ClientId = client.Id,
-                    Comment = string.Empty,
-                    TotalPaid = client.Orders.Sum(x => x.TotalPaidAmount),
-                    WillBePaidIn = client.Orders.OrderByDescending(x => x.Date).Last().Date.AddMonths(1)
-                };
-                _dbContext.Debts.Add(debt);
-                _dbContext.SaveChanges();
-                i++;
-            }
-        }
+        //    foreach (Client client in _dbContext.Clients.Include(o => o.Orders))
+        //    {
+        //        var debt = new Debt()
+        //        {
+        //            Id = i,
+        //            Client = client,
+        //            ClientId = client.Id,
+        //            Comment = string.Empty,
+        //            TotalPaid = client.Orders.Sum(x => x.TotalPaidAmount),
+        //            WillBePaidIn = client.Orders.OrderByDescending(x => x.Date).Last().Date.AddMonths(1)
+        //        };
+        //        _dbContext.Debts.Add(debt);
+        //        _dbContext.SaveChanges();
+        //        i++;
+        //    }
+        //}
 
         public void EditClientDebt(int clientId, string? comment = null, DateTime? willBePaidIn = null)
         {

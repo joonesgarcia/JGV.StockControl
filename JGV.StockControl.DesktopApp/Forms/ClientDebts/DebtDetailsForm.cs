@@ -73,6 +73,7 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (Tools.ExtractNumericValue(abaterDividaTextBox.Text) > 0)
             {
                 decimal valorAbater = Tools.ExtractNumericValue(abaterDividaTextBox.Text);
+                bool deduced = false;
 
                 while (valorAbater > 0)
                 {
@@ -80,14 +81,18 @@ namespace JGV.StockControl.DesktopApp.Forms
                     decimal valorAbativelUltimaCompraDevedora = Tools.ExtractNumericValue(ultimaCompraDevedora.RemainingDebt);
 
                     if (valorAbater > valorAbativelUltimaCompraDevedora)
-                        _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);                   
+                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);                   
                     else
-                        _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbater);
+                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbater);
 
                     valorAbater -= valorAbativelUltimaCompraDevedora;
-                    RefreshClientDebt();
                 }
-                MessageBox.Show("Valor abatido!");
+                RefreshClientDebt();
+
+                if (deduced)
+                    MessageBox.Show("Valor abatido!");
+                else
+                    MessageBox.Show("Erro durante abatimento");
             }
         }
         private int GetLastSellIdWithDebt()

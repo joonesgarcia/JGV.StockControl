@@ -15,13 +15,19 @@ public class SellRepository : ISellRepository
         _dbContext = dbContext;
     }
 
-    public void DeduceDebtValue(int sellId, decimal value)
+    public bool DeduceDebtValue(int sellId, decimal value)
     {
         var sell = GetSellById(sellId);
-        if (sell != null) {
-            sell.TotalPaidAmount += value;
-            _dbContext.SaveChanges();
-        }
+        var debt = _dbContext.Debts.Single(d => d.ClientId == sell.ClientId);
+
+        if (sell == null || debt == null)
+            return false;
+
+        sell.TotalPaidAmount += value;
+        debt.TotalPaid += value;
+
+        _dbContext.SaveChanges();
+        return true;
     }
 
     public int GetNextSellId()
