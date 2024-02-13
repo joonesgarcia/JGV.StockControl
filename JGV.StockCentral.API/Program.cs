@@ -25,7 +25,7 @@ app.MapGet("/Clientes", (IUnitOfWork db) =>
 });
 app.MapGet("/Produtos", (IUnitOfWork db) =>
 {
-    return Results.Ok(db.ProductRepository.GetAll());
+    return Results.Ok(db.ProductRepository.GetAllProducts());
 });
 app.MapGet("/Vendas", (IUnitOfWork db) =>
 {

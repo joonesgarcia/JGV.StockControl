@@ -74,7 +74,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 .Select(soldItem => Tools.ExtractNumericValue(soldItem.SoldPrice) * soldItem.Quantity)
                 .Sum()
                 .ToString("C", new CultureInfo("pt-BR"));
-        private int  GetValidProductSoldQuantityFromInput(ProductViewModel product)
+        private int GetValidProductSoldQuantityFromInput(ProductViewModel product)
         {
             int sellAlreadySoldProductQuantity = sellSoldProducts
                     .Where(p => p.ProductDescription == product.Description)
@@ -215,7 +215,8 @@ namespace JGV.StockControl.DesktopApp.Forms
                     MessageBox.Show("Venda adicionada!");
 
                     this.Close();
-                }else
+                }
+                else
                     MessageBox.Show("Cliente inválido!");
             }
         }

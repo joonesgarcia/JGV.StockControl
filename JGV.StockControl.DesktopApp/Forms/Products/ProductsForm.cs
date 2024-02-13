@@ -1,34 +1,39 @@
-﻿using JGV.StockControl.Library.DAL.IRepository;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using JGV.StockControl.DesktopApp.Forms.Products;
+using JGV.StockControl.Library.BLL;
 
-namespace JGV.StockControl.DesktopApp.Forms
+namespace JGV.StockControl.DesktopApp.Forms;
+
+public partial class ProductsForm : Form
 {
-    public partial class ProductsForm : Form
+    private readonly ProductsService _productService;
+    private readonly AddProductForm _addProductForm;
+
+    public ProductsForm(ProductsService productService, AddProductForm addProductForm)
     {
-        private readonly IUnitOfWork _unitOfWork;
+        InitializeComponent();
 
-        public ProductsForm(IUnitOfWork unitOfWork)
-        {
-            InitializeComponent();
-            _unitOfWork = unitOfWork;
-        }
-
-        private void ProductsForm_Load(object sender, EventArgs e)
-        {
-            InitializeGridView();
-        }
-        private void InitializeGridView()
-        {
-            productsGridView.AutoGenerateColumns = true;
-            productsGridView.DataSource = _unitOfWork.ProductRepository.GetAll();
-        }
+        _productService = productService;
+        _addProductForm = addProductForm;
     }
+
+    private void ProductsForm_Load(object sender, EventArgs e)
+    {
+        InitializeGridView();
+    }
+    private void InitializeGridView()
+    {
+        productsGridView.AutoGenerateColumns = true;
+        RefreshGridStockView();
+    }
+    private void RefreshGridStockView()
+        => productsGridView.DataSource = _productService.GetProductsView();
+
+    private void addProductBtn_Click(object sender, EventArgs e)
+    {
+        _addProductForm.ShowDialog();
+        _addProductForm.ProductAdded += OnProductAdded;
+    }
+
+    private void OnProductAdded(object sender, EventArgs e)
+        => RefreshGridStockView();
 }

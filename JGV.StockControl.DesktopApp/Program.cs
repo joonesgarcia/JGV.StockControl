@@ -1,3 +1,4 @@
+using JGV.StockControl.DesktopApp.Forms.Products;
 using JGV.StockControl.Library.BLL;
 using JGV.StockControl.Library.DAL;
 using JGV.StockControl.Library.DAL.IRepository;
@@ -10,7 +11,7 @@ namespace JGV.StockControl.DesktopApp
 {
     internal static class Program
     {
-        public static IServiceProvider ServiceProvider { get; set; }
+        private static IServiceProvider _serviceProvider = null!;
         static void ConfigureServices()
         {
             var services = new ServiceCollection();
@@ -23,10 +24,12 @@ namespace JGV.StockControl.DesktopApp
             services.AddSingleton<ISellRepository, SellRepository>();
             services.AddSingleton<IDebtsRepository, DebtsRepository>();
 
+            services.AddSingleton<AddProductForm>();
+            services.AddSingleton<ProductsService>();
 
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
-            ServiceProvider = services.BuildServiceProvider();
+            _serviceProvider = services.BuildServiceProvider();
         }
         /// <summary>
         ///  The main entry point for the application.
@@ -38,7 +41,7 @@ namespace JGV.StockControl.DesktopApp
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             ConfigureServices();
-            Application.Run(new MainForm(ServiceProvider.GetRequiredService<IUnitOfWork>()));
+            Application.Run(new MainForm(_serviceProvider));
         }
     }
 }

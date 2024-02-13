@@ -11,9 +11,9 @@ namespace JGV.StockControl.Library.BLL.ViewModel;
 
 public struct ProductViewModel
 {
-    public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion, bool isFromInitialInvestment)
+    public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion, bool isFromInitialInvestment, int productId)
     {
-        Description = isFromInitialInvestment ? 
+        Description = isFromInitialInvestment ?
             description.FirstCharToUpperOrEmptyStringAsDefault() + "*" :
             description.FirstCharToUpperOrEmptyStringAsDefault();
         Cost = cost.ToString("C", new CultureInfo("pt-BR"));
@@ -21,6 +21,7 @@ public struct ProductViewModel
         AvailableQuantity = availableQuantity;
         DiscountPromotion = discountPromotion?.FirstCharToUpperOrEmptyStringAsDefault();
         IsFromInitialInvestment = isFromInitialInvestment;
+        ProductId = productId;
     }
 
     [System.ComponentModel.DisplayName("Produto")]
@@ -35,6 +36,8 @@ public struct ProductViewModel
     public string? DiscountPromotion { get; set; } = null;
     [Browsable(false)]
     public bool IsFromInitialInvestment { get; set; }
+    [Browsable(false)]
+    public int ProductId { get; set; }  
 }
 
 

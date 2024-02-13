@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.BLL.ViewModel;
+﻿using JGV.StockControl.Library.BLL.InputModel;
+using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
 
 namespace JGV.StockControl.Library.DAL.Repository
@@ -6,45 +7,39 @@ namespace JGV.StockControl.Library.DAL.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly StockControlLocalDbContext _dbContext;
-
         public ProductRepository(StockControlLocalDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public List<ProductViewModel> GetAll()
-        => _dbContext.Products
-            .Select(p => new ProductViewModel(
-                p.Description,
-                p.Cost,
-                p.Price,
-                p.BoughtQuantity - _dbContext.SoldProducts.Where(s => s.Product == p)
-                                                          .Select(p => p.Quantity)
-                                                          .Sum(),
-                p.DiscountPromotion,
-                p.IsFromInitialInvestment))
-            .AsEnumerable()
-            .OrderByDescending(quantity => quantity.AvailableQuantity)
-            .ToList();
-        public ProductViewModel GetProductViewByDescription(string description)
-        => GetAll().SingleOrDefault(p => description.Equals(p.Description));
-        public Product? GetProductByDescription(string description)
+
+        public void AddProduct(ProductInputModel input)
         {
-            if (description == null) return null;
-
-            bool isFromInitialInvestment = false;
-            string productDescription = description.ToUpperInvariant();
-
-            if(productDescription.Last() == '*')
+            Product product = new()
             {
-                isFromInitialInvestment = true;
-                productDescription = productDescription[..^1];
-            }        
-            return _dbContext.Products
-                .AsEnumerable()
-                .FirstOrDefault(p => 
-                    p.Description.ToUpperInvariant() ==  productDescription &&
-                    p.IsFromInitialInvestment == isFromInitialInvestment);
+                BoughtQuantity = input.BoughtQuantity,
+                Cost = input.Cost,
+                Description = input.Description,
+                DiscountPromotion = input.DiscountPromotion,
+                IsFromInitialInvestment = input.IsFromInitialInvestment,
+                Price = input.Price,
+            };
+            _dbContext.Products.Add(product);
+            _dbContext.SaveChanges();
         }
+        public void DeleteProduct(Product product)
+        {
+            _dbContext.Products.Remove(product);
+            _dbContext.SaveChanges();
+        }
+        public IEnumerable<Product> GetAllProducts()
+        => _dbContext.Products;
+        public Product? GetProductById(int id)
+        => _dbContext.Products.FirstOrDefault(p => p.Id == id);
 
+        public int GetProductAvailableQuantity(Product product)
+        => product.BoughtQuantity -
+           _dbContext.SoldProducts
+            .Where(sp => sp.Product == product)
+            .Sum(sp => sp.Quantity);
     }
 }

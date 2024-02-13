@@ -61,6 +61,7 @@
             // 
             // panel1
             // 
+            panel1.BackColor = SystemColors.ControlLight;
             panel1.Controls.Add(clientNameValue);
             panel1.Controls.Add(clientLabel);
             panel1.Controls.Add(valorLabel);

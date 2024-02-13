@@ -56,9 +56,9 @@
             // addSellBtn
             // 
             addSellBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            addSellBtn.BackColor = Color.DarkSeaGreen;
+            addSellBtn.BackColor = Color.PowderBlue;
             addSellBtn.Cursor = Cursors.Hand;
-            addSellBtn.Location = new Point(710, 94);
+            addSellBtn.Location = new Point(723, 111);
             addSellBtn.MinimumSize = new Size(161, 0);
             addSellBtn.Name = "addSellBtn";
             addSellBtn.Size = new Size(161, 53);

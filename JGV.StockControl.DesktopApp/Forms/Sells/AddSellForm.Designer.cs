@@ -46,14 +46,16 @@
             sellDebtValueText = new Label();
             discountTextValue = new Label();
             impossibleSellLable = new Label();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // clientLabel
             // 
             clientLabel.AutoSize = true;
-            clientLabel.Location = new Point(52, 48);
+            clientLabel.Location = new Point(39, 62);
             clientLabel.Name = "clientLabel";
             clientLabel.Size = new Size(58, 20);
             clientLabel.TabIndex = 0;
@@ -62,7 +64,7 @@
             // clientComboBox
             // 
             clientComboBox.FormattingEnabled = true;
-            clientComboBox.Location = new Point(52, 84);
+            clientComboBox.Location = new Point(39, 115);
             clientComboBox.Name = "clientComboBox";
             clientComboBox.Size = new Size(227, 28);
             clientComboBox.TabIndex = 1;
@@ -70,7 +72,7 @@
             // dateLabel
             // 
             dateLabel.AutoSize = true;
-            dateLabel.Location = new Point(52, 150);
+            dateLabel.Location = new Point(39, 186);
             dateLabel.Name = "dateLabel";
             dateLabel.Size = new Size(44, 20);
             dateLabel.TabIndex = 2;
@@ -79,7 +81,7 @@
             // sellDateInput
             // 
             sellDateInput.Format = DateTimePickerFormat.Short;
-            sellDateInput.Location = new Point(149, 150);
+            sellDateInput.Location = new Point(136, 186);
             sellDateInput.Name = "sellDateInput";
             sellDateInput.Size = new Size(130, 27);
             sellDateInput.TabIndex = 3;
@@ -87,7 +89,7 @@
             // soldProductsLabel
             // 
             soldProductsLabel.AutoSize = true;
-            soldProductsLabel.Location = new Point(357, 43);
+            soldProductsLabel.Location = new Point(367, 32);
             soldProductsLabel.Name = "soldProductsLabel";
             soldProductsLabel.Size = new Size(223, 20);
             soldProductsLabel.TabIndex = 5;
@@ -96,7 +98,7 @@
             // downPaymentLabel
             // 
             downPaymentLabel.AutoSize = true;
-            downPaymentLabel.Location = new Point(52, 206);
+            downPaymentLabel.Location = new Point(39, 242);
             downPaymentLabel.Name = "downPaymentLabel";
             downPaymentLabel.Size = new Size(63, 20);
             downPaymentLabel.TabIndex = 6;
@@ -104,16 +106,16 @@
             // 
             // downPaymentTextBox
             // 
-            downPaymentTextBox.Location = new Point(149, 206);
+            downPaymentTextBox.Location = new Point(136, 242);
             downPaymentTextBox.Name = "downPaymentTextBox";
             downPaymentTextBox.Size = new Size(130, 27);
             downPaymentTextBox.TabIndex = 7;
-            downPaymentTextBox.TextChanged += DownPaymentTextBoxOnlyNumbers;
             downPaymentTextBox.Text = "0";
+            downPaymentTextBox.TextChanged += DownPaymentTextBoxOnlyNumbers;
             // 
             // soldProductQuantityInput
             // 
-            soldProductQuantityInput.Location = new Point(592, 331);
+            soldProductQuantityInput.Location = new Point(602, 320);
             soldProductQuantityInput.Maximum = new decimal(new int[] { 45, 0, 0, 0 });
             soldProductQuantityInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             soldProductQuantityInput.Name = "soldProductQuantityInput";
@@ -124,7 +126,7 @@
             // soldProductQuantityLabel
             // 
             soldProductQuantityLabel.AutoSize = true;
-            soldProductQuantityLabel.Location = new Point(357, 331);
+            soldProductQuantityLabel.Location = new Point(367, 320);
             soldProductQuantityLabel.Name = "soldProductQuantityLabel";
             soldProductQuantityLabel.Size = new Size(90, 20);
             soldProductQuantityLabel.TabIndex = 11;
@@ -132,12 +134,12 @@
             // 
             // addSoldProductButton
             // 
-            addSoldProductButton.BackColor = Color.FromArgb(255, 224, 192);
-            addSoldProductButton.Location = new Point(357, 387);
+            addSoldProductButton.BackColor = Color.PowderBlue;
+            addSoldProductButton.Location = new Point(367, 376);
             addSoldProductButton.Name = "addSoldProductButton";
             addSoldProductButton.Size = new Size(187, 35);
             addSoldProductButton.TabIndex = 12;
-            addSoldProductButton.Text = "Adicionar";
+            addSoldProductButton.Text = "Adicionar item";
             addSoldProductButton.UseVisualStyleBackColor = false;
             addSoldProductButton.Click += AddSoldProductButton_Click;
             // 
@@ -146,9 +148,9 @@
             AddSellButton.BackColor = Color.Green;
             AddSellButton.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
             AddSellButton.ForeColor = SystemColors.ButtonHighlight;
-            AddSellButton.Location = new Point(52, 331);
+            AddSellButton.Location = new Point(619, 690);
             AddSellButton.Name = "AddSellButton";
-            AddSellButton.Size = new Size(227, 91);
+            AddSellButton.Size = new Size(169, 79);
             AddSellButton.TabIndex = 13;
             AddSellButton.Text = "Cadastrar venda";
             AddSellButton.UseVisualStyleBackColor = false;
@@ -159,7 +161,7 @@
             SelectedSoldProductsGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             SelectedSoldProductsGrid.BackgroundColor = SystemColors.Control;
             SelectedSoldProductsGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            SelectedSoldProductsGrid.Location = new Point(52, 468);
+            SelectedSoldProductsGrid.Location = new Point(18, 464);
             SelectedSoldProductsGrid.Name = "SelectedSoldProductsGrid";
             SelectedSoldProductsGrid.RowHeadersWidth = 51;
             SelectedSoldProductsGrid.RowTemplate.Height = 29;
@@ -168,7 +170,7 @@
             // 
             // availableProductsListView
             // 
-            availableProductsListView.Location = new Point(357, 84);
+            availableProductsListView.Location = new Point(367, 73);
             availableProductsListView.Name = "availableProductsListView";
             availableProductsListView.Size = new Size(385, 223);
             availableProductsListView.TabIndex = 15;
@@ -179,11 +181,11 @@
             // removeSoldProductButton
             // 
             removeSoldProductButton.BackColor = Color.Silver;
-            removeSoldProductButton.Location = new Point(550, 387);
+            removeSoldProductButton.Location = new Point(560, 376);
             removeSoldProductButton.Name = "removeSoldProductButton";
             removeSoldProductButton.Size = new Size(187, 35);
             removeSoldProductButton.TabIndex = 16;
-            removeSoldProductButton.Text = "Remover";
+            removeSoldProductButton.Text = "Remover item";
             removeSoldProductButton.UseVisualStyleBackColor = false;
             removeSoldProductButton.Click += RemoveSoldProductButton_Click;
             // 
@@ -192,18 +194,18 @@
             SellInitialDebtLabel.Anchor = AnchorStyles.Right;
             SellInitialDebtLabel.AutoSize = true;
             SellInitialDebtLabel.Font = new Font("Segoe UI", 19F, FontStyle.Regular, GraphicsUnit.Point);
-            SellInitialDebtLabel.Location = new Point(664, 559);
+            SellInitialDebtLabel.Location = new Point(39, 338);
             SellInitialDebtLabel.Name = "SellInitialDebtLabel";
-            SellInitialDebtLabel.Size = new Size(88, 45);
+            SellInitialDebtLabel.Size = new Size(95, 45);
             SellInitialDebtLabel.TabIndex = 17;
-            SellInitialDebtLabel.Text = "Total";
+            SellInitialDebtLabel.Text = "Total:";
             // 
             // sellDebtValueText
             // 
             sellDebtValueText.Anchor = AnchorStyles.Right;
             sellDebtValueText.AutoSize = true;
             sellDebtValueText.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
-            sellDebtValueText.Location = new Point(660, 626);
+            sellDebtValueText.Location = new Point(175, 350);
             sellDebtValueText.Name = "sellDebtValueText";
             sellDebtValueText.Size = new Size(0, 30);
             sellDebtValueText.TabIndex = 18;
@@ -228,35 +230,47 @@
             impossibleSellLable.Size = new Size(0, 25);
             impossibleSellLable.TabIndex = 20;
             // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(availableProductsListView);
+            panel1.Controls.Add(soldProductsLabel);
+            panel1.Controls.Add(soldProductQuantityInput);
+            panel1.Controls.Add(sellDebtValueText);
+            panel1.Controls.Add(soldProductQuantityLabel);
+            panel1.Controls.Add(SellInitialDebtLabel);
+            panel1.Controls.Add(addSoldProductButton);
+            panel1.Controls.Add(removeSoldProductButton);
+            panel1.Controls.Add(clientComboBox);
+            panel1.Controls.Add(downPaymentTextBox);
+            panel1.Controls.Add(clientLabel);
+            panel1.Controls.Add(downPaymentLabel);
+            panel1.Controls.Add(dateLabel);
+            panel1.Controls.Add(sellDateInput);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(800, 441);
+            panel1.TabIndex = 21;
+            // 
             // AddSellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 800);
+            Controls.Add(panel1);
             Controls.Add(impossibleSellLable);
             Controls.Add(discountTextValue);
-            Controls.Add(sellDebtValueText);
-            Controls.Add(SellInitialDebtLabel);
-            Controls.Add(removeSoldProductButton);
-            Controls.Add(availableProductsListView);
             Controls.Add(SelectedSoldProductsGrid);
             Controls.Add(AddSellButton);
-            Controls.Add(addSoldProductButton);
-            Controls.Add(soldProductQuantityLabel);
-            Controls.Add(soldProductQuantityInput);
-            Controls.Add(downPaymentTextBox);
-            Controls.Add(downPaymentLabel);
-            Controls.Add(soldProductsLabel);
-            Controls.Add(sellDateInput);
-            Controls.Add(dateLabel);
-            Controls.Add(clientComboBox);
-            Controls.Add(clientLabel);
             MinimumSize = new Size(818, 847);
             Name = "AddSellForm";
             Text = "Cadastro de venda";
             Load += AddSellForm_Load;
             ((System.ComponentModel.ISupportInitialize)soldProductQuantityInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)SelectedSoldProductsGrid).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -281,5 +295,6 @@
         private Label sellDebtValueText;
         private Label discountTextValue;
         private Label impossibleSellLable;
+        private Panel panel1;
     }
 }

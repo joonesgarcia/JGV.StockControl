@@ -32,7 +32,7 @@ namespace JGV.StockControl.Library.DAL.Builder
 
             foreach (var productView in soldProductViews)
             {
-                Product? product = _unitOfWork.ProductRepository.GetProductByDescription(productView.ProductDescription) ?? 
+                Product? product = _unitOfWork.ProductRepository.GetProductById(productView.ProductId) ?? 
                     throw new NullReferenceException($"Product {productView.ProductDescription} not found");
 
                 SoldProduct soldProduct = new SoldProduct()

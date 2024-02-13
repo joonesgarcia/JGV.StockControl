@@ -1,21 +1,26 @@
 using JGV.StockControl.DesktopApp.Forms;
+using JGV.StockControl.Library.BLL;
 using JGV.StockControl.Library.DAL.IRepository;
+using JGV.StockControl.Library.DAL.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JGV.StockControl.DesktopApp
 {
     public partial class MainForm : Form
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly Random _random = new();
 
         private Button _currentButton;
         private Form _activeForm;
 
         private int _tempIndex;
-        public MainForm(IUnitOfWork unitOfWork)
+
+        private readonly IServiceProvider _serviceProvider;
+
+        public MainForm(IServiceProvider serviceProvider)
         {
-            _unitOfWork = unitOfWork;
             InitializeComponent();
+            _serviceProvider = serviceProvider;
         }
         private Color SelectRandomColor()
         {
@@ -55,8 +60,7 @@ namespace JGV.StockControl.DesktopApp
         }
         private void OpenChildForm(Form childForm, Button buttonSender)
         {
-            if (_activeForm != null)
-                _activeForm.Close();
+            _activeForm?.Close();
 
             ActivateButton(buttonSender);
             _activeForm = childForm;
@@ -74,18 +78,17 @@ namespace JGV.StockControl.DesktopApp
 
         private void ProductsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new ProductsForm(_unitOfWork), (Button)sender);
+            OpenChildForm(new ProductsForm(_serviceProvider.GetService<ProductsService>()!), (Button)sender);
         }
 
         private void SellsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new SellsForm(_unitOfWork), (Button)sender);
-
+            OpenChildForm(new SellsForm(_serviceProvider.GetService<UnitOfWork>()!), (Button)sender);
         }
 
         private void ClientDebtsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new ClientDebtsForm(_unitOfWork), (Button)sender);
+            OpenChildForm(new ClientDebtsForm(_serviceProvider.GetService<UnitOfWork>()!), (Button)sender);
         }
     }
 }

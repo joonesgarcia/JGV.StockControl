@@ -35,7 +35,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                 if (sellId > 0)
                 {
                     SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
-                    sellDetailsForm.Show();
+                    sellDetailsForm.ShowDialog();
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void ClientComboBoxSelectionChanged(object? sender, EventArgs e)
         {
-            if(clientComboBox.SelectedItem != null)
+            if (clientComboBox.SelectedItem != null)
             {
                 Client selected = clientComboBox.SelectedItem as Client;
                 RefreshSellsForm(selected!.Id);

@@ -81,7 +81,7 @@ namespace JGV.StockControl.DesktopApp.Forms
                     decimal valorAbativelUltimaCompraDevedora = Tools.ExtractNumericValue(ultimaCompraDevedora.RemainingDebt);
 
                     if (valorAbater > valorAbativelUltimaCompraDevedora)
-                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);                   
+                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);
                     else
                         deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbater);
 
@@ -97,6 +97,6 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private int GetLastSellIdWithDebt()
         => _purchases.Last(x => Tools.ExtractNumericValue(x.RemainingDebt) > 0).Id;
-        
+
     }
 }

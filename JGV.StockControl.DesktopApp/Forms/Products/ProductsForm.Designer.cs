@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             productsGridView = new DataGridView();
+            addProductBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
             SuspendLayout();
             // 
@@ -47,11 +48,24 @@
             productsGridView.Size = new Size(939, 375);
             productsGridView.TabIndex = 0;
             // 
+            // addProductBtn
+            // 
+            addProductBtn.BackColor = Color.PowderBlue;
+            addProductBtn.FlatStyle = FlatStyle.Flat;
+            addProductBtn.Location = new Point(803, 120);
+            addProductBtn.Name = "addProductBtn";
+            addProductBtn.Size = new Size(148, 39);
+            addProductBtn.TabIndex = 1;
+            addProductBtn.Text = "Adicionar novo";
+            addProductBtn.UseVisualStyleBackColor = false;
+            addProductBtn.Click += addProductBtn_Click;
+            // 
             // ProductsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(973, 578);
+            Controls.Add(addProductBtn);
             Controls.Add(productsGridView);
             Name = "ProductsForm";
             Text = "ProductsForm";
@@ -63,5 +77,6 @@
         #endregion
 
         private DataGridView productsGridView;
+        private Button addProductBtn;
     }
 }

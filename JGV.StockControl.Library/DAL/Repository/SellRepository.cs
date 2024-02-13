@@ -45,6 +45,8 @@ public class SellRepository : ISellRepository
         _dbContext.SaveChanges();       
     }
 
+
+
     public void RemoveSoldProductFromSell(int sellId, SoldProduct product)
     {
         var sell = GetSellById(sellId);
@@ -63,6 +65,11 @@ public class SellRepository : ISellRepository
 
     private bool SellHasNoSoldProducts(Sell sell)
         => !sell.SoldProducts.Any();
+
+
+
+
+
 
     public void CancelSell(int sellId)
     {
