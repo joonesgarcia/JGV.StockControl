@@ -1,6 +1,10 @@
-﻿using JGV.StockControl.Library;
+﻿using JGV.StockControl.DesktopApp.Events;
+using JGV.StockControl.Library;
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
+using JGV.StockControl.Library.DAL.Models;
+using JGV.StockControl.Library.DAL.Repository;
+using JGV.StockControl.Library.Services;
 using System.ComponentModel;
 
 namespace JGV.StockControl.DesktopApp.Forms
@@ -8,20 +12,41 @@ namespace JGV.StockControl.DesktopApp.Forms
     public partial class DebtDetailsForm : Form
     {
         public IUnitOfWork _unitOfWork { get; }
-        private BindingList<SellViewModel> _purchases = new();
-        private ClientDebtViewModel _clientDebt;
 
-        public DebtDetailsForm(IUnitOfWork unitOfWork, ClientDebtViewModel clientDebt)
+        private ClientDebtOutputModel _clientDebt;
+        private BindingList<SellOutputModel> _purchases;
+
+        private readonly SellDetailsForm _sellDetailsForm;
+        private readonly SellsService _sellsService;
+
+        public event EventHandler<SellSelectedEventArgs> SellSelected;
+        public DebtDetailsForm(IUnitOfWork unitOfWork, SellDetailsForm sellDetailsForm, SellsService sellsService)
         {
             _unitOfWork = unitOfWork;
-            _clientDebt = clientDebt;
 
-            _purchases = new BindingList<SellViewModel>(clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
+            _sellDetailsForm = sellDetailsForm;
+            SellSelected += _sellDetailsForm.HandleSellSelected;
+
+            _sellsService = sellsService;
+
+            _purchases = new BindingList<SellOutputModel>(_clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
 
             InitializeComponent();
             InitializeGridView();
             RefreshDividaRestantePanel();
         }
+
+        private void OnSellSelected(SellOutputModel sell)
+        => SellSelected.Invoke(this, new SellSelectedEventArgs(sell));
+
+        public void HandleDebtSelected(object sender, DebtSelectedEventArgs e)
+        {
+            _purchases.Clear();
+
+            _clientDebt = e.ClientDebt;
+            _purchases = new BindingList<SellOutputModel>(e.ClientDebt.Purchases.ToList());
+        }
+
         private void InitializeGridView()
         {
             debtDetailsGridView.AutoGenerateColumns = true;
@@ -33,8 +58,9 @@ namespace JGV.StockControl.DesktopApp.Forms
         private void RefreshClientDebt()
         {
             _clientDebt = _unitOfWork.DebtsRepository.GetClientsDebtView(_clientDebt.ClientId).Single();
+            _clientDebt.Purchases = _sellsService.GetAllSellsView(_clientDebt.ClientId);
 
-            _purchases = new BindingList<SellViewModel>(_clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
+            _purchases = new BindingList<SellOutputModel>(_clientDebt.Purchases.OrderByDescending(d => d.Date).ToList());
             debtDetailsGridView.DataSource = _purchases;
 
             RefreshDividaRestantePanel();
@@ -50,10 +76,12 @@ namespace JGV.StockControl.DesktopApp.Forms
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
                 var sellId = Convert.ToInt32(debtDetailsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-                if (sellId > 0)
+                Sell? sell = _unitOfWork.SellRepository.GetSellById(sellId);
+
+                if (sell != null)
                 {
-                    SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
-                    sellDetailsForm.Show();
+                    OnSellSelected(_sellsService.GetSellView(sell));
+                    _sellDetailsForm.Show();
                 }
             }
         }
@@ -77,13 +105,13 @@ namespace JGV.StockControl.DesktopApp.Forms
 
                 while (valorAbater > 0)
                 {
-                    SellViewModel ultimaCompraDevedora = _purchases.Single(p => p.Id == GetLastSellIdWithDebt());
+                    SellOutputModel ultimaCompraDevedora = _purchases.Single(p => p.Id == GetLastSellIdWithDebt());
                     decimal valorAbativelUltimaCompraDevedora = Tools.ExtractNumericValue(ultimaCompraDevedora.RemainingDebt);
 
                     if (valorAbater > valorAbativelUltimaCompraDevedora)
-                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);
+                        deduced = _unitOfWork.SellRepository.DeduceDebtFromSell(ultimaCompraDevedora.Id, valorAbativelUltimaCompraDevedora);
                     else
-                        deduced = _unitOfWork.SellRepository.DeduceDebtValue(ultimaCompraDevedora.Id, valorAbater);
+                        deduced = _unitOfWork.SellRepository.DeduceDebtFromSell(ultimaCompraDevedora.Id, valorAbater);
 
                     valorAbater -= valorAbativelUltimaCompraDevedora;
                 }

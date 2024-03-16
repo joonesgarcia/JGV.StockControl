@@ -120,7 +120,7 @@
             cancellSellBtn.TabIndex = 6;
             cancellSellBtn.Text = "Cancelar venda";
             cancellSellBtn.UseVisualStyleBackColor = false;
-            cancellSellBtn.Click += cancellSellBtn_Click;
+            cancellSellBtn.Click += CancellSellBtn_Click;
             // 
             // SellDetailsForm
             // 
@@ -132,7 +132,6 @@
             Controls.Add(sellDetailsGridView);
             Name = "SellDetailsForm";
             Text = "Detalhes da venda";
-            Load += SellDetailsForm_Load;
             ((System.ComponentModel.ISupportInitialize)sellDetailsGridView).EndInit();
             dividaRestantePanel.ResumeLayout(false);
             dividaRestantePanel.PerformLayout();

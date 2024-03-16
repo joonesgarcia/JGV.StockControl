@@ -1,25 +1,20 @@
 ﻿using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
+using JGV.StockControl.Library.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JGV.StockControl.Library.DAL.Repository
 {
     public class DebtsRepository : IDebtsRepository
     {
         private readonly StockControlLocalDbContext _dbContext;
-        private readonly ISellRepository _sellRepository;
         private readonly IClientRepository _clientRepository;
 
-        public DebtsRepository(StockControlLocalDbContext dbContext, ISellRepository sellRepository)
+        public DebtsRepository(StockControlLocalDbContext dbContext)
         {
             _dbContext = dbContext;
-            _sellRepository = sellRepository;
+
         }
         public decimal GetTotalPaidByClient(int clientId)
         {
@@ -66,9 +61,9 @@ namespace JGV.StockControl.Library.DAL.Repository
             _dbContext.SaveChanges();
         }
 
-        public List<ClientDebtViewModel> GetClientsDebtView(int clientId = -1)
+        public List<ClientDebtOutputModel> GetClientsDebtView(int clientId = -1)
         {
-            List<ClientDebtViewModel> clientDebts = new();
+            List<ClientDebtOutputModel> clientDebts = new();
 
             foreach (Debt debt in _dbContext.Debts
                 .Include(c => c.Client)
@@ -76,15 +71,14 @@ namespace JGV.StockControl.Library.DAL.Repository
                         .ThenInclude(sp => sp.SoldProducts)
                             .ThenInclude(p => p.Product))
             {
-                clientDebts.Add(new ClientDebtViewModel(
+                clientDebts.Add(new ClientDebtOutputModel(
                     debt.Id,
                     debt.Client.Name,
                     debt.ClientId,
                     debt.Client.Orders.Sum(x => x.InitialDebtAmount),
                     debt.Client.Orders.Sum(x => x.InitialDebtAmount) - debt.TotalPaid,
                     debt.Comment,
-                    debt.WillBePaidIn,
-                    _sellRepository.GetAll(debt.Client)));
+                    debt.WillBePaidIn));
             }
 
             if (clientId != -1)

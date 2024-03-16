@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JGV.StockControl.Library.BLL.ViewModel
 {
-    public struct ClientDebtViewModel
+    public struct ClientDebtOutputModel
     {
         private readonly decimal initialDebtValue;
         private readonly decimal remainingDebtValue;
@@ -23,20 +23,20 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         public string Comment { get; set; }
 
         [Browsable(false)]
-        public IEnumerable<SellViewModel> Purchases { get; init; }
+        public IEnumerable<SellOutputModel> Purchases { get; set; } = new List<SellOutputModel>();
         [Browsable(false)]
         public int ClientId { get; set; }
 
-        public ClientDebtViewModel(int id, string clientName, int clientId, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt, IEnumerable<SellViewModel> purchases)
+        public ClientDebtOutputModel(int id, string clientName, int clientId, decimal initialDebtValue, decimal remainingDebtValue, string comment, DateTime willBePaidAt)
         {
             this.Id = id;   
             this.ClientName = clientName;
             this.initialDebtValue = initialDebtValue;
             this.remainingDebtValue = remainingDebtValue;
-            this.Purchases = purchases;
             this.Comment = comment;
             this.WillBePaidAt = willBePaidAt;
             this.ClientId = clientId;   
         }
+
     }
 }

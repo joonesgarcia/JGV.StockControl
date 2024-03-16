@@ -15,62 +15,35 @@ public class SellRepository : ISellRepository
         _dbContext = dbContext;
     }
 
-    public bool DeduceDebtValue(int sellId, decimal value)
+    public IEnumerable<Sell> GetAllSells(int? clientId = null)
     {
-        var sell = GetSellById(sellId);
-        var debt = _dbContext.Debts.Single(d => d.ClientId == sell.ClientId);
+        var sells = _dbContext.Sells
+            .Include(c => c.Client)
+            .Include(sp => sp.SoldProducts)
+                .ThenInclude(p => p.Product)
+            .ToList();
 
-        if (sell == null || debt == null)
-            return false;
+        if (clientId != null)
+            return sells
+                .OrderByDescending(x => x.Id)
+                .Where(x => x.ClientId == clientId)
+                .ToList();
 
-        sell.TotalPaidAmount += value;
-        debt.TotalPaid += value;
-
-        _dbContext.SaveChanges();
-        return true;
+        return sells
+            .OrderByDescending(x => x.Id)
+            .ToList();
     }
-
-    public int GetNextSellId()
-    => GetAll().OrderBy(x => x.Id)
-        .Last().Id + 1;
-
-    public Sell GetSellById(int id)
+    public Sell? GetSellById(int id)
     => _dbContext.Sells
-        .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
+        .Include(c => c.Client)
+        .Include(sp => sp.SoldProducts)
+            .ThenInclude(p => p.Product)
         .SingleOrDefault(s => s.Id.Equals(id));
-
     public void AddSell(Sell sell)
     {
         _dbContext.Sells.Add(sell);
         _dbContext.SaveChanges();       
     }
-
-
-
-    public void RemoveSoldProductFromSell(int sellId, SoldProduct product)
-    {
-        var sell = GetSellById(sellId);
-
-        if (sell != null)
-        {
-            sell.SoldProducts.Remove(product);
-
-            if (SellHasNoSoldProducts(sell))
-                _dbContext.Sells.Remove(sell);
-
-            _dbContext.SaveChanges();
-        }
-
-    }
-
-    private bool SellHasNoSoldProducts(Sell sell)
-        => !sell.SoldProducts.Any();
-
-
-
-
-
-
     public void CancelSell(int sellId)
     {
         Sell sell = _dbContext.Sells.Single(s => s.Id == sellId);
@@ -85,45 +58,32 @@ public class SellRepository : ISellRepository
         _dbContext.SaveChanges();
     }
 
-    public List<SellViewModel> GetAll(Client? clientFilter = null)
+
+    public bool DeduceDebtFromSell(int sellId, decimal value)
     {
-        List<SellViewModel> result = new();
-        foreach (Sell sell in _dbContext.Sells
-            .Include(sp => sp.SoldProducts).ThenInclude(p => p.Product)
-            .Include(c => c.Client))
-        {
+        Sell? sell = _dbContext.Sells.SingleOrDefault(s => s.Id.Equals(sellId));
+        if (sell == null) return false;
 
-            SellViewModel model = new(
-                sell.Id,
-                DateOnly.FromDateTime(sell.Date),
-                sell.Client,
-                sell.SoldProducts
-                    .Select(p => p.SoldPrice * p.Quantity)
-                    .Sum(),
-                sell.TotalPaidAmount,              
-                sell.SoldProducts
-                    .Select(p => (p.SoldPrice - p.Product.Cost) * p.Quantity)
-                    .Sum(),
-                sell.SoldProducts
-                    .Select(sp => new SoldProductViewModel(
-                        sell.Date.ToShortDateString(),
-                        sp.ProductId,
-                        sp.Product.Description,
-                        sp.Quantity, 
-                        sp.SoldPrice))
-            );
-            result.Add(model);
-        }
-        if (clientFilter != null)
-            return result
-                .OrderByDescending(x => x.Id)
-                .Where(x => x.Client == clientFilter)
-                .ToList();
-        return result
-            .OrderByDescending(x => x.Id)
-            .ToList();
+        Debt? debt = _dbContext.Debts.SingleOrDefault(d => d.ClientId == sell.ClientId);
+        if (debt == null) return false;
+
+        sell.TotalPaidAmount += value;
+        debt.TotalPaid += value;
+
+        _dbContext.SaveChanges();
+        return true;
     }
+    public void RemoveSoldProductFromSell(int sellId, SoldProduct product)
+    {
+        Sell? sell = _dbContext.Sells.SingleOrDefault(s => s.Id.Equals(sellId));
+        if (sell == null) return;
 
+        sell.SoldProducts.Remove(product);
 
+        if (!sell.SoldProducts.Any())
+            _dbContext.Sells.Remove(sell);
+
+        _dbContext.SaveChanges();
+    }
 }
 

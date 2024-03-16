@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace JGV.StockControl.Library.BLL.ViewModel
 {
-    public struct SellViewModel
+    public struct SellOutputModel
     {
         private readonly decimal _totalPaidAmount { get; init; }
         private readonly decimal _initialDebtValue { get; init; }
 
-        public SellViewModel(int id, DateOnly date, Client client, decimal initialDebtValue, decimal totalPaidAmount, decimal profit, IEnumerable<SoldProductViewModel> soldProductViews)
+        public SellOutputModel(int id, DateOnly date, Client client, decimal initialDebtValue, decimal totalPaidAmount, decimal profit, IEnumerable<SoldProductOutputModel> soldProductViews)
         {
             Id = id;
             Date = date;
@@ -54,7 +54,7 @@ namespace JGV.StockControl.Library.BLL.ViewModel
         public string Profit { get; init; }
 
         [Browsable(false)]
-        public IEnumerable<SoldProductViewModel> SoldProductViews { get; init; }
+        public IEnumerable<SoldProductOutputModel> SoldProductViews { get; init; }
         [Browsable(false)]
         public Client Client { get; set; }
 

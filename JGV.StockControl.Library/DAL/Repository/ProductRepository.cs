@@ -1,6 +1,7 @@
 ﻿using JGV.StockControl.Library.BLL.InputModel;
 using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JGV.StockControl.Library.DAL.Repository
 {
@@ -38,7 +39,7 @@ namespace JGV.StockControl.Library.DAL.Repository
 
         public int GetProductAvailableQuantity(Product product)
         => product.BoughtQuantity -
-           _dbContext.SoldProducts
+           _dbContext.SoldProducts.Include(p => p.Product)
             .Where(sp => sp.Product == product)
             .Sum(sp => sp.Quantity);
     }

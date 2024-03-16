@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace JGV.StockControl.Library.DAL.Repository;
 public interface ISellRepository
 {
-    public List<SellViewModel> GetAll(Client? client = null);
+    public IEnumerable<Sell> GetAllSells(int? clientId = null);
+    public Sell? GetSellById(int id);
     public void AddSell(Sell sell);
     public void CancelSell(int sellId);
-    public Sell GetSellById(int id);
-    public int GetNextSellId();
-    public bool DeduceDebtValue(int sellId, decimal value);
+
+    public bool DeduceDebtFromSell(int sellId, decimal value);
     public void RemoveSoldProductFromSell(int sellId, SoldProduct product);
 }

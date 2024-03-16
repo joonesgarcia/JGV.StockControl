@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace JGV.StockControl.Library.BLL.ViewModel;
 
-public struct ProductViewModel
+public struct ProductOutputModel
 {
-    public ProductViewModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion, bool isFromInitialInvestment, int productId)
+    public ProductOutputModel(string description, decimal cost, decimal price, int availableQuantity, string? discountPromotion, bool isFromInitialInvestment, int productId)
     {
         Description = isFromInitialInvestment ?
             description.FirstCharToUpperOrEmptyStringAsDefault() + "*" :

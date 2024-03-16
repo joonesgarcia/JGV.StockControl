@@ -1,5 +1,5 @@
 ﻿using JGV.StockControl.DesktopApp.Forms.Products;
-using JGV.StockControl.Library.BLL;
+using JGV.StockControl.Library.Services;
 
 namespace JGV.StockControl.DesktopApp.Forms;
 
@@ -26,7 +26,7 @@ public partial class ProductsForm : Form
         RefreshGridStockView();
     }
     private void RefreshGridStockView()
-        => productsGridView.DataSource = _productService.GetProductsView();
+        => productsGridView.DataSource = _productService.GetProductsView().ToList();
 
     private void addProductBtn_Click(object sender, EventArgs e)
     {

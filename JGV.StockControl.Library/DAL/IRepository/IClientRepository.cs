@@ -9,6 +9,6 @@ public interface IClientRepository
     public void DeleteClientById(int id);
     public Client? GetClientById(int? id);
     public Client? GetClientByName(string clientName);
-    public List<Client> GetAll();
+    public IEnumerable<Client> GetAllClients();
 }
 

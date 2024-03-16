@@ -11,6 +11,6 @@ namespace JGV.StockControl.Library.DAL.IRepository
     {
         decimal GetTotalPaidByClient(int clientId);
         //void BuildClientsDebts();
-        List<ClientDebtViewModel> GetClientsDebtView(int clientId = -1);
+        List<ClientDebtOutputModel> GetClientsDebtView(int clientId = -1);
     }
 }

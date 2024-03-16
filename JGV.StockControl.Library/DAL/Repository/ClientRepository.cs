@@ -11,7 +11,7 @@ namespace JGV.StockControl.Library.DAL.Repository
         {
             _dbContext = dbContext;
         }
-        public List<Client> GetAll()
+        public IEnumerable<Client> GetAllClients()
         {
             return _dbContext.Clients.OrderBy(x => x.Name).ToList();
         }

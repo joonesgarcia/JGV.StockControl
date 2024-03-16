@@ -1,7 +1,9 @@
 using JGV.StockControl.DesktopApp.Forms;
-using JGV.StockControl.Library.BLL;
+using JGV.StockControl.DesktopApp.Forms.Products;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
+using JGV.StockControl.Library.DAL.Repository;
+using JGV.StockControl.Library.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JGV.StockControl.DesktopApp
@@ -78,17 +80,26 @@ namespace JGV.StockControl.DesktopApp
 
         private void ProductsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new ProductsForm(_serviceProvider.GetService<ProductsService>()!), (Button)sender);
+            OpenChildForm(new ProductsForm(
+                _serviceProvider.GetService<ProductsService>()!, 
+                _serviceProvider.GetService<AddProductForm>()!), 
+                (Button)sender);
         }
 
         private void SellsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new SellsForm(_serviceProvider.GetService<UnitOfWork>()!), (Button)sender);
+            OpenChildForm(new SellsForm(
+                _serviceProvider.GetService<ISellRepository>()!,
+                _serviceProvider.GetService<ClientsService>()!,
+                _serviceProvider.GetService<SellsService>()!,
+                _serviceProvider.GetService<SellDetailsForm>()!,
+                _serviceProvider.GetService<AddSellForm>()!),
+                (Button)sender);
         }
 
         private void ClientDebtsButton_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new ClientDebtsForm(_serviceProvider.GetService<UnitOfWork>()!), (Button)sender);
+            OpenChildForm(new ClientDebtsForm(_serviceProvider.GetService<UnitOfWork>()!, _serviceProvider.GetService<DebtDetailsForm>()!), (Button)sender);
         }
     }
 }

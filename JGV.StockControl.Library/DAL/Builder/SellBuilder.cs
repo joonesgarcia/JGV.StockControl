@@ -21,11 +21,10 @@ namespace JGV.StockControl.Library.DAL.Builder
         }
         public SellBuilder CreateSell()
         {
-            _sell = new Sell();  
-            _sell.Id = _unitOfWork.SellRepository.GetNextSellId();
+            _sell = new();  
             return this;
         }
-        public SellBuilder WithSoldProducts(IEnumerable<SoldProductViewModel> soldProductViews) 
+        public SellBuilder WithSoldProducts(IEnumerable<SoldProductOutputModel> soldProductViews) 
         {
             List<SoldProduct> soldProducts = new();
             decimal debt = 0;

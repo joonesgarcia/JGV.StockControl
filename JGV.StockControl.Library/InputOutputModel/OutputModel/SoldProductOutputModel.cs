@@ -5,12 +5,12 @@ using System.Globalization;
 
 namespace JGV.StockControl.Library.BLL.ViewModel
 {
-    public class SoldProductViewModel : INotifyPropertyChanged
+    public class SoldProductOutputModel : INotifyPropertyChanged
     {
         private decimal soldPrice;
         private int quantity;
         private DateTime sellDate;
-        public SoldProductViewModel(string sellDate, int productId, string productDescription, int quantity, decimal soldPrice)
+        public SoldProductOutputModel(string sellDate, int productId, string productDescription, int quantity, decimal soldPrice)
         { 
             this.SellDate = sellDate;
             this.ProductId = productId;
@@ -19,11 +19,11 @@ namespace JGV.StockControl.Library.BLL.ViewModel
             this.soldPrice = soldPrice;
             this.ExpectedSellPrice = soldPrice;
         }
-        public static List<SoldProductViewModel> GetViewFromSell(Sell sell)
+        public static List<SoldProductOutputModel> GetViewFromSell(Sell sell)
             => sell.SoldProducts
-                .Select(sp => new SoldProductViewModel(sell.Date.ToShortDateString(), sp.ProductId, sp.Product.Description, sp.Quantity, sp.SoldPrice))
+                .Select(sp => new SoldProductOutputModel(sell.Date.ToShortDateString(), sp.ProductId, sp.Product.Description, sp.Quantity, sp.SoldPrice))
                 .ToList();
-        public SoldProductViewModel()
+        public SoldProductOutputModel()
         {}
         [DisplayName("Data da venda")]
         public string SellDate { 

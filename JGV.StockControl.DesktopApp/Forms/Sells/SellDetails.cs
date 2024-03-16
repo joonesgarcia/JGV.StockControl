@@ -1,30 +1,22 @@
-﻿using JGV.StockControl.Library;
+﻿using JGV.StockControl.DesktopApp.Events;
+using JGV.StockControl.Library;
 using JGV.StockControl.Library.BLL.ViewModel;
-using JGV.StockControl.Library.DAL;
 using JGV.StockControl.Library.DAL.IRepository;
 using JGV.StockControl.Library.DAL.Models;
 using System.ComponentModel;
-using System.Globalization;
-using System.Windows.Forms;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class SellDetailsForm : Form
     {
-        private int _sellId;
-        private BindingList<SoldProductViewModel> _soldProductsView;
+        private SellOutputModel _sellView;
+        private BindingList<SoldProductOutputModel> _soldProductsView;
 
         private readonly IUnitOfWork _unitOfWork;
-        public SellDetailsForm(int sellId, IUnitOfWork unitOfWork)
+        public SellDetailsForm(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;
-            _sellId = sellId;
-        }
-        private void SellDetailsForm_Load(object sender, EventArgs e)
-        {
-            RefreshDividaRestantePanel();
-            InitializeGridView();
         }
 
         private void InitializeGridView()
@@ -34,37 +26,43 @@ namespace JGV.StockControl.DesktopApp.Forms
             sellDetailsGridView.Columns["ProductId"].Visible = false;
             sellDetailsGridView.Columns["SellDate"].Visible = false;
 
-            AddRemoveSoldProductButton();
+            ConfigureRemoveSoldProductButton();
         }
-        private void AddRemoveSoldProductButton()
+        private void ConfigureRemoveSoldProductButton()
         {
-            var deleteButton = new DataGridViewButtonColumn();
-            deleteButton.Name = "soldProductsViewDeleteButton";
-            deleteButton.HeaderText = "";
-            deleteButton.Text = "Remover";
-            deleteButton.UseColumnTextForButtonValue = true;
+            var deleteButton = new DataGridViewButtonColumn
+            {
+                Name = "soldProductsViewDeleteButton",
+                HeaderText = "",
+                Text = "Remover",
+                UseColumnTextForButtonValue = true
+            };
             this.sellDetailsGridView.Columns.Add(deleteButton);
         }
         private void RefreshDividaRestantePanel()
         {
-            Sell sell = _unitOfWork.SellRepository.GetSellById(_sellId);
-
-            RefreshSoldProductsView(sell);
-            RefreshDividaRestante(sell);
-
+            RefreshSoldProductsView();
+            RefreshDividaRestanteText();
         }
-        private void RefreshSoldProductsView(Sell sell)
-         => _soldProductsView = new BindingList<SoldProductViewModel>(
-                                    SoldProductViewModel.GetViewFromSell(sell));
-        private void RefreshDividaRestante(Sell sell)
+        private void RefreshSoldProductsView()
+         => _soldProductsView = new BindingList<SoldProductOutputModel>(_sellView.SoldProductViews.ToList());
+        private void RefreshDividaRestanteText()
         {
-            List<SoldProductViewModel> soldProductsView = SoldProductViewModel.GetViewFromSell(sell);
-
-            labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity) - sell.TotalPaidAmount);
-            SellDateValue.Text = sell.Date.ToShortDateString();
+            labelDividaRestanteValor.Text = Tools.ExtractCurrencyString(_soldProductsView.Sum(x => Tools.ExtractNumericValue(x.SoldPrice) * x.Quantity) - Tools.ExtractNumericValue(_sellView.TotalPaidAmount));
+            SellDateValue.Text = _sellView.Date.ToShortDateString();
         }
 
         #region :: Events ::
+
+        public void HandleSellSelected(object sender, SellSelectedEventArgs e)
+        {
+            _sellView = e.SelectedSell;
+            _soldProductsView = new(_sellView.SoldProductViews.ToList());
+
+            InitializeGridView();
+            RefreshDividaRestantePanel();
+        }
+
         void SoldProductsView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //if click is on new row or header row
@@ -74,18 +72,19 @@ namespace JGV.StockControl.DesktopApp.Forms
             //Check if click is on specific column 
             if (e.ColumnIndex == sellDetailsGridView.Columns["soldProductsViewDeleteButton"].Index)
             {
-                Sell sell = _unitOfWork.SellRepository.GetSellById(_sellId);
+                Sell sell = _unitOfWork.SellRepository.GetSellById(_sellView.Id);
 
                 SoldProduct soldProduct = sell.SoldProducts
                     .FirstOrDefault(
-                    p => p.Sell == sell &&
+                    p => 
+                    p.Sell == sell &&
                     p.ProductId == Convert.ToInt32(sellDetailsGridView.Rows[e.RowIndex].Cells["ProductId"].Value))!;
 
 
-                _unitOfWork.SellRepository.RemoveSoldProductFromSell(_sellId, soldProduct);
+                _unitOfWork.SellRepository.RemoveSoldProductFromSell(_sellView.Id, soldProduct);
                 _soldProductsView.RemoveAt(e.RowIndex);
 
-                RefreshDividaRestante(sell);
+                RefreshDividaRestanteText();
 
                 if (_soldProductsView.Count == 0)
                 {
@@ -94,12 +93,12 @@ namespace JGV.StockControl.DesktopApp.Forms
                 }
             }
         }
-        private void cancellSellBtn_Click(object sender, EventArgs e)
+        private void CancellSellBtn_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("Tem certeza? Não é possível desfazer essa ação.", "Cancelamento de venda", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                _unitOfWork.SellRepository.CancelSell(_sellId);
+                _unitOfWork.SellRepository.CancelSell(_sellView.Id);
                 MessageBox.Show("Venda cancelada!");
                 this.Close();
             }

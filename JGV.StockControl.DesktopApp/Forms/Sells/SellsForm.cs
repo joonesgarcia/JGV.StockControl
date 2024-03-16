@@ -1,86 +1,112 @@
-﻿using JGV.StockControl.Library.BLL.ViewModel;
-using JGV.StockControl.Library.DAL.IRepository;
+﻿using JGV.StockControl.DesktopApp.Events;
+using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.Models;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
+using JGV.StockControl.Library.DAL.Repository;
+using JGV.StockControl.Library.Services;
+using static JGV.StockControl.Library.Services.ClientsService;
 
 namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class SellsForm : Form
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public SellsForm(IUnitOfWork unitOfWork)
+        private readonly ISellRepository sellRepository;
+
+        private readonly ClientsService clientService;
+        private readonly SellsService sellsService;
+
+        private readonly SellDetailsForm detailsForm;
+        private readonly AddSellForm addSellForm;
+
+        public event EventHandler<SellSelectedEventArgs> SellSelected;
+
+        public SellsForm(ISellRepository sellRepository, ClientsService clientService, SellsService sellsService, SellDetailsForm detailsForm, AddSellForm addSellForm)
         {
             InitializeComponent();
-            _unitOfWork = unitOfWork;
+
+            this.sellsService = sellsService;
+            this.detailsForm = detailsForm;
+            this.addSellForm = addSellForm;
+            this.sellRepository = sellRepository;
+            this.clientService = clientService;
+
+            SellSelected += detailsForm.HandleSellSelected;
         }
+
+        #region ::: Grid/Client filter form load  :::
         private void SellsForm_Load(object sender, EventArgs e)
         {
-            InitializeGridView();
+            LoadSellsGridView();
             LoadClientComboBox();
-            RefreshSellsForm();
         }
-        private void InitializeGridView()
+        private void LoadSellsGridView()
         {
             sellsGridView.AutoGenerateColumns = true;
-            sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
+            sellsGridView.DataSource = sellsService.GetAllSellsView();
         }
-
-        private void RefreshSellsFormAfterCloseAddSellForm(object? sender, FormClosedEventArgs e)
-            => sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
-        private void SellsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex == 0)
-            {
-                var sellId = Convert.ToInt32(sellsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-                if (sellId > 0)
-                {
-                    SellDetailsForm sellDetailsForm = new(sellId, _unitOfWork);
-                    sellDetailsForm.ShowDialog();
-                }
-            }
-        }
-
-        private void AddSellBtn_Click(object sender, EventArgs e)
-        {
-            AddSellForm addSellForm = new(_unitOfWork);
-            addSellForm.Show();
-
-            addSellForm.FormClosed += RefreshSellsFormAfterCloseAddSellForm;
-        }
-        private void RefreshSellsForm(int? clientId = null)
-        {
-            if (clientId == null)
-            {
-                sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll();
-                return;
-            }
-            Client? selectedClient = _unitOfWork.ClientRepository.GetClientById(clientId);
-            if (selectedClient != null)
-            {
-                sellsGridView.DataSource = _unitOfWork.SellRepository.GetAll(selectedClient);
-                return;
-            }
-        }
-
         private void LoadClientComboBox()
         {
-            clientComboBox.DataSource = _unitOfWork.ClientRepository.GetAll();
+            clientComboBox.SelectedIndexChanged -= ClientComboBoxSelectionChanged;
+            clientComboBox.DataSource = clientService.GetAllClients().ToList();
             clientComboBox.DisplayMember = "Name";
             clientComboBox.ValueMember = "Id";
             clientComboBox.SelectedItem = null;
+            clientComboBox.SelectedIndexChanged += ClientComboBoxSelectionChanged;
+
         }
+        #endregion
+
+        #region ::: Events :::
+        // Client filter events
         private void ClientComboBoxSelectionChanged(object? sender, EventArgs e)
         {
             if (clientComboBox.SelectedItem != null)
             {
-                Client selected = clientComboBox.SelectedItem as Client;
-                RefreshSellsForm(selected!.Id);
+                ClientInfo selected = (ClientInfo)clientComboBox.SelectedItem;
+                RefreshSellsGridView(selected.Id);
             }
         }
         private void CleanClientFilterBtn_Click(object sender, EventArgs e)
         {
             clientComboBox.SelectedItem = null;
-            RefreshSellsForm();
+            RefreshSellsGridView();
         }
+
+        // Add new sell events
+        private void AddSellBtn_Click(object sender, EventArgs e)
+        {
+            addSellForm.ShowDialog();
+            addSellForm.FormClosed += RefreshSellsFormAfterCloseAddSellForm;
+        }
+        private void RefreshSellsFormAfterCloseAddSellForm(object? sender, FormClosedEventArgs e)
+        => sellsGridView.DataSource = sellsService.GetAllSellsView();
+
+        // Grid events
+        private void OnSellSelected(SellOutputModel sell)
+        => SellSelected.Invoke(this, new SellSelectedEventArgs(sell));
+
+        private void SellsGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 0)
+            {
+                var sellId = Convert.ToInt32(sellsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                Sell? sell = sellRepository.GetSellById(sellId);
+
+                if (sell != null)
+                {
+                    OnSellSelected(sellsService.GetSellView(sell)) ;
+                    detailsForm.ShowDialog();            
+                }
+            }
+        }
+        private void RefreshSellsGridView(int? clientId = null)
+        {
+            if (clientId == null)
+            {
+                sellsGridView.DataSource = sellsService.GetAllSellsView();
+                return;
+            }
+            sellsGridView.DataSource = sellsService.GetAllSellsView(clientId);
+        }
+        #endregion
     }
 }

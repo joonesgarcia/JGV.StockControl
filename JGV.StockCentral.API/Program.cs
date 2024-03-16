@@ -21,7 +21,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/Clientes", (IUnitOfWork db) =>
 {
-    return Results.Ok(db.ClientRepository.GetAll());
+    return Results.Ok(db.ClientRepository.GetAllClients());
 });
 app.MapGet("/Produtos", (IUnitOfWork db) =>
 {
@@ -29,7 +29,7 @@ app.MapGet("/Produtos", (IUnitOfWork db) =>
 });
 app.MapGet("/Vendas", (IUnitOfWork db) =>
 {
-    return Results.Ok(db.SellRepository.GetAll());
+    return Results.Ok(db.SellRepository.GetAllSells());
 });
 
 app.Run();

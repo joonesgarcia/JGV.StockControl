@@ -1,4 +1,5 @@
-﻿using JGV.StockControl.Library.BLL.ViewModel;
+﻿using JGV.StockControl.DesktopApp.Events;
+using JGV.StockControl.Library.BLL.ViewModel;
 using JGV.StockControl.Library.DAL.IRepository;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,23 @@ namespace JGV.StockControl.DesktopApp.Forms
 {
     public partial class ClientDebtsForm : Form
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private BindingList<ClientDebtViewModel> clientDebtView;
+        public event EventHandler<DebtSelectedEventArgs> DebtSelected;
 
-        public ClientDebtsForm(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly DebtDetailsForm _debtDetailsForm;
+
+        private BindingList<ClientDebtOutputModel> clientDebtView;
+
+        public ClientDebtsForm(IUnitOfWork unitOfWork, DebtDetailsForm debtDetailsForm)
         {
             InitializeComponent();
+
             _unitOfWork = unitOfWork;
+
+            _debtDetailsForm = debtDetailsForm;
+            _debtDetailsForm.FormClosed += RefreshClientDebtsGridOnDebtDetailsClose;
+
+            DebtSelected += _debtDetailsForm.HandleDebtSelected;
         }
 
         private void ClientDebtsForm_Load(object sender, EventArgs e)
@@ -35,7 +46,7 @@ namespace JGV.StockControl.DesktopApp.Forms
         }
         private void RefreshClientDebtsGrid()
         {
-            clientDebtView = new BindingList<ClientDebtViewModel>(_unitOfWork.DebtsRepository.GetClientsDebtView());
+            clientDebtView = new BindingList<ClientDebtOutputModel>(_unitOfWork.DebtsRepository.GetClientsDebtView());
             ClientDebtsGridView.DataSource = clientDebtView;
         }
         private void RefreshClientDebtsGridOnDebtDetailsClose(object? sender, FormClosedEventArgs e)
@@ -48,11 +59,13 @@ namespace JGV.StockControl.DesktopApp.Forms
                 var clientDebt = clientDebtView.ToList()
                     .Single(x => x.ClientName.Equals(clientName));
 
-                DebtDetailsForm sellDetailsForm = new(_unitOfWork, clientDebt);
-                sellDetailsForm.Show();
+                _debtDetailsForm.Show();
 
-                sellDetailsForm.FormClosed += RefreshClientDebtsGridOnDebtDetailsClose;
             }
+        }
+        private void OnDebtSelected(ClientDebtOutputModel debt)
+        {
+
         }
     }
 }
